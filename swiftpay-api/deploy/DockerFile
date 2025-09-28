@@ -1,0 +1,11 @@
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# JAR 파일 복사 (상위 디렉토리의 build/libs에서)
+COPY ../build/libs/*.jar app.jar
+
+EXPOSE 8080
+
+# Spring Profile은 환경변수로 받음
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

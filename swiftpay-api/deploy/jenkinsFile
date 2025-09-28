@@ -1,0 +1,134 @@
+pipeline {
+    agent any
+
+    environment {
+        MODULE_NAME      = 'api'
+        MODULE_DIR       = "swiftpay-${MODULE_NAME}"     // repo 내 모듈 폴더명
+        IMAGE_NAME       = "swiftpay-${MODULE_NAME}"
+        IMAGE_TAG        = "${BUILD_NUMBER}"
+        REGISTRY         = 'docker-regi-service.infrastructure:5000'
+        KUBECONFIG       = '/var/jenkins_home/.kube/config'
+        ACTIVE_PROFILE   = 'prod'
+
+        // Gradle JVM / 캐시 설정
+        GRADLE_OPTS      = '-Xmx1024m -Dorg.gradle.daemon=false'
+        GRADLE_USER_HOME = '/var/jenkins_home/.gradle'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                script {
+                    env.GIT_COMMIT_SHORT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                }
+            }
+        }
+
+        stage('Build & Test') {
+            steps {
+                withEnv(["GRADLE_OPTS=${GRADLE_OPTS}", "GRADLE_USER_HOME=${GRADLE_USER_HOME}"]) {
+                    sh "./gradlew :${MODULE_DIR}:build -x test"
+                }
+            }
+            post {
+                always {
+                    junit testResults: "${MODULE_DIR}/build/test-results/test/*.xml", allowEmptyResults: true
+                    archiveArtifacts artifacts: "${MODULE_DIR}/build/libs/*.jar", fingerprint: true
+                }
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                echo "🐳 Building Docker image (context: ${MODULE_DIR}/deploy)..."
+                dir("${MODULE_DIR}/deploy") {
+                    script {
+                        def image = docker.build("${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}")
+                        docker.withRegistry("http://${REGISTRY}") {
+                            image.push()
+                            image.push("latest")
+                        }
+                        echo "✅ Docker image pushed: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to K3s') {
+            steps {
+                echo "🚀 Deploying ${MODULE_NAME} to K3s..."
+                script {
+                    def springProfiles = "${ACTIVE_PROFILE}"
+
+                    // 이미지 업데이트
+                    sh """
+                        kubectl set image deployment/swiftpay-${MODULE_NAME} \\
+                            swiftpay-${MODULE_NAME}=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} -n swiftpay || echo "kubectl set image failed"
+                    """
+
+                    // 환경변수 설정
+                    sh """
+                        kubectl set env deployment/swiftpay-${MODULE_NAME} \\
+                            SPRING_PROFILES_ACTIVE=${springProfiles} -n swiftpay || echo "kubectl set env failed"
+                    """
+
+                    // 롤아웃 상태 확인
+                    sh """
+                        kubectl rollout status deployment/swiftpay-${MODULE_NAME} -n swiftpay --timeout=300s
+                    """
+                }
+            }
+        }
+
+        stage('Health Check') {
+            steps {
+                echo "🏥 Health checking ${MODULE_NAME}..."
+                script {
+                    timeout(time: 120, unit: 'SECONDS') {
+                        waitUntil {
+                            script {
+                                def status = sh(script: "curl -f -s https://swiftpay-api.ngyu.me/api/actuator/health >/dev/null 2>&1; echo \$?", returnStdout: true).trim()
+                                return status == '0'
+                            }
+                        }
+                    }
+                    echo "✅ ${MODULE_NAME} health check passed!"
+                }
+            }
+        }
+
+        stage('Deployment Info') {
+            steps {
+                script {
+                    sh """
+                        echo "📋 Deployment Info"
+                        echo "Module: ${MODULE_NAME}"
+                        echo "Image: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                        echo "Git Commit: ${env.GIT_COMMIT_SHORT}"
+                        echo "Build Number: ${BUILD_NUMBER}"
+                        echo "Deployment Time: \$(date)"
+                        kubectl get pods -n swiftpay -l app=swiftpay-${MODULE_NAME} || true
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        always { cleanWs() }
+        success {
+            echo "🎉 ${MODULE_NAME} deployment successful!"
+            echo "🌐 Access URL: https://swiftpay-api.ngyu.me/api/actuator/health"
+        }
+        failure {
+            echo "❌ ${MODULE_NAME} deployment failed!"
+            script {
+                sh """
+                    echo "🔄 Rolling back..."
+                    kubectl rollout undo deployment/swiftpay-${MODULE_NAME} -n swiftpay || echo "No previous revision"
+                """
+            }
+        }
+    }
+}
