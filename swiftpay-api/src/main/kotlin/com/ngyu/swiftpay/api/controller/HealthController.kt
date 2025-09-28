@@ -10,4 +10,9 @@ class HealthController {
 
   @GetMapping("/")
   fun health(): String = "OK"
+
+  @GetMapping("/")
+  fun dbHealth() : String {
+
+  }
 }
