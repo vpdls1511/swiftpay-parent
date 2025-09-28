@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: swiftpay-api
+
+server:
+  servlet:
+    context-path: /api
