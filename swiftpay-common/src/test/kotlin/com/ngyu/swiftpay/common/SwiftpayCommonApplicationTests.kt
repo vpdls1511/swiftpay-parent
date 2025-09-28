@@ -1,10 +1,10 @@
-package com.ngyu.swfitpay.common
+package com.ngyu.swiftpay.common
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class SwfitpayCommonApplicationTests {
+class SwiftpayCommonApplicationTests {
 
   @Test
   fun contextLoads() {
