@@ -24,9 +24,13 @@ dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+  implementation("org.springframework.boot:spring-boot-starter-actuator")
+
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
   runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
