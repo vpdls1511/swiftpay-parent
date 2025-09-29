@@ -1,5 +1,5 @@
 # === Runtime Stage ===
-FROM eclipse-temurin:17-jre-slim
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 COPY build/libs/swiftpay-api-*.jar app.jar
