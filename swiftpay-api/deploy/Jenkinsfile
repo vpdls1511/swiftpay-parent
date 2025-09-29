@@ -14,7 +14,7 @@ spec:
     image: gcr.io/kaniko-project/executor:debug
     command: ['sleep', '9999999']
   - name: kubectl
-    image: bitnami/kubectl:1.29
+    image: rancher/kubectl:v1.28.3
     command: ['sleep', '9999999']
 '''
         }
