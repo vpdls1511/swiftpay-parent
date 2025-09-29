@@ -9,12 +9,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Build JAR') {
             steps {
                 dir('../') { // Jenkinsfile 위치 기준으로 루트로 이동
