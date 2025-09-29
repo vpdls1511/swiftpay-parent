@@ -22,7 +22,7 @@ spec:
     }
 
     environment {
-        REGISTRY = "container-registry.infra.svc.cluster.local:5000"
+        REGISTRY = "localhost:30500"
         IMAGE_NAME = "swiftpay-api"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         NAMESPACE = "swiftpay"
