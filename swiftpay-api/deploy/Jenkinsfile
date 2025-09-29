@@ -51,7 +51,7 @@ spec:
                     sh """
                         /kaniko/executor \
                           --context=\${WORKSPACE}/swiftpay-api \
-                          --dockerfile=\${WORKSPACE}/swiftpay-api/Dockerfile \
+                          --dockerfile=\${WORKSPACE}/swiftpay-api/deploy/Dockerfile \
                           --destination=\${REGISTRY}/\${IMAGE_NAME}:\${IMAGE_TAG} \
                           --destination=\${REGISTRY}/\${IMAGE_NAME}:latest \
                           --insecure \
