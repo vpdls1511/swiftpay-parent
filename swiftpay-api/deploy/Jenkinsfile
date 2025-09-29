@@ -1,128 +1,76 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  serviceAccountName: jenkins
+  containers:
+  - name: gradle
+    image: gradle:8.5-jdk17
+    command: ['sleep', '9999999']
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command: ['sleep', '9999999']
+  - name: kubectl
+    image: bitnami/kubectl:latest
+    command: ['sleep', '9999999']
+'''
+        }
+    }
 
     environment {
-        IMAGE_NAME = "swiftpay-api:latest"
+        REGISTRY = "container-registry.infra.svc.cluster.local:5000"
+        IMAGE_NAME = "swiftpay-api"
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
         NAMESPACE = "swiftpay"
         DEPLOYMENT = "swiftpay-api"
-        KUBECONFIG = "/etc/rancher/k3s/k3s.yaml" // Jenkins pod에서 마운트한 kubeconfig 경로
     }
 
     stages {
-        stage('Build JAR') {
+        stage('Checkout') {
             steps {
-                sh 'ls -la'
-                sh 'ls -la ../'
-                sh 'ls -la ../../'
-                sh 'ls -la ../../../'
-                sh './gradlew :swiftpay-api:build -x test --no-daemon'
+                git branch: 'dev',
+                    url: 'https://github.com/vpdls1511/swiftpay-parent.git'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build JAR') {
             steps {
-                sh "docker build -t ${IMAGE_NAME} ."
-            }pipeline {
-                 agent {
-                     kubernetes {
-                         yaml '''
-             apiVersion: v1
-             kind: Pod
-             spec:
-               serviceAccountName: jenkins
-               containers:
-               - name: gradle
-                 image: gradle:8.5-jdk17
-                 command: ['sleep', '9999999']
-               - name: kaniko
-                 image: gcr.io/kaniko-project/executor:debug
-                 command: ['sleep', '9999999']
-               - name: kubectl
-                 image: bitnami/kubectl:latest
-                 command: ['sleep', '9999999']
-             '''
-                     }
-                 }
-
-                 environment {
-                     REGISTRY = "container-registry.infra.svc.cluster.local:5000"
-                     IMAGE_NAME = "swiftpay-api"
-                     IMAGE_TAG = "${env.BUILD_NUMBER}"
-                     NAMESPACE = "swiftpay"
-                     DEPLOYMENT = "swiftpay-api"
-                 }
-
-                 stages {
-                     stage('Checkout') {
-                         steps {
-                             git branch: 'dev',
-                                 url: 'https://github.com/vpdls1511/swiftpay-parent.git'
-                         }
-                     }
-
-                     stage('Build JAR') {
-                         steps {
-                             container('gradle') {
-                                 sh './gradlew :swiftpay-api:build -x test --no-daemon'
-                             }
-                         }
-                     }
-
-                     stage('Build & Push Image') {
-                         steps {
-                             container('kaniko') {
-                                 sh """
-                                     /kaniko/executor \
-                                       --context=\${WORKSPACE}/swiftpay-api \
-                                       --dockerfile=\${WORKSPACE}/swiftpay-api/Dockerfile \
-                                       --destination=\${REGISTRY}/\${IMAGE_NAME}:\${IMAGE_TAG} \
-                                       --destination=\${REGISTRY}/\${IMAGE_NAME}:latest \
-                                       --insecure \
-                                       --skip-tls-verify
-                                 """
-                             }
-                         }
-                     }
-
-                     stage('Deploy to K3s') {
-                         steps {
-                             container('kubectl') {
-                                 sh """
-                                     kubectl set image deployment/\${DEPLOYMENT} \
-                                       \${DEPLOYMENT}=\${REGISTRY}/\${IMAGE_NAME}:\${IMAGE_TAG} \
-                                       -n \${NAMESPACE}
-
-                                     kubectl rollout status deployment/\${DEPLOYMENT} -n \${NAMESPACE} --timeout=5m
-                                 """
-                             }
-                         }
-                     }
-                 }
-
-                 post {
-                     success {
-                         echo "Deployment completed successfully!"
-                     }
-                     failure {
-                         echo "Deployment failed!"
-                     }
-                 }
-             }
+                container('gradle') {
+                    sh './gradlew :swiftpay-api:build -x test --no-daemon'
+                }
+            }
         }
 
-        stage('Push to Local Docker (Optional)') {
+        stage('Build & Push Image') {
             steps {
-                // 로컬 Docker만 사용하므로 생략 가능
-                echo "Using local Docker, no push needed"
+                container('kaniko') {
+                    sh """
+                        /kaniko/executor \
+                          --context=\${WORKSPACE}/swiftpay-api \
+                          --dockerfile=\${WORKSPACE}/swiftpay-api/Dockerfile \
+                          --destination=\${REGISTRY}/\${IMAGE_NAME}:\${IMAGE_TAG} \
+                          --destination=\${REGISTRY}/\${IMAGE_NAME}:latest \
+                          --insecure \
+                          --skip-tls-verify
+                    """
+                }
             }
         }
 
         stage('Deploy to K3s') {
-            environment {
-                KUBECONFIG = "${env.KUBECONFIG}"
-            }
             steps {
-                sh "kubectl --kubeconfig=${KUBECONFIG} -n ${NAMESPACE} rollout restart deployment ${DEPLOYMENT}"
+                container('kubectl') {
+                    sh """
+                        kubectl set image deployment/\${DEPLOYMENT} \
+                          \${DEPLOYMENT}=\${REGISTRY}/\${IMAGE_NAME}:\${IMAGE_TAG} \
+                          -n \${NAMESPACE}
+
+                        kubectl rollout status deployment/\${DEPLOYMENT} -n \${NAMESPACE} --timeout=5m
+                    """
+                }
             }
         }
     }
