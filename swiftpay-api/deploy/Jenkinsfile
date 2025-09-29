@@ -18,6 +18,7 @@ pipeline {
         stage('Build JAR') {
             steps {
                 dir('../../') { // Jenkinsfile 위치 기준으로 루트로 이동
+                    sh 'ls -la'
                     sh './gradlew :swiftpay-api:build -x test --no-daemon'
                 }
             }
