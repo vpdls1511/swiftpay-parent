@@ -17,7 +17,7 @@ pipeline {
 
         stage('Build JAR') {
             steps {
-                sh './gradlew :swiftpay-api:build -x test --no-daemon'
+                sh '../gradlew :swiftpay-api:build -x test --no-daemon'
             }
         }
 
