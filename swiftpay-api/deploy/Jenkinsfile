@@ -49,13 +49,6 @@ spec:
             steps {
                 container('kaniko') {
                     sh """
-                        echo "=== 디렉토리 구조 확인 ==="
-                        ls -la \${WORKSPACE}
-                        echo "=== swiftpay-api 내부 ==="
-                        ls -la \${WORKSPACE}/swiftpay-api
-                        echo "=== Dockerfile 찾기 ==="
-                        find \${WORKSPACE} -name Dockerfile
-
                         /kaniko/executor \
                           --context=\${WORKSPACE}/swiftpay-api \
                           --dockerfile=\${WORKSPACE}/swiftpay-api/Dockerfile \
