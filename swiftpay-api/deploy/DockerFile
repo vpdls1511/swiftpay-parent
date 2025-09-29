@@ -2,8 +2,8 @@
 FROM eclipse-temurin:17-jre-slim
 WORKDIR /app
 
-# Jenkins에서 빌드한 JAR을 Docker 이미지로 복사
-COPY build/libs/swiftpay-api-*.jar app.jar
+# context가 swiftpay-api/이므로 그대로 참조 가능
+COPY swiftpay-api/build/libs/swiftpay-api-*.jar app.jar
 
 EXPOSE 8080
 
