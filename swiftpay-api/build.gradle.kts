@@ -24,6 +24,7 @@ repositories {
 }
 
 dependencies {
+  implementation(project(":swiftpay-core"))
   implementation(project(":swiftpay-infrastructure"))
 
   implementation("org.springframework.boot:spring-boot-starter")
