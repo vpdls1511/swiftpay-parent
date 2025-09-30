@@ -1,4 +1,7 @@
 package com.ngyu.swiftpay.core.usecase
 
+import com.ngyu.swiftpay.core.domain.Member
+
 interface AuthenticationUseCase {
+  fun registerUser(member: Member): String
 }
