@@ -25,7 +25,6 @@ dependencies {
 
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.springframework.boot:spring-boot-starter")
-  implementation("org.springframework.session:spring-session-jdbc")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
