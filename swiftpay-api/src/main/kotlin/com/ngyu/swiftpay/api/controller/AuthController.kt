@@ -1,15 +1,29 @@
 package com.ngyu.swiftpay.api.controller
 
+import com.ngyu.swiftpay.api.dto.AuthRegisterRequest
 import com.ngyu.swiftpay.api.dto.AuthRegisterResponse
+import com.ngyu.swiftpay.core.domain.Member
+import com.ngyu.swiftpay.core.usecase.AuthenticationUseCase
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController(value = "auth")
-class AuthController {
+@RestController
+@RequestMapping("/auth")
+class AuthController(
+  private val authenticationUseCase: AuthenticationUseCase,
+) {
 
   @PostMapping(value = ["/register"])
-  fun createUser(): ResponseEntity<AuthRegisterResponse> {
-    return ResponseEntity.ok(AuthRegisterResponse("apiToken"))
+  fun createUser(
+    @RequestBody @Valid request: AuthRegisterRequest
+  ): ResponseEntity<AuthRegisterResponse> {
+    val member: Member = request.toDomain()
+    val accessToken: String = authenticationUseCase.registerUser(member)
+
+    return ResponseEntity.ok(AuthRegisterResponse(accessToken))
   }
 }
