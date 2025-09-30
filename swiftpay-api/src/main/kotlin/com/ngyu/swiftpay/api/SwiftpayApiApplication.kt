@@ -3,7 +3,7 @@ package com.ngyu.swiftpay.api
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["com.ngyu.swiftpay"])
 class SwiftpayApiApplication
 
 fun main(args: Array<String>) {
