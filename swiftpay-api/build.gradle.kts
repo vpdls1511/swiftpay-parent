@@ -26,11 +26,13 @@ repositories {
 dependencies {
   implementation(project(":swiftpay-core"))
   implementation(project(":swiftpay-infrastructure"))
+  implementation(project(":swiftpay-security"))
 
-  implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
+  implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 
