@@ -21,12 +21,15 @@ repositories {
 
 dependencies {
   implementation(project(":swiftpay-common"))
+  implementation(project(":swiftpay-core"))
 
-  implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
+  implementation("org.springframework.boot:spring-boot-starter")
+  implementation("org.springframework.session:spring-session-jdbc")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-  testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+  testImplementation("org.springframework.boot:spring-boot-starter-test")
 
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 

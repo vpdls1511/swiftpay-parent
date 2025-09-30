@@ -2,7 +2,6 @@ package com.ngyu.swiftpay.core.domain
 
 import com.ngyu.swiftpay.core.domain.vo.Password
 import java.time.LocalDateTime
-import java.util.*
 
 data class Member(
   val id: Long? = null,
