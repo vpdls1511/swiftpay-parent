@@ -194,9 +194,6 @@ application-local.properties
 application-dev.yml
 application-dev.yaml
 application-dev.properties
-application-prod.yml
-application-prod.yaml
-application-prod.properties
 
 ### Docker ###
 .dockerignore
@@ -258,3 +255,4 @@ ehthumbs_vista.db
 
 ## properties
 **/application-local.yaml
+/.idea/
