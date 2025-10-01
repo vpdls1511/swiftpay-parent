@@ -37,10 +37,10 @@ spec:
 
     environment {
         REGISTRY = "container-registry.infra.svc.cluster.local:5000"
-        IMAGE_NAME = "swiftpay-api"
+        IMAGE_NAME = "swiftpay-payment"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         NAMESPACE = "swiftpay"
-        DEPLOYMENT = "swiftpay-api"
+        DEPLOYMENT = "swiftpay-payment"
         GRADLE_OPTS = "-Dorg.gradle.daemon=false -Dorg.gradle.caching=true"
     }
 
