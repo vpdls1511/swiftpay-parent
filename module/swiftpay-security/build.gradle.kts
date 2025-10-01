@@ -15,6 +15,14 @@ java {
   }
 }
 
+tasks.bootJar { // 실행 파일 안만듦
+  enabled = false
+}
+
+tasks.jar { // 라이브러리용 파일은 만듦
+  enabled = true
+}
+
 repositories {
   mavenCentral()
 }
