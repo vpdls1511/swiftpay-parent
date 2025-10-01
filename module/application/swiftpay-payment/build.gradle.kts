@@ -5,15 +5,8 @@ plugins {
   id("io.spring.dependency-management") version "1.1.7"
 }
 
-
 group = "com.ngyu"
 version = "0.0.1-SNAPSHOT"
-description = "swiftpay-parent"
-
-allprojects {
-  group = "com.ngyu.swiftpay"
-  version = "1.0.0"
-}
 
 java {
   toolchain {
@@ -21,15 +14,29 @@ java {
   }
 }
 
+tasks.jar {
+  enabled = false
+}
+
 repositories {
   mavenCentral()
 }
 
 dependencies {
-  implementation("org.springframework.boot:spring-boot-starter")
+  implementation(project(":module:swiftpay-core"))
+  implementation(project(":module:swiftpay-infrastructure"))
+  implementation(project(":module:swiftpay-security"))
+
   implementation("org.jetbrains.kotlin:kotlin-reflect")
+  implementation("org.springframework.boot:spring-boot-starter")
+  implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-actuator")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
+
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+  testImplementation("com.h2database:h2")
+
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

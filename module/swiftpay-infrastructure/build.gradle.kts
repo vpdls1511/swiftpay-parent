@@ -5,15 +5,9 @@ plugins {
   id("io.spring.dependency-management") version "1.1.7"
 }
 
-
 group = "com.ngyu"
 version = "0.0.1-SNAPSHOT"
-description = "swiftpay-parent"
-
-allprojects {
-  group = "com.ngyu.swiftpay"
-  version = "1.0.0"
-}
+description = "swiftpay-infrastructure"
 
 java {
   toolchain {
@@ -26,11 +20,19 @@ repositories {
 }
 
 dependencies {
-  implementation("org.springframework.boot:spring-boot-starter")
+  implementation(project(":module:swiftpay-common"))
+  implementation(project(":module:swiftpay-core"))
+
   implementation("org.jetbrains.kotlin:kotlin-reflect")
-  testImplementation("org.springframework.boot:spring-boot-starter-test")
+  implementation("org.springframework.boot:spring-boot-starter")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+  testImplementation("org.springframework.boot:spring-boot-starter-test")
+
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+  runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 }
 
 kotlin {

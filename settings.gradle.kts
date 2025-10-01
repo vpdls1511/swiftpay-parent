@@ -1,7 +1,7 @@
 rootProject.name = "swiftpay-parent"
 
-include("swiftpay-core")
-include("swiftpay-application")
-include("swiftpay-infrastructure")
-include("swiftpay-security")
-include("swiftpay-common")
+include("module:application:swiftpay-payment")
+include("module:swiftpay-core")
+include("module:swiftpay-infrastructure")
+include("module:swiftpay-security")
+include("module:swiftpay-common")
