@@ -1,7 +1,7 @@
-package com.ngyu.swiftpay.api.controller
+package com.ngyu.swiftpay.application.controller
 
-import com.ngyu.swiftpay.api.dto.AuthRegisterRequest
-import com.ngyu.swiftpay.api.dto.AuthRegisterResponse
+import com.ngyu.swiftpay.application.dto.AuthRegisterRequest
+import com.ngyu.swiftpay.application.dto.AuthRegisterResponse
 import com.ngyu.swiftpay.core.domain.Member
 import com.ngyu.swiftpay.core.usecase.AuthenticationUseCase
 import jakarta.validation.Valid

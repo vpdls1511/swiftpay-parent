@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.api
+package com.ngyu.swiftpay.application
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.api.dto
+package com.ngyu.swiftpay.application.dto
 
 import com.ngyu.swiftpay.core.domain.Member
 import com.ngyu.swiftpay.core.domain.vo.Password

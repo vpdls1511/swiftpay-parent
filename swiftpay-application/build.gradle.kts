@@ -7,7 +7,7 @@ plugins {
 
 group = "com.ngyu"
 version = "0.0.1-SNAPSHOT"
-description = "swiftpay-api"
+description = "swiftpay-application"
 
 java {
   toolchain {
