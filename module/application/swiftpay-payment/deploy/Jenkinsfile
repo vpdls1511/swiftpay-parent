@@ -13,6 +13,13 @@ spec:
     volumeMounts:
     - name: gradle-cache
       mountPath: /home/gradle/.gradle
+    resources:
+      requests:
+        memory: "2Gi"
+        cpu: "500m"
+      limits:
+        memory: "4Gi"
+        cpu: "2"
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     command: ['sleep', '9999999']
@@ -20,6 +27,10 @@ spec:
     image: alpine/k8s:1.28.3
     command: ['sleep']
     args: ['9999999']
+  volumes:
+  - name: gradle-cache
+    persistentVolumeClaim:
+      claimName: jenkins-gradle-cache
 '''
         }
     }
@@ -30,6 +41,7 @@ spec:
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         NAMESPACE = "swiftpay"
         DEPLOYMENT = "swiftpay-api"
+        GRADLE_OPTS = "-Dorg.gradle.daemon=false -Dorg.gradle.caching=true"
     }
 
     stages {
@@ -43,7 +55,17 @@ spec:
         stage('Build JAR') {
             steps {
                 container('gradle') {
-                    sh './gradlew :module:application:swiftpay-payment:build -x test --parallel'
+                    sh '''
+                        echo "=== Gradle 캐시 확인 ==="
+                        ls -lah /home/gradle/.gradle/ 2>/dev/null || echo "첫 빌드"
+
+                        ./gradlew :module:application:swiftpay-payment:build \
+                          -x test \
+                          --parallel \
+                          --no-daemon \
+                          --build-cache \
+                          --console=plain
+                    '''
                 }
             }
         }
