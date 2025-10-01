@@ -10,6 +10,9 @@ spec:
   - name: gradle
     image: gradle:8.5-jdk17
     command: ['sleep', '9999999']
+    volumeMounts:
+    - name: gradle-cache
+      mountPath: /home/gradle/.gradle
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     command: ['sleep', '9999999']
@@ -50,8 +53,8 @@ spec:
                 container('kaniko') {
                     sh """
                         /kaniko/executor \
-                          --context=\${WORKSPACE}/swiftpay-api \
-                          --dockerfile=\${WORKSPACE}/swiftpay-api/Dockerfile \
+                          --context=\${WORKSPACE}/module/application/swiftpay-payment \
+                          --dockerfile=\${WORKSPACE}/module/application/swiftpay-payment/Dockerfile \
                           --destination=\${REGISTRY}/\${IMAGE_NAME}:\${IMAGE_TAG} \
                           --destination=\${REGISTRY}/\${IMAGE_NAME}:latest \
                           --insecure \
