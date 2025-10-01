@@ -40,7 +40,7 @@ spec:
         stage('Build JAR') {
             steps {
                 container('gradle') {
-                    sh './gradlew :module:application:swiftpay-api:build -x test --parallel'
+                    sh './gradlew :module:application:swiftpay-payment:build -x test --parallel'
                 }
             }
         }
