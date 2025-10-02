@@ -40,7 +40,7 @@ spec:
         IMAGE_NAME = "payment"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         NAMESPACE = "swiftpay"
-        DEPLOYMENT = "payment"
+        DEPLOYMENT = "swiftpay-payment"
         GRADLE_OPTS = "-Dorg.gradle.daemon=false -Dorg.gradle.caching=true"
     }
 
