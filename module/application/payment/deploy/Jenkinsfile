@@ -37,10 +37,10 @@ spec:
 
     environment {
         REGISTRY = "container-registry.infra.svc.cluster.local:5000"
-        IMAGE_NAME = "swiftpay-payment"
+        IMAGE_NAME = "payment"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         NAMESPACE = "swiftpay"
-        DEPLOYMENT = "swiftpay-payment"
+        DEPLOYMENT = "payment"
         GRADLE_OPTS = "-Dorg.gradle.daemon=false -Dorg.gradle.caching=true"
     }
 
@@ -59,7 +59,7 @@ spec:
                         echo "=== Gradle 캐시 확인 ==="
                         ls -lah /home/gradle/.gradle/ 2>/dev/null || echo "첫 빌드"
 
-                        ./gradlew :module:application:swiftpay-payment:build \
+                        ./gradlew :module:application:payment:build \
                           -x test \
                           --parallel \
                           --no-daemon \
@@ -75,8 +75,8 @@ spec:
                 container('kaniko') {
                     sh """
                         /kaniko/executor \
-                          --context=\${WORKSPACE}/module/application/swiftpay-payment \
-                          --dockerfile=\${WORKSPACE}/module/application/swiftpay-payment/Dockerfile \
+                          --context=\${WORKSPACE}/module/application/payment \
+                          --dockerfile=\${WORKSPACE}/module/application/payment/Dockerfile \
                           --destination=\${REGISTRY}/\${IMAGE_NAME}:\${IMAGE_TAG} \
                           --destination=\${REGISTRY}/\${IMAGE_NAME}:latest \
                           --insecure \
