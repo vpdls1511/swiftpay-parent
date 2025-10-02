@@ -21,4 +21,8 @@ class PaymentTokenProvider(
     )
   }
 
+  fun verify(apiKey: String, hashKey: String) : Boolean {
+    return HmacEncUtil.verify(apiKey, hashKey)
+  }
+
 }
