@@ -15,7 +15,7 @@ data class ApiKey(
     fun create(apiKey: String, lookupKey: String): ApiKey {
       val now = LocalDateTime.now()
       val defaultLimit = 100000
-      val defaultExpiredWeek: Long = 1L
+      val defaultExpiredWeek = 1L
       return ApiKey(
         apiKey = apiKey,
         lookupKey = lookupKey,
