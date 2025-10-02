@@ -28,6 +28,8 @@ repositories {
 }
 
 dependencies {
+  implementation(project(":module:swiftpay-core"))
+
   implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.springframework.boot:spring-boot-starter-security")
