@@ -13,11 +13,11 @@ class PaymentApiKeyService(
   private val apiKeyRepository: ApiKeyRepository
 ) : PaymentApiKeyUseCase {
   override fun issueKey(): ApiKeyResponse {
-    val key: ApiKeyPair = paymentTokenProvider.issue()
-    val apiKey: ApiKey = ApiKey.create(key.hashed)
+    val pair: ApiKeyPair = paymentTokenProvider.issue()
+    val apiKey: ApiKey = ApiKey.create(pair.hashed)
 
     apiKeyRepository.save(apiKey)
 
-    return ApiKeyResponse(key.plain)
+    return ApiKeyResponse(pair.plain)
   }
 }
