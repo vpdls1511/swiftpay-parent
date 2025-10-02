@@ -23,7 +23,6 @@ class PaymentTokenProviderTest {
     val timestamp = System.currentTimeMillis()
     val random = SecureRandom().nextInt().toString()
     val data = "$SERVICE_NAME:$timestamp:$random"
-    var apiKey = ""
 
     //when
     val hmac = Mac.getInstance("HmacSHA256")
@@ -32,7 +31,7 @@ class PaymentTokenProviderTest {
       .withoutPadding()
       .encodeToString(hmac.doFinal(data.toByteArray()))
 
-    apiKey = listOf(SERVICE_NAME, signature).joinToString(separator = "_")
+    val apiKey = listOf(SERVICE_NAME, signature).joinToString(separator = "_")
     log.info(apiKey)
 
     //then
