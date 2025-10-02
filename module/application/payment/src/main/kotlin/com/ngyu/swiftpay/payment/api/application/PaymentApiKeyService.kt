@@ -19,14 +19,21 @@ class PaymentApiKeyService(
   override fun issueKey(): ApiKeyResponse {
     log.info("API 키 발급 시작 - ")
     val pair: ApiKeyPair = paymentTokenProvider.issue()
-    val apiKey: ApiKey = ApiKey.create(pair.hashed)
+    val apiKey: ApiKey = ApiKey.create(pair.hashed, pair.lookupKey)
 
     log.debug("ApiKeyPair 발급 완료")
     log.debug("ApiKey Hash 값 db 저장")
     apiKeyRepository.save(apiKey)
 
     log.info("ApiKey 발급 & 저장 완료")
-    return ApiKeyResponse(pair.plain)
+    return ApiKeyResponse(
+      apiKey = pair.plain,
+      apiPair = pair.lookupKey
+    )
+  }
+
+  override fun validKey(apiKey: String): ApiKeyResponse {
+    return ApiKeyResponse("1" , "1")
   }
 
 }

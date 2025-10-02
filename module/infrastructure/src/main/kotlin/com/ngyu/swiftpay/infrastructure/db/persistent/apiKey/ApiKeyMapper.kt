@@ -7,6 +7,7 @@ object ApiKeyMapper {
   fun toEntity(domain: ApiKey): ApiKeyEntity {
     return ApiKeyEntity(
       apiKey = domain.apiKey,
+      lookupKey = domain.lookupKey,
       userId = domain.userId,
       callLimit = domain.callLimit,
       issuedAt = domain.issuedAt,
@@ -18,6 +19,7 @@ object ApiKeyMapper {
   fun toDomain(entity: ApiKeyEntity): ApiKey {
     return ApiKey(
       apiKey = entity.apiKey,
+      lookupKey = entity.lookupKey,
       userId = entity.userId,
       callLimit = entity.callLimit,
       issuedAt = entity.issuedAt,

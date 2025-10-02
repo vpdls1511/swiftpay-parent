@@ -25,9 +25,10 @@ object HmacEncUtil {
     val signature = hmac(data, secretKey)
     val apiKey = "${ServiceConstant.SERVICE_NAME}.${signature}"
 
-    val hashKey = hash(signature)
+    val hashKey = hash(apiKey)
+    val lookupKey = sha256(apiKey)
 
-    return ApiKeyPair(apiKey, hashKey)
+    return ApiKeyPair(apiKey, lookupKey, hashKey)
   }
 
   /**

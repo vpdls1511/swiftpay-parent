@@ -19,6 +19,7 @@ CREATE TABLE member
 CREATE TABLE api_key
 (
     api_key    VARCHAR(255) NOT NULL PRIMARY KEY,
+    lookup_key VARCHAR(255) NOT NULL,
     user_id    INT          NULL,
     call_limit VARCHAR(100) NOT NULL,
     status     VARCHAR(20)  NOT NULL DEFAULT 'ACTIVE',

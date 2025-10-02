@@ -24,7 +24,7 @@ class PaymentApiKeyServiceTest {
   @DisplayName("Api 키 검증 성공")
   fun successVerifyApiKey() {
     // given
-    val pair = apiKeyPair
+    val pair: ApiKeyPair = apiKeyPair
 
     // when
     val verify: Boolean = paymentTokenProvider.verify(pair.plain, pair.hashed)

@@ -11,6 +11,9 @@ class ApiKeyEntity(
   @Column(name = "api_key", unique = true, nullable = false)
   val apiKey: String,
 
+  @Column(name = "lookup_key", unique = true, nullable = false)
+  val lookupKey: String,
+
   @Column(name = "user_id")
   val userId: Long? = null,
 
@@ -29,6 +32,7 @@ class ApiKeyEntity(
 ) {
   protected constructor() : this(
     apiKey = "",
+    lookupKey = "",
     userId = null,
     callLimit = 0,
     issuedAt = LocalDateTime.now(),

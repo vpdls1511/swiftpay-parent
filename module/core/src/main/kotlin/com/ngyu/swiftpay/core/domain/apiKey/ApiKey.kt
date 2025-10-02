@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class ApiKey(
   val apiKey: String,
+  val lookupKey: String,
   val userId: Long? = null,
   val callLimit: Int,
   val issuedAt: LocalDateTime,
@@ -11,12 +12,13 @@ data class ApiKey(
   val status: ApiKeyStatus
 ) {
   companion object {
-    fun create(apiKey: String): ApiKey {
+    fun create(apiKey: String, lookupKey: String): ApiKey {
       val now = LocalDateTime.now()
       val defaultLimit = 100000
       val defaultExpiredWeek: Long = 1L
       return ApiKey(
         apiKey = apiKey,
+        lookupKey = lookupKey,
         userId = null,
         callLimit = defaultLimit,
         issuedAt = now,
