@@ -28,7 +28,7 @@ jwt:
   expiration: ${JWT_EXPIRATION:3600000}
 
 hmac:
-  secret: ${HMAC_SECRET}
+  secret: ${HMAC_KEY}
 
 logging:
   level:
