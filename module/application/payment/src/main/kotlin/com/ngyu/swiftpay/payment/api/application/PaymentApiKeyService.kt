@@ -4,6 +4,7 @@ import com.ngyu.swiftpay.core.domain.apiKey.ApiKey
 import com.ngyu.swiftpay.infrastructure.db.persistent.apiKey.ApiKeyRepository
 import com.ngyu.swiftpay.payment.api.dto.ApiKeyResponse
 import com.ngyu.swiftpay.security.provider.PaymentTokenProvider
+import com.ngyu.swiftpay.security.util.HmacEncUtil
 import org.springframework.stereotype.Service
 
 @Service
@@ -12,11 +13,11 @@ class PaymentApiKeyService(
   private val apiKeyRepository: ApiKeyRepository
 ) : PaymentApiKeyUseCase {
   override fun issueKey(): ApiKeyResponse {
-    val key: String = paymentTokenProvider.issue()
-    val apiKey: ApiKey = ApiKey.create(key)
+    val key: HmacEncUtil.ApiKeyPair = paymentTokenProvider.issue()
+    val apiKey: ApiKey = ApiKey.create(key.hashed)
 
     apiKeyRepository.save(apiKey)
 
-    return ApiKeyResponse(key)
+    return ApiKeyResponse(key.plain)
   }
 }
