@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.example
 
-import com.ngyu.swiftpay.core.extension.logger
+import com.ngyu.swiftpay.core.logger.logger
 import org.junit.jupiter.api.Test
 
 class ExampleTest {
