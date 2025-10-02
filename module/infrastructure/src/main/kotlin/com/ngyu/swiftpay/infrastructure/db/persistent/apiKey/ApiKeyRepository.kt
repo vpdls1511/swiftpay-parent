@@ -1,8 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.apiKey
 
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
+import com.ngyu.swiftpay.core.domain.apiKey.ApiKey
 
-@Repository
-interface ApiKeyRepository: JpaRepository<ApiKeyEntity, String> {
+interface ApiKeyRepository{
+  fun save(domain: ApiKey): ApiKey
 }
