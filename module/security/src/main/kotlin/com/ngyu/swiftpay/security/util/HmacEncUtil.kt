@@ -11,12 +11,17 @@ object HmacEncUtil {
     val random = SecureRandom().nextInt().toString()
     val data = "$timestamp:$random"
 
-    val hmac = Mac.getInstance("HmacSHA256")
-    hmac.init(SecretKeySpec(secretKey.toByteArray(), "HmacSHA256"))
-    val signature = Base64.getUrlEncoder()
-      .withoutPadding()
-      .encodeToString(hmac.doFinal(data.toByteArray()))
+    val signature = hmac(data, secretKey)
 
     return signature
+  }
+
+  private fun hmac(data: String, secretKey: String): String {
+    val hmac = Mac.getInstance("HmacSHA256")
+    hmac.init(SecretKeySpec(secretKey.toByteArray(), "HmacSHA256"))
+
+    return Base64.getUrlEncoder()
+      .withoutPadding()
+      .encodeToString(hmac.doFinal(data.toByteArray()))
   }
 }
