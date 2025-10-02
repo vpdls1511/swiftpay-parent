@@ -28,10 +28,17 @@ repositories {
 }
 
 dependencies {
-  implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+  implementation("org.springframework.boot:spring-boot-starter") {
+    exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+  }
+
+  api("org.springframework.boot:spring-boot-starter-log4j2")
+
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
