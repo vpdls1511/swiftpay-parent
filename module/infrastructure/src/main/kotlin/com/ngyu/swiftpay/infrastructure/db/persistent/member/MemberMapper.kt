@@ -1,8 +1,7 @@
-package com.ngyu.swiftpay.infrastructure.db.mapper
+package com.ngyu.swiftpay.infrastructure.db.persistent.member
 
 import com.ngyu.swiftpay.core.domain.member.Member
 import com.ngyu.swiftpay.core.domain.member.vo.Password
-import com.ngyu.swiftpay.infrastructure.db.persistent.MemberEntity
 
 class MemberMapper {
 

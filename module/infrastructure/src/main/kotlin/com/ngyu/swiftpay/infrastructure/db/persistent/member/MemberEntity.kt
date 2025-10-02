@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.infrastructure.db.persistent
+package com.ngyu.swiftpay.infrastructure.db.persistent.member
 
 import com.ngyu.swiftpay.core.domain.member.MemberStatus
 import com.ngyu.swiftpay.infrastructure.db.persistent.common.BaseTimeEntity
