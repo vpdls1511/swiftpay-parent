@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.payment.service
 
 import com.ngyu.swiftpay.security.provider.PaymentTokenProvider
-import com.ngyu.swiftpay.security.util.HmacEncUtil
+import com.ngyu.swiftpay.security.vo.ApiKeyPair
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -12,11 +12,11 @@ class PaymentApiKeyServiceTest {
   private val SECRET_KEY: String = "ck7488ZlcflJ+ZwsY/h9vIzPRjS5KsuAlQS9lBVBgks="
   private val paymentTokenProvider: PaymentTokenProvider = PaymentTokenProvider(SECRET_KEY)
 
-  private lateinit var apiKeyPair: HmacEncUtil.ApiKeyPair
+  private lateinit var apiKeyPair: ApiKeyPair
 
   @BeforeEach
   fun setup() {
-    val signature: HmacEncUtil.ApiKeyPair = paymentTokenProvider.issue()
+    val signature: ApiKeyPair = paymentTokenProvider.issue()
     apiKeyPair = signature
   }
 

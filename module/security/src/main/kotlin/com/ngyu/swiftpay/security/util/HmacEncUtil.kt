@@ -1,6 +1,7 @@
 package com.ngyu.swiftpay.security.util
 
 import com.ngyu.swiftpay.core.extension.logger
+import com.ngyu.swiftpay.security.vo.ApiKeyPair
 import org.springframework.security.crypto.bcrypt.BCrypt
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -71,6 +72,4 @@ object HmacEncUtil {
       .digest(data.toByteArray())
       .joinToString("") { String.format("%02x", it) }
   }
-
-  data class ApiKeyPair (val plain: String, val hashed: String )
 }

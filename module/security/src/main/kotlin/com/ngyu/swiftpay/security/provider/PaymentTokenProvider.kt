@@ -2,7 +2,7 @@ package com.ngyu.swiftpay.security.provider
 
 import com.ngyu.swiftpay.core.constant.ServiceConstant
 import com.ngyu.swiftpay.security.util.HmacEncUtil
-import com.ngyu.swiftpay.security.util.HmacEncUtil.ApiKeyPair
+import com.ngyu.swiftpay.security.vo.ApiKeyPair
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
