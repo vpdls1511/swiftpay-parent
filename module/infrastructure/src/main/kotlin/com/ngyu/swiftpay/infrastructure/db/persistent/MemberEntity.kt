@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent
 
-import com.ngyu.swiftpay.core.domain.MemberStatus
+import com.ngyu.swiftpay.core.domain.member.MemberStatus
 import com.ngyu.swiftpay.infrastructure.db.persistent.common.BaseTimeEntity
 import jakarta.persistence.*
 

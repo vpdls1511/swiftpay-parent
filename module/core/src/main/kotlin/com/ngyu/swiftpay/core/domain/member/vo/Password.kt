@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.core.domain.member
+package com.ngyu.swiftpay.core.domain.member.vo
 
 @JvmInline
 value class Password private constructor(val value: String) {

@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.core.domain.member
 
+import com.ngyu.swiftpay.core.domain.member.vo.Password
 import java.time.LocalDateTime
 
 data class Member(
