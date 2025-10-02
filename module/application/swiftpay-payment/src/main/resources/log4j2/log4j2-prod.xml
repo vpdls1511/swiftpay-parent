@@ -6,10 +6,16 @@
         </Console>
     </Appenders>
     <Loggers>
+        <!-- 애플리케이션 로그 -->
         <Logger name="com.ngyu.swiftpay" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Root level="info">
+
+        <!-- Hibernate DB 정보 로그 제거 -->
+        <Logger name="org.hibernate.orm.connections.pooling" level="error"/>
+        <Logger name="org.hibernate.engine.jdbc.connections.internal" level="error"/>
+
+        <Root level="warn">
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>
