@@ -5,3 +5,6 @@ spring:
 server:
   servlet:
     context-path: /api
+
+logging:
+  config: classpath:log4j2-${spring.profiles.active}.xml
