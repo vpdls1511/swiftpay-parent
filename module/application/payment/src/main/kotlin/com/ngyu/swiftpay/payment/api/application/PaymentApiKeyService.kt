@@ -17,16 +17,15 @@ class PaymentApiKeyService(
   private val log = logger()
 
   override fun issueKey(): ApiKeyResponse {
-
-    log.info("create ApiKeyPair pending")
+    log.info("API 키 발급 시작 - ")
     val pair: ApiKeyPair = paymentTokenProvider.issue()
     val apiKey: ApiKey = ApiKey.create(pair.hashed)
 
-    log.info("create ApiKeyPair success")
-    log.info("ApiKeyPair save on db")
+    log.debug("ApiKeyPair 발급 완료")
+    log.debug("ApiKey Hash 값 db 저장")
     apiKeyRepository.save(apiKey)
-    log.info("ApiKeyPair save success")
 
+    log.info("ApiKey 발급 & 저장 완료")
     return ApiKeyResponse(pair.plain)
   }
 
