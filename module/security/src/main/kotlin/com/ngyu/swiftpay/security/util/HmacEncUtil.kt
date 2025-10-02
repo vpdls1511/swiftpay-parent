@@ -1,6 +1,7 @@
 package com.ngyu.swiftpay.security.util
 
-import com.ngyu.swiftpay.core.extension.logger
+import com.ngyu.swiftpay.core.constant.ServiceConstant
+import com.ngyu.swiftpay.core.logger.logger
 import com.ngyu.swiftpay.security.vo.ApiKeyPair
 import org.springframework.security.crypto.bcrypt.BCrypt
 import java.security.MessageDigest
@@ -22,9 +23,11 @@ object HmacEncUtil {
     val data = "$timestamp:$random"
 
     val signature = hmac(data, secretKey)
+    val apiKey = "${ServiceConstant.SERVICE_NAME}.${signature}"
+
     val hashKey = hash(signature)
 
-    return ApiKeyPair(signature, hashKey)
+    return ApiKeyPair(apiKey, hashKey)
   }
 
   /**
