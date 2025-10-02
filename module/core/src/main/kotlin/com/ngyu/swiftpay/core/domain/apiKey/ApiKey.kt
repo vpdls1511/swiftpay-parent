@@ -4,8 +4,25 @@ import java.time.LocalDateTime
 
 data class ApiKey(
   val apiKey: String,
-  val limit: Int = 100000,
+  val userId: Long? = null,
+  val callLimit: Int,
   val issuedAt: LocalDateTime,
   val expiresAt: LocalDateTime,
   val status: ApiKeyStatus
-)
+) {
+  companion object {
+    fun create(apiKey: String): ApiKey {
+      val now = LocalDateTime.now()
+      val defaultLimit = 100000
+      val defaultExpiredWeek: Long = 1L
+      return ApiKey(
+        apiKey = apiKey,
+        userId = null,
+        callLimit = defaultLimit,
+        issuedAt = now,
+        expiresAt = now.plusWeeks(defaultExpiredWeek),
+        status = ApiKeyStatus.ACTIVE
+      )
+    }
+  }
+}
