@@ -28,7 +28,6 @@ repositories {
 }
 
 dependencies {
-  implementation(project(":module:swiftpay-common"))
   implementation(project(":module:swiftpay-core"))
 
   implementation("org.jetbrains.kotlin:kotlin-reflect")
