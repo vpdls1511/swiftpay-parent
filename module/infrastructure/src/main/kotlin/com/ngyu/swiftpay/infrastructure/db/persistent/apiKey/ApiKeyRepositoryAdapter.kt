@@ -14,4 +14,11 @@ class ApiKeyRepositoryAdapter(
 
     return ApiKeyMapper.toDomain(savedEntity)
   }
+
+  override fun findApiKey(lookupKey: String): ApiKey {
+    val entity = jpaRepository.findByLookupKey(lookupKey)
+      ?: throw Exception("Entity not found")
+
+    return ApiKeyMapper.toDomain(entity)
+  }
 }
