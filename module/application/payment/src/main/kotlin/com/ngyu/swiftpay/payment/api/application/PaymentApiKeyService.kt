@@ -32,8 +32,4 @@ class PaymentApiKeyService(
     )
   }
 
-  override fun validKey(apiKey: String): ApiKeyResponse {
-    return ApiKeyResponse("1" , "1")
-  }
-
 }

@@ -4,5 +4,4 @@ import com.ngyu.swiftpay.payment.api.dto.ApiKeyResponse
 
 interface PaymentApiKeyUseCase {
   fun issueKey(): ApiKeyResponse
-  fun validKey(apiKey: String): ApiKeyResponse
 }
