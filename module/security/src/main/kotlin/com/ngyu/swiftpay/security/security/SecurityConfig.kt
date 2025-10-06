@@ -17,7 +17,9 @@ class SecurityConfig {
       .csrf { it.disable() }
       .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
       .authorizeHttpRequests { auth ->
-        auth.anyRequest().permitAll()  // 모든 요청 허용
+        auth
+          .requestMatchers("/health", "/actuator/**", "/error").permitAll()  // 인증 불필요
+          .anyRequest().permitAll()  // 모든 요청 허용
       }
 
     return http.build()
