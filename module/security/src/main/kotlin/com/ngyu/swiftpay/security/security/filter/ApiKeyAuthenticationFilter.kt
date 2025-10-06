@@ -16,8 +16,8 @@ class ApiKeyAuthenticationFilter (
   private val log = logger()
 
   companion object {
-    private val PAYMENT_API_KEY_HEADER = "X-API-KEY"
-    private val PAYMENT_API_PAIR_HEADER = "X-API-PAIR"
+    private const val PAYMENT_API_KEY_HEADER = "X-API-KEY"
+    private const val PAYMENT_API_PAIR_HEADER = "X-API-PAIR"
   }
 
   override fun doFilterInternal(
