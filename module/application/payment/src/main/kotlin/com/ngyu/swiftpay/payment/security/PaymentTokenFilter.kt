@@ -1,11 +1,10 @@
 package com.ngyu.swiftpay.payment.security
 
 import com.ngyu.swiftpay.security.security.BaseAuthenticationFilter
-import com.ngyu.swiftpay.security.security.validator.ApiKeyValidator
 import jakarta.servlet.http.HttpServletRequest
 
 class PaymentTokenFilter(
-  private val apiKeyValidator: ApiKeyValidator,
+  private val paymentTokenValidator: PaymentTokenValidator,
 ) : BaseAuthenticationFilter<PaymentCredentials>() {
 
   companion object {
@@ -42,7 +41,7 @@ class PaymentTokenFilter(
    * @return 유효하면 true, 그렇지 않으면 false
    */
   override fun validateCredentials(credential: PaymentCredentials): Boolean {
-    return true
+    return paymentTokenValidator.validate(credential)
   }
 }
 
