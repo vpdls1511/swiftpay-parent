@@ -40,6 +40,12 @@ abstract class BaseAuthenticationFilter<T> : OncePerRequestFilter() {
   abstract fun getProtectedPaths(): List<String>
 
   /**
+   * 인증이 필요하지 않은 Url 패턴
+   * @return url 패턴 리스트
+   */
+  abstract fun getNoProtectedPaths(): List<String>
+
+  /**
    * 요청 필터링 후 인증 수행
    *
    * 처리순서 :
