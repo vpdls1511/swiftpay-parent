@@ -1,11 +1,12 @@
 package com.ngyu.swiftpay.payment.security
 
+import com.ngyu.swiftpay.payment.security.vo.PaymentCredentialsVo
 import com.ngyu.swiftpay.security.security.BaseAuthenticationFilter
 import jakarta.servlet.http.HttpServletRequest
 
 class PaymentTokenFilter(
   private val paymentTokenValidator: PaymentTokenValidator,
-) : BaseAuthenticationFilter<PaymentCredentials>() {
+) : BaseAuthenticationFilter<PaymentCredentialsVo>() {
 
   companion object {
     private const val PAYMENT_API_KEY_HEADER = "X-API-KEY"
@@ -16,7 +17,7 @@ class PaymentTokenFilter(
    * Http 요청에서 인증 정보 추출
    * @return 추출된 인증 정보, 없으면 null
    */
-  override fun extractCredentials(request: HttpServletRequest): PaymentCredentials? {
+  override fun extractCredentials(request: HttpServletRequest): PaymentCredentialsVo? {
     val apiKey = request.getHeader(PAYMENT_API_KEY_HEADER)
     val apiPairKey = request.getHeader(PAYMENT_API_PAIR_HEADER)
 
@@ -24,7 +25,7 @@ class PaymentTokenFilter(
       return null
     }
 
-    return PaymentCredentials(apiKey, apiPairKey)
+    return PaymentCredentialsVo(apiKey, apiPairKey)
   }
 
   /**
@@ -47,12 +48,8 @@ class PaymentTokenFilter(
    * @param credential 검증할 데이터
    * @return 유효하면 true, 그렇지 않으면 false
    */
-  override fun validateCredentials(credential: PaymentCredentials): Boolean {
+  override fun validateCredentials(credential: PaymentCredentialsVo): Boolean {
     return paymentTokenValidator.validate(credential)
   }
 }
 
-data class PaymentCredentials(
-  val apiKey: String,
-  val apiPairKey: String
-)

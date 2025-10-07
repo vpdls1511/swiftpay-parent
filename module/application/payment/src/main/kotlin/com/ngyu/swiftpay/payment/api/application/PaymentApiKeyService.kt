@@ -28,7 +28,7 @@ class PaymentApiKeyService(
     log.info("ApiKey 발급 & 저장 완료")
     return ApiKeyResponse(
       apiKey = pair.plain,
-      apiPair = pair.lookupKey
+      apiPairKey = pair.lookupKey
     )
   }
 
