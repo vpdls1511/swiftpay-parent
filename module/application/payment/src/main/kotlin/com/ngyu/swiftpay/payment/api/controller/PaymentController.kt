@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.payment.api.controller
 
 import com.ngyu.swiftpay.core.logger.logger
+import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import com.ngyu.swiftpay.payment.security.PaymentPrincipal
-import com.ngyu.swiftpay.payment.security.vo.PaymentCredentialsVo
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -16,7 +16,7 @@ class PaymentController(
 
   @PostMapping("/health")
   fun processPayment(
-    @PaymentPrincipal principal: PaymentCredentialsVo
+    @PaymentPrincipal principal: PaymentCredentials
   ): String {
     return "ok"
   }
