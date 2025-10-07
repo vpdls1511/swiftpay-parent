@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.payment.api.controller
 
-import com.ngyu.swiftpay.payment.api.application.PaymentApiKeyUseCase
+import com.ngyu.swiftpay.payment.api.application.usecase.PaymentApiKeyUseCase
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
