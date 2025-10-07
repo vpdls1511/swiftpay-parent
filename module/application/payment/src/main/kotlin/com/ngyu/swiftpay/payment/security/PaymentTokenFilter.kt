@@ -32,9 +32,16 @@ class PaymentTokenFilter(
    * @return url 패턴 리스트
    */
   override fun getProtectedPaths(): List<String> {
-    TODO("Not yet implemented")
+    return listOf(
+      "/api/payment/**"
+    )
   }
 
+  override fun getNoProtectedPaths(): List<String> {
+    return listOf(
+      "/api/payment/key/**"
+    )
+  }
   /**
    * 추출된 인증정보 검증
    * @param credential 검증할 데이터
