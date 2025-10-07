@@ -18,6 +18,7 @@ abstract class BaseAuthenticationFilter<T> : OncePerRequestFilter() {
     val isNoProtected = getNoProtectedPaths().any { pattern ->
       pathMatcher.match(pattern, requestPath)
     }
+    if (isNoProtected) {
       return true
     }
 
