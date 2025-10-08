@@ -41,6 +41,12 @@ class FilterChainExceptionHandler(
     code: Int,
     message: String
   ) {
+
+    if (response.isCommitted) {
+      log.warn("응답이 이미 커밋되어 추가 에러를 작성할 수 없습니다.")
+      return
+    }
+
     response.status = code
     response.contentType = MediaType.APPLICATION_JSON_VALUE
     response.characterEncoding = "UTF-8"
