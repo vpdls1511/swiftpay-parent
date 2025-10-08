@@ -48,9 +48,12 @@ class PaymentSwaggerConfig : BaseSwaggerConfig() {
           Server().url("http://localhost:8080").description("로컬"),
           Server().url("https://swiftpay-payment.ngyu.me").url("개발")
         )
-      ).addSecurityItem(
-        SecurityRequirement()
-          .addList("Api Key")
+      ).security(
+        listOf(
+          SecurityRequirement()
+            .addList("X-API-KEY")
+            .addList("X-API-PAIR")
+        )
       ).components(
         Components()
           .addSecuritySchemes(
