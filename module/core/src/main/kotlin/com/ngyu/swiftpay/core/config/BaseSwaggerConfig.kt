@@ -7,9 +7,9 @@ abstract class BaseSwaggerConfig {
 
   protected fun createContact(): Contact {
     return Contact()
-      .name("SwiftPay Team")
-      .email("support@swiftpay.com")
-      .url("https://swiftpay.com")
+      .name("SwiftPay")
+//      .email("support@swiftpay.com")
+//      .url("https://swiftpay.com")
   }
 
   protected fun createBaseInfo(
