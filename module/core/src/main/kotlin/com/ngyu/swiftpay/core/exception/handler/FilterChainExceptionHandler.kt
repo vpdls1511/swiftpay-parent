@@ -13,6 +13,13 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
+
+/**
+ * FilterChain 전체를 감싸는 최상위 예외처리
+ *
+ * filterChain.doFilter() 내부에서 발생하는 모든 에러를 캐치하여
+ * 일관된 형식의 ExceptionResposne로 반환한다.
+ */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class FilterChainExceptionHandler(

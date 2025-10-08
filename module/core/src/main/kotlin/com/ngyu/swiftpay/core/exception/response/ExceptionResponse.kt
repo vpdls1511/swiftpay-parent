@@ -4,6 +4,15 @@ import com.ngyu.swiftpay.core.logger.RequestIdFilter
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.MDC
 
+/**
+ * 예외 발생 시 클라이언트에 반환하는 에러 응답 형식
+ *
+ * @property message 에러 메시지
+ * @property requestId 요청 추적 ID (X-Request-ID 헤더)
+ * @property timestamp 예외 발생 시각 (Unix timestamp, milliseconds)
+ * @property requestTime 요청 시작 시각 (Unix timestamp, milliseconds)
+ * @property path 예외가 발생한 API 경로
+ */
 data class ExceptionResponse(
   val message: String,
   val requestId: String,
