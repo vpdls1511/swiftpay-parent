@@ -15,6 +15,7 @@ object PayMethodDetailsEmbeddableMapper {
         cardNumber = domain.cardNumber,
         cardExpiry = domain.cardExpiry,
         cardCvc = domain.cardCvc,
+        cardType = domain.cardType,
         installmentPlan = domain.installmentPlan,
         useCardPoint = domain.useCardPoint
       )
@@ -36,6 +37,7 @@ object PayMethodDetailsEmbeddableMapper {
         cardNumber = embeddable.cardNumber,
         cardExpiry = embeddable.cardExpiry,
         cardCvc = embeddable.cardCvc,
+        cardType = embeddable.cardType,
         installmentPlan = embeddable.installmentPlan,
         useCardPoint = embeddable.useCardPoint ?: false
       )

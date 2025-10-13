@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment
 
+import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
@@ -18,6 +19,9 @@ class PayMethodDetailsEmbeddable(
   @Column(length = 4)
   val cardCvc: String? = null,
 
+  @Column(length = 5)
+  val cardType: PaymentCardType? = null,
+
   @Column
   val installmentPlan: Int? = null,
 
@@ -30,16 +34,4 @@ class PayMethodDetailsEmbeddable(
 
   @Column(length = 50)
   val accountNumber: String? = null
-){
-  // JPA용 no-arg constructor
-  protected constructor() : this(
-    type = "",
-    cardNumber = null,
-    cardExpiry = null,
-    cardCvc = null,
-    installmentPlan = null,
-    useCardPoint = null,
-    bankCode = null,
-    accountNumber = null
-  )
-}
+)

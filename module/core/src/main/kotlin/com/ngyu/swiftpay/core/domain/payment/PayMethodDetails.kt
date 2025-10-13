@@ -8,6 +8,7 @@ sealed class PayMethodDetails {
     val cardExpiry: String?,          // 유효기간 (YYMM)
     val cardCvc: String?,             // CVC
     val installmentPlan: Int? = 0,    // 할부 개월 (0: 일시불)
+    val cardType: PaymentCardType?,
     val useCardPoint: Boolean = false // 카드 포인트 사용 여부
   ) : PayMethodDetails()
 
