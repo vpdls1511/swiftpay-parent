@@ -4,7 +4,11 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 /**
- * 결제의 생명주기를 관리하는 도메인
+ * ### 결제 도메인 엔티티
+ *
+ * 결제의 생명주기를 관리하며, 결제 요청부터 완료/취소까지의
+ *
+ * 모든 상태와 정보를 포함한다.
  */
 data class Payment(
   // 기본정보
@@ -16,7 +20,7 @@ data class Payment(
   val currency: String = "KRW",       // 통화
 
   // 결제 수단 정보
-  val method: PayStatus,              // 결제 수단
+  val method: PayMethod,              // 결제 수단
   val methodDetail: PayMethodDetails, // 결제 상세정보 ( CARD일 경우, 옵션 )
 
   // 옵션 - 콜백 URL
@@ -33,13 +37,31 @@ data class Payment(
   val updatedAt: LocalDateTime
 ) {
   companion object {
+    /**
+     * 새로운 결제를 생성한다.
+     *
+     * 초기 상태는 PENDING이며, 고유한 결제 ID가 자동 생성된다.
+     *
+     * @param apiPairKey API 키 페어
+     * @param orderId 가맹점 주문 번호
+     * @param orderName 주문 상품명
+     * @param amount 결제 금액
+     * @param currency 통화 (기본: KRW)
+     * @param method 결제 수단
+     * @param methodDetail 결제 수단 상세
+     * @param successUrl 성공 콜백 URL
+     * @param cancelUrl 취소 콜백 URL
+     * @param failureUrl 실패 콜백 URL
+     * @param idempotencyKey 중복 방지 키
+     * @return 생성된 Payment 도메인 객체
+     */
     fun create(
       apiPairKey: String,
       orderId: String,
       orderName: String,
       amount: BigDecimal,
       currency: String = "KRW",
-      method: PayStatus,
+      method: PayMethod,
       methodDetail: PayMethodDetails,
       successUrl: String? = null,
       cancelUrl: String? = null,
@@ -66,6 +88,14 @@ data class Payment(
       )
     }
 
+
+    /**
+     * 고유한 결제 ID를 생성한다.
+     *
+     * 형식: swift_pay_{timestamp}_{random}
+     *
+     * 예시: swift_pay_1696752000000_5837
+     */
     private fun generatePaymentId(): String {
       return "swift_pay_${System.currentTimeMillis()}_${(1000..9999).random()}"
     }
