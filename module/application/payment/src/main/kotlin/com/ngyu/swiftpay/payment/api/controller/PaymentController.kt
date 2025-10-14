@@ -27,7 +27,7 @@ class PaymentController(
     content = [Content(mediaType = "text/plain", schema = Schema(implementation = String::class, example = "ok"))]
   )
   @PostMapping("/health")
-  fun processPayment(
+  fun checkApiKey(
     @PaymentPrincipal principal: PaymentCredentials
   ): String {
     log.info("API KEY 유효성 검사")
