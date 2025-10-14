@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.security.security
 
+import com.ngyu.swiftpay.core.exception.PrincipalException
 import com.ngyu.swiftpay.core.logger.logger
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
+
 
 abstract class BaseAuthenticationFilter<T> : OncePerRequestFilter() {
 
@@ -68,18 +70,10 @@ abstract class BaseAuthenticationFilter<T> : OncePerRequestFilter() {
     response: HttpServletResponse,
     filterChain: FilterChain
   ) {
-    val credentials = extractCredentials(request)
-
-    if (credentials == null) {
-      log.error("인증 정보가 없습니다.")
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증이 필요합니다.")
-      return
-    }
+    val credentials = extractCredentials(request) ?: throw PrincipalException("인증 정보가 없습니다.")
 
     if (!validateCredentials(credentials)) {
-      log.error("유효하지 않은 인증 정보 입니다.")
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증에 실패했습니다.")
-      return
+      throw PrincipalException("유효하지 않은 인증 정보 입니다.")
     }
 
     val authentication = UsernamePasswordAuthenticationToken(
@@ -92,5 +86,4 @@ abstract class BaseAuthenticationFilter<T> : OncePerRequestFilter() {
 
     filterChain.doFilter(request, response)
   }
-
 }

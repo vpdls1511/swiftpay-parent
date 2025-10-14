@@ -1,5 +1,7 @@
 package com.ngyu.swiftpay.payment.security
 
+import com.ngyu.swiftpay.core.exception.PrincipalException
+import com.ngyu.swiftpay.core.logger.logger
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import org.springframework.core.MethodParameter
 import org.springframework.security.core.context.SecurityContextHolder
@@ -10,7 +12,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 
 @Component
-class PaymentPrincipalResolver: HandlerMethodArgumentResolver {
+class PaymentPrincipalResolver : HandlerMethodArgumentResolver {
+
+  private val log = logger()
 
   override fun supportsParameter(parameter: MethodParameter): Boolean {
     return parameter.hasParameterAnnotation(PaymentPrincipal::class.java) &&
@@ -24,12 +28,18 @@ class PaymentPrincipalResolver: HandlerMethodArgumentResolver {
     binderFactory: WebDataBinderFactory?
   ): PaymentCredentials {
     val authentication = SecurityContextHolder.getContext().authentication
-      ?: throw IllegalStateException("인증 정보가 존재하지 않습니다.")
 
-    val credentials = authentication.principal as? PaymentCredentials
-      ?: throw IllegalStateException("유효하지 않은 인증 정보입니다.")
+    checkNotNull(authentication) {
+      log.error("filter 통과했지만, Security Context에 인증정보 없음")
+      throw PrincipalException("인증 정보가 존재하지 않습니다.")
+    }
 
-    return credentials
+    require(authentication.principal is PaymentCredentials) {
+      log.error("인증 정보 타입이 PaymentPrincipal이 아님")
+      throw PrincipalException("유효하지 않은 인증 정보입니다.")
+    }
+
+    return authentication.principal as PaymentCredentials
   }
 
 }

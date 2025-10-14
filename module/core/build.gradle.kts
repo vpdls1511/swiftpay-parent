@@ -34,8 +34,11 @@ dependencies {
     exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
   }
 
-  api("org.springframework.boot:spring-boot-starter-log4j2")
   implementation("org.springframework.boot:spring-boot-starter-web")
+
+  api("org.springframework.boot:spring-boot-starter-log4j2")
+  api("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4")
+  implementation("org.apache.commons:commons-lang3:3.18.0")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

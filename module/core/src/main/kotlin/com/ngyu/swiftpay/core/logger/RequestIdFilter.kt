@@ -14,6 +14,7 @@ class RequestIdFilter : OncePerRequestFilter() {
   companion object {
     const val REQUEST_ID_HEADER = "X-Request-ID"
     const val REQUEST_ID_MDC_KEY = "requestId"
+    const val REQUEST_TIME_MDC_KEY = "requestTime"
   }
 
   override fun doFilterInternal(
@@ -25,9 +26,11 @@ class RequestIdFilter : OncePerRequestFilter() {
       // 헤더에서 가져오거나 새로 생성
       val requestId = request.getHeader(REQUEST_ID_HEADER)
         ?: UUID.randomUUID().toString()
+      val requestTime = System.currentTimeMillis()
 
       // MDC에 저장
       MDC.put(REQUEST_ID_MDC_KEY, requestId)
+      MDC.put(REQUEST_TIME_MDC_KEY, requestTime.toString())
 
       // 응답 헤더에도 추가
       response.setHeader(REQUEST_ID_HEADER, requestId)

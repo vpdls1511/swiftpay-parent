@@ -35,6 +35,17 @@ spec:
         }
     }
 
+    parameters {
+        gitParameter(
+            name: 'BRANCH',
+            type: 'PT_BRANCH',
+            defaultValue: 'origin/dev',
+            description: '배포할 브랜치를 선택하세요',
+            listSize: '10',
+            sortMode: 'ASCENDING_SMART'
+        )
+    }
+
     environment {
         REGISTRY = "container-registry.infra.svc.cluster.local:5000"
         IMAGE_NAME = "swiftpay-payment"
@@ -47,8 +58,13 @@ spec:
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'dev',
-                    url: 'https://github.com/vpdls1511/swiftpay-parent.git'
+                script {
+                    def branchName = params.BRANCH.replaceAll('origin/', '')
+                    
+                    git branch: branchName,
+                        url: 'https://github.com/vpdls1511/swiftpay-parent.git',
+                        credentialsId: 'github-token'
+                }
             }
         }
 
