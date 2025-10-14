@@ -3,6 +3,7 @@ package com.ngyu.swiftpay.payment.security
 import com.ngyu.swiftpay.core.domain.apiKey.ApiKey
 import com.ngyu.swiftpay.core.logger.logger
 import com.ngyu.swiftpay.infrastructure.db.persistent.apiKey.ApiKeyRepository
+import com.ngyu.swiftpay.infrastructure.redis.service.ApiKeyCacheService
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import com.ngyu.swiftpay.security.util.HmacEncUtil
 import org.springframework.stereotype.Component
@@ -10,7 +11,8 @@ import java.time.LocalDateTime
 
 @Component
 class PaymentTokenValidator(
-  private val apiKeyRepository: ApiKeyRepository
+  private val apiKeyRepository: ApiKeyRepository,
+  private val apiKeyCacheService: ApiKeyCacheService
 ) {
 
   val log = logger()
@@ -25,13 +27,24 @@ class PaymentTokenValidator(
    * @return Boolean
    */
   fun validate(paymentCredentials: PaymentCredentials): Boolean {
-    val apiKey = apiKeyRepository.findApiKey(paymentCredentials.apiPairKey)
-    if (expiredToken(apiKey)) {
-      log.warn("Token expired")
-      return false
+    val apiPairKey = paymentCredentials.apiPairKey
+    val providedApiKey = paymentCredentials.apiKey
+
+    val cachedApiKey = apiKeyCacheService.find(apiPairKey)
+    val apiKey = cachedApiKey ?: run {
+
+      val dbApiKey = apiKeyRepository.findApiKey(apiPairKey) ?: return false
+
+      if (expiredToken(dbApiKey)) {
+        log.warn("Token expired for apiPairKey=$apiPairKey")
+        return false
+      }
+
+      apiKeyCacheService.save(apiPairKey, dbApiKey.apiKey)
+      dbApiKey.apiKey
     }
 
-    return HmacEncUtil.verify(paymentCredentials.apiKey, apiKey.apiKey)
+    return HmacEncUtil.verify(providedApiKey, apiKey)
   }
 
 
