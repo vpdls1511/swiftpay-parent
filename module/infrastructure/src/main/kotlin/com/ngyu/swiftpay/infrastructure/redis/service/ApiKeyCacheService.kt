@@ -66,7 +66,8 @@ class ApiKeyCacheService(
         ?: throw PrincipalException("issuedAt이 없습니다."),
       expiresAt = this["expiresAt"]?.let { LocalDateTime.parse(it) }
         ?: throw PrincipalException("expiresAt이 없습니다."),
-      status = (this["status"] ?: ApiKeyStatus.INACTIVE) as ApiKeyStatus,
+      status = runCatching { ApiKeyStatus.valueOf(this["status"] ?: "INACTIVE") }
+        .getOrElse { ApiKeyStatus.INACTIVE }
     )
   }
 }
