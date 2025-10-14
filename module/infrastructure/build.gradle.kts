@@ -34,6 +34,10 @@ dependencies {
 
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.springframework.boot:spring-boot-starter")
+
+  api("org.springframework.boot:spring-boot-starter-data-redis")
+  api("io.lettuce:lettuce-core")
+
   api("org.springframework.boot:spring-boot-starter-data-jpa")
 
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
