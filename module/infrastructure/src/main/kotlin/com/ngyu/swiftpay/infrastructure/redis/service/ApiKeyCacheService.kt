@@ -37,11 +37,12 @@ class ApiKeyCacheService(
     return if (entries.isEmpty()) null else entries
   }
 
+  // TODO - 가능성은 미미하나, 만약 RaceCondition 발생 시 HINCRBY 적용하기
   fun decreaseCallLimit(apiPairKey: String): Int? {
     val key = RedisKey.apiKey(apiPairKey)
     val callLimit = hashOps.get(key, "callLimit")?.toIntOrNull() ?: return null
     val newCallLimit = callLimit - 1
-    
+
     hashOps.put(key, "callLimit", newCallLimit.toString())
 
     return newCallLimit
