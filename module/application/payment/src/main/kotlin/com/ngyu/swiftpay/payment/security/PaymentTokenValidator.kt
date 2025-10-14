@@ -19,32 +19,44 @@ class PaymentTokenValidator(
 
   /**
    * API키 검증을 위한 메서드
-   * TODO - 1. Redis 캐시 확인
-   * TODO - 2. 캐시 미스 시 DB 조회
-   * TODO - 3. 검증 성공 시 Redis 캐싱
+   *
+   * 1. Redis 캐시 확인
+   *
+   * 1-1. 캐시 미스 시 DB 조회
+   *
+   * 1-2. 검증 성공 시 Redis 캐싱
+   *
+   * 2. Redis 캐시에 저장된 키 만료 확인
+   *
+   * 3. 검증
    *
    * @param paymentCredentials 추출된 인증정보
    * @return Boolean
    */
   fun validate(paymentCredentials: PaymentCredentials): Boolean {
+    val apiKey = paymentCredentials.apiKey
     val apiPairKey = paymentCredentials.apiPairKey
-    val providedApiKey = paymentCredentials.apiKey
 
-    val cachedApiKey = apiKeyCacheService.find(apiPairKey)
-    val apiKey = cachedApiKey ?: run {
-
+    val apiKeyData = apiKeyCacheService.find(apiPairKey) ?: run {
       val dbApiKey = apiKeyRepository.findApiKey(apiPairKey) ?: return false
 
-      if (expiredToken(dbApiKey)) {
-        log.warn("Token expired for apiPairKey=$apiPairKey")
+      // 저장 전 토큰 만료 확인
+      if(expiredToken(dbApiKey)) {
+        log.warn("Expired API key")
         return false
       }
 
-      apiKeyCacheService.save(apiPairKey, dbApiKey.apiKey)
-      dbApiKey.apiKey
+      apiKeyCacheService.save(dbApiKey)
+      dbApiKey
     }
 
-    return HmacEncUtil.verify(providedApiKey, apiKey)
+    // Redis에 저장된 토큰 만료 확인
+    if(expiredToken(apiKeyData)) {
+      log.warn("Expired API key")
+      return false
+    }
+
+    return HmacEncUtil.verify(apiKey, apiKeyData.apiKey)
   }
 
 
