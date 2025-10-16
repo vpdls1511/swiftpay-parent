@@ -1,0 +1,24 @@
+package com.ngyu.swiftpay.payment.api.dto
+
+import com.ngyu.swiftpay.core.domain.merchant.Merchant
+
+data class MerchantRegisterReqeust(
+  val businessNumber: String,
+  val businessName: String,
+  val representativeName: String,
+  val businessType: String,
+  val email: String,
+  val phoneNumber: String,
+  val address: String,
+  val bankAccountNumber: String
+) {
+  fun toDomain(): Merchant {
+    return Merchant(
+      businessNumber = this.businessNumber,
+      businessName = this.businessName,
+      representativeName = this.representativeName,
+      businessType = this.businessType,
+      bankAccountNumber = this.bankAccountNumber
+    )
+  }
+}
