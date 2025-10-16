@@ -38,7 +38,14 @@ data class Money(
   }
 
   /**
-   * 수수료 계산을 위한 기능
+   * 비율을 곱한 금액 계산
+   *
+   * 사용 예시:
+   * - 수수료 계산: amount.multiply(0.03)
+   * - 할인 계산: price.multiply(0.20)
+   *
+   * @param rate 곱할 비율 (0.03 = 3%)
+   * @return 계산된 금액
    */
   fun multiply(rate: BigDecimal): Money {
     return Money(
