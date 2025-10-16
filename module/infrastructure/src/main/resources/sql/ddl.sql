@@ -111,3 +111,34 @@ CREATE TABLE card_bin
     CONSTRAINT chk_owner_type CHECK (owner_type IN ('PERSONAL', 'CORPORATE')),
     CONSTRAINT chk_card_type CHECK (card_type IN ('CREDIT', 'DEBIT'))
 );
+
+CREATE TABLE merchant
+(
+    id                  VARCHAR(36) PRIMARY KEY,
+    user_id             BIGINT,
+
+    business_number     VARCHAR(20)   NOT NULL UNIQUE,
+    business_name       VARCHAR(100)  NOT NULL,
+    representative_name VARCHAR(50)   NOT NULL,
+    business_type       VARCHAR(50)   NOT NULL,
+
+    email               VARCHAR(100)  NOT NULL,
+    phone_number        VARCHAR(20)   NOT NULL,
+    address             VARCHAR(200)  NOT NULL,
+
+    bank_account_number VARCHAR(50)   NOT NULL,
+    fee_rate            DECIMAL(5, 4) NOT NULL DEFAULT 0.0300,
+    settlement_cycle    VARCHAR(20)   NOT NULL,
+
+    contract_start_date DATE,
+    contract_end_date   DATE,
+
+    status              VARCHAR(20)   NOT NULL,
+    approved_at         DATETIME,
+
+    created_at          TIMESTAMP     NOT NULL,
+    updated_at          TIMESTAMP     NOT NULL,
+
+    INDEX idx_business_number (business_number),
+    INDEX idx_status (status)
+);
