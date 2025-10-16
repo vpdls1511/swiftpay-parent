@@ -72,6 +72,7 @@ CREATE TABLE `payments`
     -- 상태 관리
     `status`           ENUM ('PENDING', 'IN_PROGRESS', 'SUCCEEDED', 'FAILED', 'CANCELLED') NOT NULL COMMENT '결제 상태',
     `idempotency_key`  VARCHAR(100)                                                                 DEFAULT NULL COMMENT '중복 방지 키',
+    `settlementId`     VARCHAR(100)                                                                 DEFAULT NULL COMMENT '정산 관리 키',
 
     -- 시스템 정보
     `created_at`       DATETIME(6)                                                         NOT NULL COMMENT '생성 일시',
