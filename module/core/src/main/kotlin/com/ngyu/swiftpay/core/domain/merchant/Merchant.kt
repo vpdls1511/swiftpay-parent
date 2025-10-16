@@ -15,7 +15,7 @@ data class Merchant(
   val representativeName: String,
   val businessType: String,
 
-  val apiPairKey: String,
+  val apiPairKey: String? = null,
 
   val bankAccountNumber: String,
   val feeRate: BigDecimal = BigDecimal.valueOf(0.03), // 기본 3%
