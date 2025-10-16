@@ -1,6 +1,7 @@
 package com.ngyu.swiftpay.core.domain.merchant
 
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -26,16 +27,16 @@ data class Merchant(
   val settlementCycle: SettlementCycle = SettlementCycle.D_PLUS_1,
 
   val status: MerchantStatus = MerchantStatus.PENDING,
-  val suspendReason: String? = null,
+  val suspendedReason: String? = null,
 
-  val contractStartDate: LocalDateTime? = null,
-  val contractEndDate: LocalDateTime? = null,
+  val contractStartDate: LocalDate? = null,
+  val contractEndDate: LocalDate? = null,
 
   val createdAt: LocalDateTime = LocalDateTime.now(),
   val updatedAt: LocalDateTime = LocalDateTime.now(),
   val approvedAt: LocalDateTime? = null
 ) {
-  fun approved(startDate: LocalDateTime): Merchant {
+  fun approved(startDate: LocalDate): Merchant {
     require(this.status == MerchantStatus.PENDING) { "승인 대기 상태가 아닙니다." }
     return this.copy(
       status = MerchantStatus.ACTIVE,
@@ -49,7 +50,7 @@ data class Merchant(
     require(this.status == MerchantStatus.ACTIVE) { "활성 상태가 아닙니다" }
     return this.copy(
       status = MerchantStatus.SUSPENDED,
-      suspendReason = reason,
+      suspendedReason = reason,
       updatedAt = LocalDateTime.now(),
     )
   }
@@ -62,7 +63,7 @@ data class Merchant(
     )
   }
 
-  fun terminate(endDate: LocalDateTime): Merchant {
+  fun terminate(endDate: LocalDate): Merchant {
     require(this.status != MerchantStatus.TERMINATED) { "이미 종료된 가맹점입니다" }
     return this.copy(
       status = MerchantStatus.TERMINATED,
