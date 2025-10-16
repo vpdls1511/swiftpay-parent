@@ -1,15 +1,26 @@
 package com.ngyu.swiftpay.payment.api.application.service
 
+import com.ngyu.swiftpay.core.domain.merchant.MerchantRepository
 import com.ngyu.swiftpay.payment.api.application.usecase.MerchantUseCase
+import com.ngyu.swiftpay.payment.api.application.usecase.PaymentApiKeyUseCase
+import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
+import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
+import org.springframework.stereotype.Service
 
-class MerchantService: MerchantUseCase {
+@Service
+class MerchantService(
+  private val paymentApiKeyUseCase: PaymentApiKeyUseCase,
+  private val merchantRepository: MerchantRepository
+): MerchantUseCase {
   /**
    * 가맹점 등록
    *
    * 상태 : PENDING
    */
-  override fun register() {
-    TODO("Not yet implemented")
+  override fun register(request: MerchantRegisterReqeust): PaymentCredentials {
+    val savedMerchant = merchantRepository.save(request.toDomain())
+
+    return approve(savedMerchant.id)
   }
 
   /**
@@ -17,7 +28,8 @@ class MerchantService: MerchantUseCase {
    *
    * 상태 : PENDING → ACTIVE
    */
-  override fun approve() {
-    TODO("Not yet implemented")
+  override fun approve(merchantId: String): PaymentCredentials {
+    return paymentApiKeyUseCase.issueKey()
   }
+
 }
