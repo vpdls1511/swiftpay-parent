@@ -50,4 +50,7 @@ class PaymentEntity(
 
   @Column(unique = true, length = 100)
   val idempotencyKey: String? = null,
+
+  @Column(nullable = true)
+  val settlementId: String? = null,
 ) : BaseTimeEntity()

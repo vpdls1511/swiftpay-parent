@@ -32,6 +32,8 @@ data class Payment(
   val status: PayStatus,
   val idempotencyKey: String?,        // 중복 결제 방지 키
 
+  val settlementId: String? = null, // 정산 관리 Id
+
   // 시스템정보
   val createdAt: LocalDateTime,
   val updatedAt: LocalDateTime
