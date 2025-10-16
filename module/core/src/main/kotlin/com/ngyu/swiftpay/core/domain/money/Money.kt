@@ -38,6 +38,15 @@ data class Money(
   }
 
   /**
+   * '==, <= , >=' 같은 비교 operator를 사용 가능
+   * - a < b : -1
+   * - a == b : 0
+   * - a > b : 1
+   * @return Int
+   */
+  operator fun compareTo(other: Money): Int = this.amount.compareTo(other.amount)
+
+  /**
    * 비율을 곱한 금액 계산
    *
    * 사용 예시:
