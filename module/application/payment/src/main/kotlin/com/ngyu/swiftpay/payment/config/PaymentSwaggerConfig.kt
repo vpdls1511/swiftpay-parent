@@ -19,7 +19,7 @@ class PaymentSwaggerConfig : BaseSwaggerConfig() {
   fun paymentApi(): GroupedOpenApi {
     return GroupedOpenApi.builder()
       .group("payment")
-      .pathsToMatch("/payment/**")
+      .pathsToMatch("/**")
       .build()
   }
 
