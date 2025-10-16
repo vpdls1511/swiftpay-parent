@@ -18,7 +18,10 @@ data class MerchantRegisterReqeust(
       businessName = this.businessName,
       representativeName = this.representativeName,
       businessType = this.businessType,
-      bankAccountNumber = this.bankAccountNumber
+      bankAccountNumber = this.bankAccountNumber,
+      email = this.email,
+      phoneNumber = this.phoneNumber,
+      address = this.address,
     )
   }
 }
