@@ -1,6 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.apiKey
 
 import com.ngyu.swiftpay.core.domain.apiKey.ApiKey
+import com.ngyu.swiftpay.core.domain.apiKey.ApiKeyRepository
 import org.springframework.stereotype.Component
 
 @Component
