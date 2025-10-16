@@ -27,7 +27,7 @@ class PaymentEntityTest {
   fun `카드 결제 도메인을 생성하고 저장한 후 다시 조회할 수 있다`() {
     // given - 도메인 생성
     val payment = Payment.create(
-      apiPairKey = "pair_key_001",
+      merchantId = "pair_key_001",
       orderId = "ORDER_001",
       orderName = "나이키 에어포스",
       amount = BigDecimal("129000.00"),
@@ -57,7 +57,7 @@ class PaymentEntityTest {
 
     // then - 도메인 검증
     assertEquals(payment.id, foundDomain.id)
-    assertEquals("pair_key_001", foundDomain.apiPairKey)
+    assertEquals("pair_key_001", foundDomain.merchantId)
     assertEquals("ORDER_001", foundDomain.orderId)
     assertEquals("나이키 에어포스", foundDomain.orderName)
     assertEquals(BigDecimal("129000.00"), foundDomain.amount)
@@ -89,7 +89,7 @@ class PaymentEntityTest {
   fun `계좌이체 결제 도메인을 생성하고 저장한 후 다시 조회할 수 있다`() {
     // given
     val payment = Payment.create(
-      apiPairKey = "pair_key_001",
+      merchantId = "pair_key_001",
       orderId = "ORDER_002",
       orderName = "아디다스 슈퍼스타",
       amount = BigDecimal("99000.00"),
@@ -125,7 +125,7 @@ class PaymentEntityTest {
   fun `할부가 있는 신용카드 결제를 저장하고 조회할 수 있다`() {
     // given
     val payment = Payment.create(
-      apiPairKey = "pair_key_001",
+      merchantId = "pair_key_001",
       orderId = "ORDER_003",
       orderName = "맥북 프로",
       amount = BigDecimal("2500000.00"),
@@ -164,7 +164,7 @@ class PaymentEntityTest {
   fun `체크카드 일시불 결제를 저장하고 조회할 수 있다`() {
     // given
     val payment = Payment.create(
-      apiPairKey = "pair_key_001",
+      merchantId = "pair_key_001",
       orderId = "ORDER_004",
       orderName = "스타벅스 아메리카노",
       amount = BigDecimal("4500.00"),
@@ -203,7 +203,7 @@ class PaymentEntityTest {
   fun `선택적 필드들이 null로 저장되고 조회된다`() {
     // given
     val payment = Payment.create(
-      apiPairKey = "pair_key_001",
+      merchantId = "pair_key_001",
       orderId = "ORDER_005",
       orderName = "테스트 상품",
       amount = BigDecimal("10000.00"),
@@ -283,7 +283,7 @@ class PaymentEntityTest {
   fun `USD 통화로 결제를 저장할 수 있다`() {
     // given
     val payment = Payment.create(
-      apiPairKey = "pair_key_001",
+      merchantId = "pair_key_001",
       orderId = "ORDER_010",
       orderName = "International Product",
       amount = BigDecimal("99.99"),
@@ -394,7 +394,7 @@ class PaymentEntityTest {
     apiPairKey: String = "pair_key_001"
   ): Payment {
     return Payment.create(
-      apiPairKey = apiPairKey,
+      merchantId = apiPairKey,
       orderId = orderId,
       orderName = "테스트 상품",
       amount = BigDecimal("10000.00"),
@@ -421,7 +421,7 @@ class PaymentEntityTest {
     apiPairKey: String = "pair_key_001"
   ): Payment {
     return Payment.create(
-      apiPairKey = apiPairKey,
+      merchantId = apiPairKey,
       orderId = orderId,
       orderName = "테스트 상품",
       amount = BigDecimal("10000.00"),

@@ -14,7 +14,7 @@ class PaymentEntity(
   val id: String,
 
   @Column(nullable = false, length = 100)
-  val apiPairKey: String,
+  val merchantId: String,
 
   @Column(nullable = false, length = 100)
   val orderId: String,

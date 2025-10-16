@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 data class Payment(
   // 기본정보
   val id: String,                     // 고유 ID
-  val apiPairKey: String,             // 주문시 사용한 pairKey
+  val merchantId: String,             // 가맹점 Id
   val orderId: String,                // 가맹점의 주문번호
   val orderName: String,              // 상품 이름
   val amount: BigDecimal,             // 상품 가격
@@ -42,7 +42,7 @@ data class Payment(
      *
      * 초기 상태는 PENDING이며, 고유한 결제 ID가 자동 생성된다.
      *
-     * @param apiPairKey API 키 페어
+     * @param merchantId 가맹점 아이디
      * @param orderId 가맹점 주문 번호
      * @param orderName 주문 상품명
      * @param amount 결제 금액
@@ -56,7 +56,7 @@ data class Payment(
      * @return 생성된 Payment 도메인 객체
      */
     fun create(
-      apiPairKey: String,
+      merchantId: String,
       orderId: String,
       orderName: String,
       amount: BigDecimal,
@@ -71,7 +71,7 @@ data class Payment(
       val now = LocalDateTime.now()
       return Payment(
         id = generatePaymentId(),
-        apiPairKey = apiPairKey,
+        merchantId = merchantId,
         orderId = orderId,
         orderName = orderName,
         amount = amount,
