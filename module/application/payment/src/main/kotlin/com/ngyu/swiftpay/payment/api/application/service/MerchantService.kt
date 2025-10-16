@@ -6,6 +6,7 @@ import com.ngyu.swiftpay.payment.api.application.usecase.PaymentApiKeyUseCase
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class MerchantService(
@@ -29,6 +30,10 @@ class MerchantService(
    * 상태 : PENDING → ACTIVE
    */
   override fun approve(merchantId: String): PaymentCredentials {
+    val domain = merchantRepository.findByMerchantId(merchantId)
+    domain.approved(LocalDate.now().plusDays(1))
+    merchantRepository.save(domain)
+
     return paymentApiKeyUseCase.issueKey()
   }
 
