@@ -14,6 +14,9 @@ data class Merchant(
   val businessName: String,
   val representativeName: String,
   val businessType: String,
+  val email: String,
+  val phoneNumber: String,
+  val address: String,
 
   val apiPairKey: String? = null,
 
