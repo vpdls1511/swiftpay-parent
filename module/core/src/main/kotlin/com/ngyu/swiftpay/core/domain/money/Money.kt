@@ -26,7 +26,7 @@ data class Money(
    */
   operator fun plus(other: Money): Money {
     require(other.currency == this.currency) { "통화가 다릅니다." }
-    return Money(other.amount + this.amount, this.currency)
+    return Money(this.amount + other.amount, this.currency)
   }
 
   /**
