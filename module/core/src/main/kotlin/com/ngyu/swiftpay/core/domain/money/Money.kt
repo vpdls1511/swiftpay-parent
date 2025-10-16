@@ -44,7 +44,10 @@ data class Money(
    * - a > b : 1
    * @return Int
    */
-  operator fun compareTo(other: Money): Int = this.amount.compareTo(other.amount)
+  operator fun compareTo(other: Money): Int {
+    require(other.currency == this.currency) { "통화가 다릅니다." }
+    return this.amount.compareTo(other.amount)
+  }
 
   /**
    * 비율을 곱한 금액 계산
