@@ -24,12 +24,13 @@ class PaymentController(
 
   private val log = logger()
 
-  @Operation(summary = "결제 요청", description = "테스트 은행으로 결제 요청을 보냅니다.")
+  @Operation(summary = "주문서 생성", description = "결제 전 주문 정보를 생성하고, orderId를 발급합니다.")
   @PostMapping("/order")
   fun processPayment(
     @PaymentPrincipal principal: PaymentCredentials,
     @RequestBody request: OrderCreateRequestDto
   ): ResponseEntity<OrderCreateResponseDto> {
+    log.info("주문서 생성 시작")
     val response = paymentUseCase.readyOrder(request)
     return ResponseEntity
       .status(HttpStatus.CREATED)
