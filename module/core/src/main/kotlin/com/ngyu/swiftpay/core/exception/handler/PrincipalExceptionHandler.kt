@@ -3,6 +3,8 @@ package com.ngyu.swiftpay.core.exception.handler
 import com.ngyu.swiftpay.core.exception.PrincipalException
 import com.ngyu.swiftpay.core.exception.response.ExceptionResponse
 import jakarta.servlet.http.HttpServletRequest
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
  * 인증 관련된 Exception을 캐치하여 401 Unauthorized 응답을 반환한다.
  */
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 class PrincipalExceptionHandler {
 
   @ExceptionHandler(PrincipalException::class)
