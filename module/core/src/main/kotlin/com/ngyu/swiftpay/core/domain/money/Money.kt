@@ -37,6 +37,18 @@ data class Money(
     return Money(this.amount - other.amount, this.currency)
   }
 
+  operator fun div(divider: Long): Money {
+    return Money(
+      this.amount.divide(BigDecimal.valueOf(divider), this.currency.decimalFormat, RoundingMode.HALF_UP),
+      this.currency
+    )
+  }
+
+  operator fun div(other: Money): BigDecimal {
+    require(other.currency == this.currency) { "통화가 다릅니다." }
+    return this.amount.divide(other.amount, other.currency.decimalFormat, RoundingMode.HALF_UP)
+  }
+
   /**
    * '==, <= , >=' 같은 비교 operator를 사용 가능
    * - a < b : -1
