@@ -1,5 +1,7 @@
 package com.ngyu.swiftpay.core.domain.payment
 
+import com.ngyu.swiftpay.core.domain.money.Currency
+import com.ngyu.swiftpay.core.domain.money.Money
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -16,8 +18,7 @@ data class Payment(
   val merchantId: String,             // 가맹점 Id
   val orderId: String,                // 가맹점의 주문번호
   val orderName: String,              // 상품 이름
-  val amount: BigDecimal,             // 상품 가격
-  val currency: String = "KRW",       // 통화
+  val amount: Money,             // 상품 가격
 
   // 결제 수단 정보
   val method: PayMethod,              // 결제 수단
@@ -62,7 +63,7 @@ data class Payment(
       orderId: String,
       orderName: String,
       amount: BigDecimal,
-      currency: String = "KRW",
+      currency: Currency,
       method: PayMethod,
       methodDetail: PayMethodDetails,
       successUrl: String? = null,
@@ -76,8 +77,7 @@ data class Payment(
         merchantId = merchantId,
         orderId = orderId,
         orderName = orderName,
-        amount = amount,
-        currency = currency,
+        amount = Money(amount, currency),
         method = method,
         methodDetail = methodDetail,
         successUrl = successUrl,

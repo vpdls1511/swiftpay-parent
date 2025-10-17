@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.fake
 
+import com.ngyu.swiftpay.core.domain.money.Currency
 import com.ngyu.swiftpay.core.domain.payment.*
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper.PaymentMapper
 import org.junit.jupiter.api.Assertions.*
@@ -31,7 +32,7 @@ class PaymentEntityTest {
       orderId = "ORDER_001",
       orderName = "나이키 에어포스",
       amount = BigDecimal("129000.00"),
-      currency = "KRW",
+      currency = Currency.KRW,
       method = PayMethod.CARD,
       methodDetail = PayMethodDetails.Card(
         cardNumber = "1234****5678",
@@ -61,7 +62,7 @@ class PaymentEntityTest {
     assertEquals("ORDER_001", foundDomain.orderId)
     assertEquals("나이키 에어포스", foundDomain.orderName)
     assertEquals(BigDecimal("129000.00"), foundDomain.amount)
-    assertEquals("KRW", foundDomain.currency)
+    assertEquals(Currency.KRW, foundDomain.currency)
     assertEquals(PayMethod.CARD, foundDomain.method)
     assertEquals(PayStatus.PENDING, foundDomain.status)
     assertEquals("idempotency_001", foundDomain.idempotencyKey)
@@ -93,7 +94,7 @@ class PaymentEntityTest {
       orderId = "ORDER_002",
       orderName = "아디다스 슈퍼스타",
       amount = BigDecimal("99000.00"),
-      currency = "KRW",
+      currency = Currency.KRW,
       method = PayMethod.BANK_TRANSFER,
       methodDetail = PayMethodDetails.BankTransfer(
         bankCode = "004",
@@ -129,7 +130,7 @@ class PaymentEntityTest {
       orderId = "ORDER_003",
       orderName = "맥북 프로",
       amount = BigDecimal("2500000.00"),
-      currency = "KRW",
+      currency = Currency.KRW,
       method = PayMethod.CARD,
       methodDetail = PayMethodDetails.Card(
         cardNumber = "9410****1234",
@@ -168,7 +169,7 @@ class PaymentEntityTest {
       orderId = "ORDER_004",
       orderName = "스타벅스 아메리카노",
       amount = BigDecimal("4500.00"),
-      currency = "KRW",
+      currency = Currency.KRW,
       method = PayMethod.CARD,
       methodDetail = PayMethodDetails.Card(
         cardNumber = "9411****5678",
@@ -207,7 +208,7 @@ class PaymentEntityTest {
       orderId = "ORDER_005",
       orderName = "테스트 상품",
       amount = BigDecimal("10000.00"),
-      currency = "KRW",
+      currency = Currency.KRW,
       method = PayMethod.CARD,
       methodDetail = PayMethodDetails.Card(
         cardNumber = null,
@@ -398,7 +399,7 @@ class PaymentEntityTest {
       orderId = orderId,
       orderName = "테스트 상품",
       amount = BigDecimal("10000.00"),
-      currency = "KRW",
+      currency = Currency.KRW,
       method = PayMethod.CARD,
       methodDetail = PayMethodDetails.Card(
         cardNumber = "1234****5678",
@@ -425,7 +426,7 @@ class PaymentEntityTest {
       orderId = orderId,
       orderName = "테스트 상품",
       amount = BigDecimal("10000.00"),
-      currency = "KRW",
+      currency = Currency.KRW,
       method = PayMethod.BANK_TRANSFER,
       methodDetail = PayMethodDetails.BankTransfer(
         bankCode = "004",

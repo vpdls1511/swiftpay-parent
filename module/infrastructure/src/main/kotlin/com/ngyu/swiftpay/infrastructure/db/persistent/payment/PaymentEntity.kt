@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment
 
+import com.ngyu.swiftpay.core.domain.money.Currency
 import com.ngyu.swiftpay.core.domain.payment.PayMethod
 import com.ngyu.swiftpay.core.domain.payment.PayStatus
 import com.ngyu.swiftpay.infrastructure.db.persistent.common.BaseTimeEntity
@@ -25,8 +26,9 @@ class PaymentEntity(
   @Column(nullable = false, precision = 19, scale = 2)
   val amount: BigDecimal,
 
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 3)
-  val currency: String = "KRW",
+  val currency: Currency = Currency.KRW,
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)

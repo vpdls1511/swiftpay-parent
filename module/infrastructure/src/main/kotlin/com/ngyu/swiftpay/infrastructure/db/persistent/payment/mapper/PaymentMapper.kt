@@ -1,7 +1,9 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper
 
+import com.ngyu.swiftpay.core.domain.money.Money
 import com.ngyu.swiftpay.core.domain.payment.Payment
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.PaymentEntity
+import java.math.BigDecimal
 
 object PaymentMapper {
 
@@ -11,8 +13,8 @@ object PaymentMapper {
       merchantId = domain.merchantId,
       orderId = domain.orderId,
       orderName = domain.orderName,
-      amount = domain.amount,
-      currency = domain.currency,
+      amount = BigDecimal.valueOf(domain.amount.toLong()),
+      currency = domain.amount.currency,
       method = domain.method,
       methodDetail = PayMethodDetailsEmbeddableMapper.toEmbeddable(domain.methodDetail),
       successUrl = domain.successUrl,
@@ -30,8 +32,7 @@ object PaymentMapper {
       merchantId = entity.merchantId,
       orderId = entity.orderId,
       orderName = entity.orderName,
-      amount = entity.amount,
-      currency = entity.currency,
+      amount = Money(entity.amount, entity.currency),
       method = entity.method,
       methodDetail = PayMethodDetailsEmbeddableMapper.toDomain(entity.methodDetail),
       successUrl = entity.successUrl,

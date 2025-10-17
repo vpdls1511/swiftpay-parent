@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.ngyu.swiftpay.core.domain.money.Currency
 import com.ngyu.swiftpay.core.domain.order.Order
 import com.ngyu.swiftpay.core.domain.payment.PayMethod
+import com.ngyu.swiftpay.core.domain.payment.PayMethodDetails
+import com.ngyu.swiftpay.core.domain.payment.Payment
 import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
 import io.swagger.v3.oas.annotations.media.Schema
 import java.math.BigDecimal
@@ -56,11 +58,11 @@ data class OrderCreateResponseDto(
 @Schema(description = "결제 요청 Dto")
 data class PaymentRequestDto(
   // 기본정보
-  val id: String,                     // 고유 ID
+  val merchantId: String,                // 가맹점의 주문번호
   val orderId: String,                // 가맹점의 주문번호
   val orderName: String,              // 상품 이름
   val amount: BigDecimal,             // 상품 가격
-  val currency: String = "KRW",       // 통화
+  val currency: Currency,       // 통화
 
   // 결제 수단 정보
   val method: PayMethod,              // 결제 수단
@@ -76,7 +78,23 @@ data class PaymentRequestDto(
 
   // 옵션 - 콜백 URL
   val callBack: PaymentCallback? = null,
-)
+) {
+  fun toDomain(): Payment {
+    return Payment.create(
+      merchantId = this.merchantId,
+      orderId = this.orderId,
+      orderName = this.orderName,
+      amount = amount,
+      currency = this.currency,
+      method = this.method,
+      methodDetail = this.methodDetail.toDomain(),
+      successUrl = this.callBack?.successUrl,
+      cancelUrl = this.callBack?.cancelUrl,
+      failureUrl = this.callBack?.failureUrl,
+      idempotencyKey = null // TODO - 추후 멱등성을 위한 체크 키 생기면 넣자..
+    )
+  }
+}
 
 @Schema(description = "결제 후 콜백 URL")
 data class PaymentCallback(
@@ -100,6 +118,7 @@ data class PaymentCallback(
   JsonSubTypes.Type(value = PaymentDtoMethodDetails.BankTransfer::class, name = "BANK_TRANSFER")
 )
 sealed class PaymentDtoMethodDetails {
+  abstract fun toDomain(): PayMethodDetails
 
   @Schema(description = "카드 결제 옵션")
   data class Card(
@@ -109,11 +128,29 @@ sealed class PaymentDtoMethodDetails {
     val installmentPlan: Int? = 0,
     val cardType: PaymentCardType?,
     val useCardPoint: Boolean = false
-  ) : PaymentDtoMethodDetails()
+  ) : PaymentDtoMethodDetails() {
+    override fun toDomain(): PayMethodDetails.Card {
+      return PayMethodDetails.Card(
+        cardNumber = this.cardNumber,
+        cardExpiry = this.cardExpiry,
+        cardCvc = this.cardCvc,
+        installmentPlan = this.installmentPlan,
+        cardType = this.cardType,
+        useCardPoint = this.useCardPoint
+      )
+    }
+  }
 
   @Schema(description = "계좌 이체 옵션")
   data class BankTransfer(
     val bankCode: String?,
     val accountNumber: String?
-  ) : PaymentDtoMethodDetails()
+  ) : PaymentDtoMethodDetails() {
+    override fun toDomain(): PayMethodDetails.BankTransfer {
+      return PayMethodDetails.BankTransfer(
+        bankCode = this.bankCode,
+        accountNumber = this.accountNumber
+      )
+    }
+  }
 }
