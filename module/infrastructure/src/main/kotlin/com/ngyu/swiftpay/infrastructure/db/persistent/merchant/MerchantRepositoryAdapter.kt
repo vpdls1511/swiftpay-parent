@@ -11,7 +11,7 @@ class MerchantRepositoryAdapter(
 ): MerchantRepository {
   override fun save(domain: Merchant): Merchant {
     val entity = MerchantMapper.toEntity(domain)
-    val saveEntity = merchantRepository.save(entity)
+    val saveEntity = merchantRepository.saveAndFlush(entity)
 
     return MerchantMapper.toDomain(saveEntity)
   }
