@@ -10,7 +10,6 @@ import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import jakarta.transaction.Transactional
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -35,10 +34,11 @@ class MerchantService(
 
       log.info("가맹점 등록 완료 - merchantId = ${savedMerchant.id} STATUS = ${savedMerchant.status}")
       return this.approve(savedMerchant.id)
-    } catch (e: DuplicateKeyException) {
-      log.error("이미 등록된 사업자 번호 - businessNumber = ${request.businessNumber}")
-      throw DuplicateMerchantException()
     } catch (e: DataIntegrityViolationException) {
+      if (e.message?.contains("Duplicate entry") == true) {
+        log.error("이미 등록된 사업자 번호 - businessNumber = ${request.businessNumber}")
+        throw DuplicateMerchantException()
+      }
       log.error("가맹점 정보 저장 실패", e)
       throw InvalidMerchantDataException()
     } catch (e: Exception) {
