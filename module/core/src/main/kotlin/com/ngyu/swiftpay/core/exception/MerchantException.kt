@@ -24,5 +24,8 @@ class MerchantNotFoundException(message: String = "가맹점을 찾을 수 없�
 class DuplicateMerchantException(message: String = "이미 등록된 가맹점입니다")
   : MerchantException(message)
 
+class InvalidMerchantDataException(message: String = "가맹점 정보가 유효하지 않습니다.")
+  : MerchantException(message)
+
 class MerchantUnauthorizedException(message: String = "인증되지 않은 가맹점입니다")
   : MerchantException(message)
