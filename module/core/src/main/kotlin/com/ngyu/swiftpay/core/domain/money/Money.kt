@@ -79,6 +79,8 @@ data class Money(
       this.currency
     )
   }
+
+  fun toLong(): Long = this.amount.toLong()
 }
 
 enum class Currency(
