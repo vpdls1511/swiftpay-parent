@@ -1,14 +1,15 @@
 package com.ngyu.swiftpay.payment.api.controller
 
 import com.ngyu.swiftpay.core.logger.logger
+import com.ngyu.swiftpay.payment.api.application.usecase.PaymentUseCase
+import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
+import com.ngyu.swiftpay.payment.api.dto.OrderCreateResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
-import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.security.PaymentPrincipal
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,30 +19,20 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/payment")
 class PaymentController(
+  private val paymentUseCase: PaymentUseCase
 ) {
 
   private val log = logger()
 
-  @Operation(summary = "API 키 유효성 검사", description = "API 키가 유효한지 확인합니다.")
-  @ApiResponse(
-    responseCode = "200",
-    description = "API 키 유효",
-    content = [Content(mediaType = "text/plain", schema = Schema(implementation = String::class, example = "ok"))]
-  )
-  @PostMapping("/health")
-  fun checkApiKey(
-    @PaymentPrincipal principal: PaymentCredentials
-  ): String {
-    log.info("API KEY 유효성 검사")
-    return "ok"
-  }
-
   @Operation(summary = "결제 요청", description = "테스트 은행으로 결제 요청을 보냅니다.")
-  @PostMapping("/payment")
+  @PostMapping("/order")
   fun processPayment(
     @PaymentPrincipal principal: PaymentCredentials,
-    @RequestBody request: PaymentRequestDto
-  ) {
-    return
+    @RequestBody request: OrderCreateRequestDto
+  ): ResponseEntity<OrderCreateResponseDto> {
+    val response = paymentUseCase.readyOrder(request)
+    return ResponseEntity
+      .status(HttpStatus.CREATED)
+      .body(response)
   }
 }
