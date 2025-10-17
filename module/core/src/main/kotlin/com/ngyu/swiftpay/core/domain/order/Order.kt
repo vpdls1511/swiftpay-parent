@@ -1,6 +1,8 @@
 package com.ngyu.swiftpay.core.domain.order
 
+import com.ngyu.swiftpay.core.domain.money.Currency
 import com.ngyu.swiftpay.core.domain.money.Money
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
@@ -32,20 +34,22 @@ data class Order(
     fun create(
       merchantId: String,
       orderName: String,
-      totalAmount: Money,
+      totalAmount: Long,
+      currency: Currency,
       customerName: String? = null,
       customerEmail: String? = null,
       customerPhone: String? = null
     ): Order {
-      val tax = totalAmount / taxFee
-      val supplyAmount = totalAmount - tax
+      val amount = Money(BigDecimal.valueOf(totalAmount), currency)
+      val tax = amount / taxFee
+      val supplyAmount = amount - tax
 
       return Order(
         orderId = UUID.randomUUID().toString(),
         merchantId = merchantId,
         orderName = orderName,
-        totalAmount = totalAmount,
-        balanceAmount = totalAmount,
+        totalAmount = amount,
+        balanceAmount = amount,
         supplyAmount = supplyAmount,
         tax = tax,
         status = OrderStatus.READY,
