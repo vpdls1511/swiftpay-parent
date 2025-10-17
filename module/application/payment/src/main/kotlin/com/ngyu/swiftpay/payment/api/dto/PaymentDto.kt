@@ -2,16 +2,61 @@ package com.ngyu.swiftpay.payment.api.dto
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.ngyu.swiftpay.core.domain.money.Currency
+import com.ngyu.swiftpay.core.domain.order.Order
 import com.ngyu.swiftpay.core.domain.payment.PayMethod
 import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
 import io.swagger.v3.oas.annotations.media.Schema
 import java.math.BigDecimal
 
+@Schema(description = "주문서 생성 요청 Dto")
+data class OrderCreateRequestDto(
+  val merchantId: String,
+  val orderName: String,
+  val totalAmount: Long,
+  val currency: Currency,
+  val customerName: String? = null,
+  val customerEmail: String? = null,
+  val customerPhone: String? = null
+) {
+  fun toDomain(): Order {
+    return Order.create(
+      merchantId = this.merchantId,
+      orderName = this.orderName,
+      totalAmount = this.totalAmount,
+      currency = this.currency,
+      customerName = this.customerName,
+      customerEmail = this.customerEmail,
+      customerPhone = this.customerPhone
+    )
+  }
+}
+
+@Schema(description = "주문서 생성 응답")
+data class OrderCreateResponseDto(
+  val orderId: String,
+  val orderName: String,
+  val amount: Long,
+  val customerName: String? = null,
+  val customerEmail: String? = null
+) {
+  companion object {
+    fun fromDomain(domain: Order): OrderCreateResponseDto {
+      return OrderCreateResponseDto(
+        orderId = domain.orderId,
+        orderName= domain.orderName,
+        amount = domain.totalAmount.toLong(),
+        customerName = domain.customerName,
+        customerEmail = domain.customerEmail
+      )
+    }
+  }
+}
+
 @Schema(description = "결제 요청 Dto")
 data class PaymentRequestDto(
   // 기본정보
   val id: String,                     // 고유 ID
-  val apiPairKey: String,             // 주문시 사용한 pairKey
   val orderId: String,                // 가맹점의 주문번호
   val orderName: String,              // 상품 이름
   val amount: BigDecimal,             // 상품 가격
@@ -31,9 +76,6 @@ data class PaymentRequestDto(
 
   // 옵션 - 콜백 URL
   val callBack: PaymentCallback? = null,
-
-  // 상태관리
-  val idempotencyKey: String?,        // 중복 결제 방지 키
 )
 
 @Schema(description = "결제 후 콜백 URL")
