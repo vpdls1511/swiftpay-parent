@@ -21,7 +21,7 @@ class ApiKeyCacheService(
     val map = mapOf(
       "apiKey" to apiKey.apiKey,
       "lookupKey" to apiKey.lookupKey,
-      "userId" to (apiKey.userId.toString() ?: ""),
+      "userId" to (apiKey.userId?.toString() ?: ""),  // 이렇게 수정
       "issuedAt" to apiKey.issuedAt.toString(),
       "expiresAt" to apiKey.expiresAt.toString(),
       "status" to apiKey.status.toString(),
@@ -60,7 +60,7 @@ class ApiKeyCacheService(
     return ApiKey(
       apiKey = this["apiKey"] ?: throw PrincipalException("apiKey가 없습니다."),
       lookupKey = this["lookupKey"] ?: throw PrincipalException("lookupKey가 없습니다."),
-      userId = this["userId"]?.toLong(),
+      userId = this["userId"]?.toLongOrNull() ?: 0,
       callLimit = this["callLimit"]?.toIntOrNull() ?: 0,
       issuedAt = this["issuedAt"]?.let { LocalDateTime.parse(it) }
         ?: throw PrincipalException("issuedAt이 없습니다."),
