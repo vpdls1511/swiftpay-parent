@@ -31,6 +31,7 @@ data class Payment(
 
   // 상태관리
   val status: PayStatus,
+  val reason: String? = null,
   val idempotencyKey: String?,        // 중복 결제 방지 키
 
   val settlementId: String? = null, // 정산 관리 Id
@@ -90,8 +91,7 @@ data class Payment(
       )
     }
 
-
-    /**
+ /**
      * 고유한 결제 ID를 생성한다.
      *
      * 형식: swift_pay_{timestamp}_{random}
@@ -101,5 +101,42 @@ data class Payment(
     private fun generatePaymentId(): String {
       return "swift_pay_${System.currentTimeMillis()}_${(1000..9999).random()}"
     }
+  }
+
+  /**
+   * 상태관리를 위한 메서드 리스트
+   * - inProgress
+   * - succeed
+   * - cancelled
+   * - failed
+   */
+  fun inProgress(): Payment {
+    require(status == PayStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    return this.copy(
+      status = PayStatus.IN_PROGRESS,
+      updatedAt = LocalDateTime.now(),
+    )
+  }
+  fun success(): Payment {
+    require(status == PayStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    return this.copy(
+      status = PayStatus.SUCCEEDED,
+      updatedAt = LocalDateTime.now(),
+    )
+  }
+  fun cancel(): Payment {
+    require(status == PayStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    return this.copy(
+      status = PayStatus.CANCELLED,
+      updatedAt = LocalDateTime.now(),
+    )
+  }
+  fun failed(reason: String): Payment {
+    require(status == PayStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    return this.copy(
+      status = PayStatus.FAILED,
+      reason = reason,
+      updatedAt = LocalDateTime.now(),
+    )
   }
 }
