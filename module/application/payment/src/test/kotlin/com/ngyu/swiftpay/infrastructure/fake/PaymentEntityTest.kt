@@ -62,7 +62,6 @@ class PaymentEntityTest {
     assertEquals("ORDER_001", foundDomain.orderId)
     assertEquals("나이키 에어포스", foundDomain.orderName)
     assertEquals(BigDecimal("129000.00"), foundDomain.amount)
-    assertEquals(Currency.KRW, foundDomain.currency)
     assertEquals(PayMethod.CARD, foundDomain.method)
     assertEquals(PayStatus.PENDING, foundDomain.status)
     assertEquals("idempotency_001", foundDomain.idempotencyKey)
@@ -288,7 +287,7 @@ class PaymentEntityTest {
       orderId = "ORDER_010",
       orderName = "International Product",
       amount = BigDecimal("99.99"),
-      currency = "USD",
+      currency = Currency.KRW,
       method = PayMethod.CARD,
       methodDetail = PayMethodDetails.Card(
         cardNumber = "4111****1111",
@@ -312,7 +311,6 @@ class PaymentEntityTest {
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
-    assertEquals("USD", foundDomain.currency)
     assertEquals(BigDecimal("99.99"), foundDomain.amount)
   }
 

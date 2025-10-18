@@ -36,7 +36,7 @@ class PaymentService(
 
     val strategy = paymentStrategyFactory.getStrategy(domain)
     val shouldAsyncProcessing = strategy.shouldAsyncProcessing(domain)
-    log.info("결제 전략 선택 | paymentId={domain.id}, strategy={strategy.getStrategyName()}, isAsync={shouldAsyncProcessing}")
+    log.info("결제 전략 선택 | paymentId=${domain.id}, strategy=${strategy.getStrategyName()}, isAsync=${shouldAsyncProcessing}")
 
     // TODO  - 아직 각 전략의 내부 서비스를 완성하지 않은 단계. 우선, 도메인 생성 후 DB 저장까지만.
 

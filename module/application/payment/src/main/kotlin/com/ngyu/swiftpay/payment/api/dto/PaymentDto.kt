@@ -98,6 +98,8 @@ data class PaymentRequestDto(
 data class PaymentResponseDto(
   @Schema(description = "payment Key 를 trnKey로 매핑하여 내려준다")
   val trnKey: String,
+  val orderId: String,
+  val merchantId: String,
 
   val amount: BigDecimal,
   val currency: Currency,
@@ -109,6 +111,8 @@ data class PaymentResponseDto(
     fun fromDomain(domain: Payment): PaymentResponseDto {
       return PaymentResponseDto(
         trnKey = domain.id,
+        orderId = domain.orderId,
+        merchantId = domain.merchantId,
         amount = domain.amount.toBigDecimal(),
         currency = domain.amount.currency,
         orderName= domain.orderName,
