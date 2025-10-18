@@ -2,6 +2,7 @@ package com.ngyu.swiftpay.payment.application.strategy
 
 import com.ngyu.swiftpay.core.domain.money.Money
 import com.ngyu.swiftpay.core.domain.payment.model.Payment
+import com.ngyu.swiftpay.core.domain.payment.model.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.port.BankApiClientPort
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.payment.PaymentCardService
@@ -13,6 +14,8 @@ class PaymentCardStrategy(
   private val cardService: PaymentCardService,
   private val cardApiClient: BankApiClientPort
 ): PaymentStrategy() {
+  override fun getPaymentMethod() = PaymentMethod.CARD
+
   override fun shouldAsyncProcessing(payment: Payment): Boolean {
     return payment.amount >= Money(BigDecimal.valueOf(10000000), payment.amount.currency)
   }

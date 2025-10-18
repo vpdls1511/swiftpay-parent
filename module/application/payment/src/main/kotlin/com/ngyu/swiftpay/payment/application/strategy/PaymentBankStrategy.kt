@@ -1,6 +1,7 @@
 package com.ngyu.swiftpay.payment.application.strategy
 
 import com.ngyu.swiftpay.core.domain.payment.model.Payment
+import com.ngyu.swiftpay.core.domain.payment.model.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.port.BankApiClientPort
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.payment.PaymentBankService
@@ -11,6 +12,8 @@ class PaymentBankStrategy(
   private val bankService: PaymentBankService,
   private val bankApiClient: BankApiClientPort
 ): PaymentStrategy() {
+  override fun getPaymentMethod() = PaymentMethod.BANK_TRANSFER
+
   override fun shouldAsyncProcessing(payment: Payment): Boolean {
 //    TODO("Not yet implemented")
     return false
