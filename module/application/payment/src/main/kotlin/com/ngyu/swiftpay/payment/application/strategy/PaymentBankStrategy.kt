@@ -1,13 +1,15 @@
 package com.ngyu.swiftpay.payment.application.strategy
 
 import com.ngyu.swiftpay.core.domain.payment.model.Payment
+import com.ngyu.swiftpay.core.domain.payment.port.BankApiClientPort
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.payment.PaymentBankService
 import org.springframework.stereotype.Component
 
 @Component
 class PaymentBankStrategy(
-  private val bankService: PaymentBankService
+  private val bankService: PaymentBankService,
+  private val bankApiClient: BankApiClientPort
 ): PaymentStrategy() {
   override fun shouldAsyncProcessing(payment: Payment): Boolean {
 //    TODO("Not yet implemented")

@@ -2,7 +2,9 @@ package com.ngyu.swiftpay.infrastructure.client.mock
 
 import com.ngyu.swiftpay.core.domain.payment.model.Payment
 import com.ngyu.swiftpay.core.domain.payment.port.BankApiClientPort
+import org.springframework.stereotype.Component
 
+@Component
 class MockExternalBankApiClient: BankApiClientPort {
   override fun shouldCanPayment(domain: Payment): Boolean {
     return true
