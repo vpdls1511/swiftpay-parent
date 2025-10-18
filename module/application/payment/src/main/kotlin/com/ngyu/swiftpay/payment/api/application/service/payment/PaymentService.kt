@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.api.application.service
+package com.ngyu.swiftpay.payment.api.application.service.payment
 
 import com.ngyu.swiftpay.payment.api.application.usecase.PaymentUseCase
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
