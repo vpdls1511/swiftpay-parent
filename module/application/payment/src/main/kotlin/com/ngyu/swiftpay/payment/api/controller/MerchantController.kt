@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.payment.api.controller
 
-import com.ngyu.swiftpay.payment.api.application.service.MerchantService
+import com.ngyu.swiftpay.payment.application.service.MerchantService
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import io.swagger.v3.oas.annotations.Operation

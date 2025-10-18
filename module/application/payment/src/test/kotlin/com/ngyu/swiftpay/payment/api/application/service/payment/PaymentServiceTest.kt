@@ -6,10 +6,11 @@ import com.ngyu.swiftpay.core.domain.payment.model.PayMethodDetails
 import com.ngyu.swiftpay.core.domain.payment.model.PayStatus
 import com.ngyu.swiftpay.core.domain.payment.model.Payment
 import com.ngyu.swiftpay.core.domain.payment.port.PaymentRepository
-import com.ngyu.swiftpay.payment.api.application.strategy.PaymentBankStrategy
-import com.ngyu.swiftpay.payment.api.application.strategy.PaymentCardStrategy
-import com.ngyu.swiftpay.payment.api.application.strategy.PaymentStrategyFactory
+import com.ngyu.swiftpay.payment.application.strategy.PaymentBankStrategy
+import com.ngyu.swiftpay.payment.application.strategy.PaymentCardStrategy
+import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
+import com.ngyu.swiftpay.payment.application.service.payment.PaymentService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

@@ -1,11 +1,11 @@
-package com.ngyu.swiftpay.payment.api.application.service
+package com.ngyu.swiftpay.payment.application.service
 
 import com.ngyu.swiftpay.core.domain.merchant.MerchantRepository
 import com.ngyu.swiftpay.core.exception.DuplicateMerchantException
 import com.ngyu.swiftpay.core.exception.InvalidMerchantDataException
 import com.ngyu.swiftpay.core.logger.logger
-import com.ngyu.swiftpay.payment.api.application.usecase.MerchantUseCase
-import com.ngyu.swiftpay.payment.api.application.usecase.PaymentApiKeyUseCase
+import com.ngyu.swiftpay.payment.application.usecase.MerchantUseCase
+import com.ngyu.swiftpay.payment.application.usecase.PaymentApiKeyUseCase
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import jakarta.transaction.Transactional

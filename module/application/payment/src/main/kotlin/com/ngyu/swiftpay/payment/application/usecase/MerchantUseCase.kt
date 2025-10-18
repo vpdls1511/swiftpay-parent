@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.api.application.usecase
+package com.ngyu.swiftpay.payment.application.usecase
 
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials

@@ -1,14 +1,14 @@
-package com.ngyu.swiftpay.payment.api.application.service.payment
+package com.ngyu.swiftpay.payment.application.service.payment
 
 import com.ngyu.swiftpay.core.domain.payment.model.Payment
 import com.ngyu.swiftpay.core.domain.payment.port.PaymentRepository
 import com.ngyu.swiftpay.core.logger.logger
-import com.ngyu.swiftpay.payment.api.application.strategy.PaymentStrategyFactory
-import com.ngyu.swiftpay.payment.api.application.usecase.PaymentUseCase
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
+import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
+import com.ngyu.swiftpay.payment.application.usecase.PaymentUseCase
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 

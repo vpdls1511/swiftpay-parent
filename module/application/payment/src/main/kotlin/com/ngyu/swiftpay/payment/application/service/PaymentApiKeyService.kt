@@ -1,9 +1,9 @@
-package com.ngyu.swiftpay.payment.api.application.service
+package com.ngyu.swiftpay.payment.application.service
 
 import com.ngyu.swiftpay.core.domain.apiKey.ApiKey
 import com.ngyu.swiftpay.core.logger.logger
 import com.ngyu.swiftpay.core.domain.apiKey.ApiKeyRepository
-import com.ngyu.swiftpay.payment.api.application.usecase.PaymentApiKeyUseCase
+import com.ngyu.swiftpay.payment.application.usecase.PaymentApiKeyUseCase
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import com.ngyu.swiftpay.security.provider.PaymentTokenProvider
 import com.ngyu.swiftpay.security.vo.ApiKeyPair

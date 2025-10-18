@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.api.application.strategy
+package com.ngyu.swiftpay.payment.application.strategy
 
 import com.ngyu.swiftpay.core.domain.payment.model.Payment
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
