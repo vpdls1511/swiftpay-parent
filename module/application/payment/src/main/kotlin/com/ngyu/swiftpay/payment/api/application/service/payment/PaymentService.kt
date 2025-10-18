@@ -34,7 +34,7 @@ class PaymentService(
 
   private fun savePayment(request: PaymentRequestDto): Payment {
     val domain = request.toDomain()
-    var updateDomain = domain.inProgress()
+    val updateDomain = domain.inProgress()
     // TODO("추후 Repository 연결 시 주석 삭제해야함")
     return updateDomain
   }
