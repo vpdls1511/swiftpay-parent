@@ -35,7 +35,18 @@ class PaymentController(
       .body(response)
   }
 
-  @Operation(summary = "주문서 기반 결제 처리", description = "주문 정보를 기반으로 결제를 실행한다." )
+  @Operation(
+    summary = "결제 처리",
+    description = """
+        주문 정보를 기반으로 결제를 실행합니다.
+        
+        • CARD(카드): 즉시 승인/거절 응답 (동기 처리)
+        • BANK_TRANSFER(계좌이체): 처리 접수 후 콜백으로 결과 전송 (비동기 처리)
+        
+        methodDetail의 type 필드로 CARD/BANK_TRANSFER를 구분하며, 각 타입에 맞는 필드를 전송해야 합니다.
+        카드 결제는 할부, 포인트 사용 등의 옵션을 지원합니다.
+    """
+  )
   @PostMapping
   fun confirmPayment(
     @PaymentPrincipal principal: PaymentPrincipal,
