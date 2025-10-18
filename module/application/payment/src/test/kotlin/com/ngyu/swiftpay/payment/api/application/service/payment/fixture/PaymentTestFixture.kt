@@ -37,7 +37,7 @@ object PaymentTestFixture {
       orderName = orderName,
       amount = amount,
       currency = currency,
-      method = PayMethod.CARD,
+      method = PaymentMethod.CARD,
       methodDetail = PaymentDtoMethodDetails.Card(
         cardNumber = cardNumber,
         cardExpiry = cardExpiry,
@@ -73,7 +73,7 @@ object PaymentTestFixture {
       orderName = orderName,
       amount = amount,
       currency = currency,
-      method = PayMethod.BANK_TRANSFER,
+      method = PaymentMethod.BANK_TRANSFER,
       methodDetail = PaymentDtoMethodDetails.BankTransfer(
         bankCode = bankCode,
         accountNumber = accountNumber
@@ -94,8 +94,8 @@ object PaymentTestFixture {
     orderName: String = "테스트 상품",
     amount: BigDecimal = BigDecimal(10000),
     currency: Currency = Currency.KRW,
-    method: PayMethod = PayMethod.CARD,
-    status: PayStatus = PayStatus.PENDING
+    method: PaymentMethod = PaymentMethod.CARD,
+    status: PaymentStatus = PaymentStatus.PENDING
   ): Payment {
     return Payment.create(
       merchantId = merchantId,
@@ -105,8 +105,8 @@ object PaymentTestFixture {
       currency = currency,
       method = method,
       methodDetail = when (method) {
-        PayMethod.CARD -> createCardMethodDetail()
-        PayMethod.BANK_TRANSFER -> createBankTransferMethodDetail()
+        PaymentMethod.CARD -> createCardMethodDetail()
+        PaymentMethod.BANK_TRANSFER -> createBankTransferMethodDetail()
         else -> createCardMethodDetail()
       }
     )
@@ -122,8 +122,8 @@ object PaymentTestFixture {
     installmentPlan: Int = 0,
     cardType: PaymentCardType = PaymentCardType.CREDIT,
     useCardPoint: Boolean = false
-  ): PayMethodDetails.Card {
-    return PayMethodDetails.Card(
+  ): PaymentMethodDetails.Card {
+    return PaymentMethodDetails.Card(
       cardNumber = cardNumber,
       cardExpiry = cardExpiry,
       cardCvc = cardCvc,
@@ -139,8 +139,8 @@ object PaymentTestFixture {
   fun createBankTransferMethodDetail(
     bankCode: String = "004",
     accountNumber: String = "1234567890"
-  ): PayMethodDetails.BankTransfer {
-    return PayMethodDetails.BankTransfer(
+  ): PaymentMethodDetails.BankTransfer {
+    return PaymentMethodDetails.BankTransfer(
       bankCode = bankCode,
       accountNumber = accountNumber
     )

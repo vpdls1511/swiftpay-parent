@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper
 
-import com.ngyu.swiftpay.core.domain.payment.model.PayMethodDetails
+import com.ngyu.swiftpay.core.domain.payment.model.PaymentMethodDetails
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.PayMethodDetailsEmbeddable
 
 object PayMethodDetailsEmbeddableMapper {
@@ -8,9 +8,9 @@ object PayMethodDetailsEmbeddableMapper {
   /**
    * 도메인 모델을 Embeddable로 변환
    */
-  fun toEmbeddable(domain: PayMethodDetails): PayMethodDetailsEmbeddable {
+  fun toEmbeddable(domain: PaymentMethodDetails): PayMethodDetailsEmbeddable {
     return when (domain) {
-      is PayMethodDetails.Card -> PayMethodDetailsEmbeddable(
+      is PaymentMethodDetails.Card -> PayMethodDetailsEmbeddable(
         type = "CARD",
         cardNumber = domain.cardNumber,
         cardExpiry = domain.cardExpiry,
@@ -20,7 +20,7 @@ object PayMethodDetailsEmbeddableMapper {
         useCardPoint = domain.useCardPoint
       )
 
-      is PayMethodDetails.BankTransfer -> PayMethodDetailsEmbeddable(
+      is PaymentMethodDetails.BankTransfer -> PayMethodDetailsEmbeddable(
         type = "BANK_TRANSFER",
         bankCode = domain.bankCode,
         accountNumber = domain.accountNumber
@@ -31,9 +31,9 @@ object PayMethodDetailsEmbeddableMapper {
   /**
    * Embeddable을 도메인 모델로 변환
    */
-  fun toDomain(embeddable: PayMethodDetailsEmbeddable): PayMethodDetails {
+  fun toDomain(embeddable: PayMethodDetailsEmbeddable): PaymentMethodDetails {
     return when (embeddable.type) {
-      "CARD" -> PayMethodDetails.Card(
+      "CARD" -> PaymentMethodDetails.Card(
         cardNumber = embeddable.cardNumber,
         cardExpiry = embeddable.cardExpiry,
         cardCvc = embeddable.cardCvc,
@@ -42,7 +42,7 @@ object PayMethodDetailsEmbeddableMapper {
         useCardPoint = embeddable.useCardPoint ?: false
       )
 
-      "BANK_TRANSFER" -> PayMethodDetails.BankTransfer(
+      "BANK_TRANSFER" -> PaymentMethodDetails.BankTransfer(
         bankCode = embeddable.bankCode,
         accountNumber = embeddable.accountNumber
       )

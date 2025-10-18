@@ -1,9 +1,9 @@
 package com.ngyu.swiftpay.payment.api.application.service.payment
 
 import com.ngyu.swiftpay.core.domain.money.Currency
-import com.ngyu.swiftpay.core.domain.payment.model.PayMethod
-import com.ngyu.swiftpay.core.domain.payment.model.PayMethodDetails
-import com.ngyu.swiftpay.core.domain.payment.model.PayStatus
+import com.ngyu.swiftpay.core.domain.payment.model.PaymentMethod
+import com.ngyu.swiftpay.core.domain.payment.model.PaymentMethodDetails
+import com.ngyu.swiftpay.core.domain.payment.model.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.model.Payment
 import com.ngyu.swiftpay.core.domain.payment.port.PaymentRepository
 import com.ngyu.swiftpay.payment.application.strategy.PaymentBankStrategy
@@ -147,7 +147,7 @@ class PaymentServiceTest {
 
   // then
   val savedPayment = paymentCaptor.firstValue
-  assertThat(savedPayment.status).isEqualTo(PayStatus.IN_PROGRESS)
+  assertThat(savedPayment.status).isEqualTo(PaymentStatus.IN_PROGRESS)
 
   verify(paymentRepository).save(any())
  }
@@ -170,7 +170,7 @@ class PaymentServiceTest {
 
   // then - PayMethod.CARD로 전략 선택 확인
   verify(paymentStrategyFactory).getStrategy(argThat { payment ->
-   payment.method == PayMethod.CARD
+   payment.method == PaymentMethod.CARD
   })
  }
 
@@ -192,7 +192,7 @@ class PaymentServiceTest {
 
   // then - PayMethod.BANK_TRANSFER로 전략 선택 확인
   verify(paymentStrategyFactory).getStrategy(argThat { payment ->
-   payment.method == PayMethod.BANK_TRANSFER
+   payment.method == PaymentMethod.BANK_TRANSFER
   })
  }
 
@@ -242,8 +242,8 @@ class PaymentServiceTest {
   // then
   assertThat(result).isNotNull
   verify(paymentRepository).save(argThat { payment ->
-   payment.methodDetail is PayMethodDetails.Card &&
-       (payment.methodDetail as PayMethodDetails.Card).installmentPlan == 12
+   payment.methodDetail is PaymentMethodDetails.Card &&
+       (payment.methodDetail as PaymentMethodDetails.Card).installmentPlan == 12
   })
  }
 
@@ -268,8 +268,8 @@ class PaymentServiceTest {
   // then
   assertThat(result).isNotNull
   verify(paymentRepository).save(argThat { payment ->
-   payment.methodDetail is PayMethodDetails.BankTransfer &&
-       (payment.methodDetail as PayMethodDetails.BankTransfer).bankCode == "088"
+   payment.methodDetail is PaymentMethodDetails.BankTransfer &&
+       (payment.methodDetail as PaymentMethodDetails.BankTransfer).bankCode == "088"
   })
  }
 }

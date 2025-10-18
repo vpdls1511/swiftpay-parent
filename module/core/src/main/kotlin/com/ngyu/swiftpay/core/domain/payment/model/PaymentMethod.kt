@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.core.domain.payment.model
 
-enum class PayMethod {
+enum class PaymentMethod {
   CARD,
   BANK_TRANSFER,
 }

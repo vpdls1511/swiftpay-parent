@@ -63,7 +63,7 @@ data class PaymentRequestDto(
   val currency: Currency,       // 통화
 
   // 결제 수단 정보
-  val method: PayMethod,              // 결제 수단
+  val method: PaymentMethod,              // 결제 수단
   @Schema(
     description = "결제 수단별 상세 정보",
     oneOf = [
@@ -104,7 +104,7 @@ data class PaymentResponseDto(
   val amount: BigDecimal,
   val currency: Currency,
   val orderName: String,
-  val status: PayStatus,
+  val status: PaymentStatus,
   val trnDate: LocalDateTime
 ) {
   companion object {
@@ -150,7 +150,7 @@ data class PaymentCallback(
   JsonSubTypes.Type(value = PaymentDtoMethodDetails.BankTransfer::class, name = "BANK_TRANSFER")
 )
 sealed class PaymentDtoMethodDetails {
-  abstract fun toDomain(): PayMethodDetails
+  abstract fun toDomain(): PaymentMethodDetails
 
   @Schema(description = "카드 결제 옵션")
   data class Card(
@@ -161,8 +161,8 @@ sealed class PaymentDtoMethodDetails {
     val cardType: PaymentCardType?,
     val useCardPoint: Boolean = false
   ) : PaymentDtoMethodDetails() {
-    override fun toDomain(): PayMethodDetails.Card {
-      return PayMethodDetails.Card(
+    override fun toDomain(): PaymentMethodDetails.Card {
+      return PaymentMethodDetails.Card(
         cardNumber = this.cardNumber,
         cardExpiry = this.cardExpiry,
         cardCvc = this.cardCvc,
@@ -178,8 +178,8 @@ sealed class PaymentDtoMethodDetails {
     val bankCode: String?,
     val accountNumber: String?
   ) : PaymentDtoMethodDetails() {
-    override fun toDomain(): PayMethodDetails.BankTransfer {
-      return PayMethodDetails.BankTransfer(
+    override fun toDomain(): PaymentMethodDetails.BankTransfer {
+      return PaymentMethodDetails.BankTransfer(
         bankCode = this.bankCode,
         accountNumber = this.accountNumber
       )

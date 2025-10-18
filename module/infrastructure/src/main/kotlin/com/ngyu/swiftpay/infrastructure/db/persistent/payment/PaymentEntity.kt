@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment
 
 import com.ngyu.swiftpay.core.domain.money.Currency
-import com.ngyu.swiftpay.core.domain.payment.model.PayMethod
-import com.ngyu.swiftpay.core.domain.payment.model.PayStatus
+import com.ngyu.swiftpay.core.domain.payment.model.PaymentMethod
+import com.ngyu.swiftpay.core.domain.payment.model.PaymentStatus
 import com.ngyu.swiftpay.infrastructure.db.persistent.common.BaseTimeEntity
 import jakarta.persistence.*
 import java.math.BigDecimal
@@ -32,7 +32,7 @@ class PaymentEntity(
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
-  val method: PayMethod,
+  val method: PaymentMethod,
 
   @Embedded
   val methodDetail: PayMethodDetailsEmbeddable,
@@ -48,7 +48,7 @@ class PaymentEntity(
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
-  val status: PayStatus,
+  val status: PaymentStatus,
 
   @Column
   val reason: String? = null,

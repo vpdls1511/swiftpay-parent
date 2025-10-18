@@ -33,8 +33,8 @@ class PaymentEntityTest {
       orderName = "나이키 에어포스",
       amount = BigDecimal("129000.00"),
       currency = Currency.KRW,
-      method = PayMethod.CARD,
-      methodDetail = PayMethodDetails.Card(
+      method = PaymentMethod.CARD,
+      methodDetail = PaymentMethodDetails.Card(
         cardNumber = "1234****5678",
         cardExpiry = "2512",
         cardCvc = "***",
@@ -62,16 +62,16 @@ class PaymentEntityTest {
     assertEquals("ORDER_001", foundDomain.orderId)
     assertEquals("나이키 에어포스", foundDomain.orderName)
     assertEquals(BigDecimal("129000.00"), foundDomain.amount)
-    assertEquals(PayMethod.CARD, foundDomain.method)
-    assertEquals(PayStatus.PENDING, foundDomain.status)
+    assertEquals(PaymentMethod.CARD, foundDomain.method)
+    assertEquals(PaymentStatus.PENDING, foundDomain.status)
     assertEquals("idempotency_001", foundDomain.idempotencyKey)
     assertEquals("https://example.com/success", foundDomain.successUrl)
     assertEquals("https://example.com/cancel", foundDomain.cancelUrl)
     assertEquals("https://example.com/fail", foundDomain.failureUrl)
 
     // 결제 수단 상세 검증
-    assertTrue(foundDomain.methodDetail is PayMethodDetails.Card)
-    val cardDetail = foundDomain.methodDetail as PayMethodDetails.Card
+    assertTrue(foundDomain.methodDetail is PaymentMethodDetails.Card)
+    val cardDetail = foundDomain.methodDetail as PaymentMethodDetails.Card
     assertEquals("1234****5678", cardDetail.cardNumber)
     assertEquals("2512", cardDetail.cardExpiry)
     assertEquals("***", cardDetail.cardCvc)
@@ -94,8 +94,8 @@ class PaymentEntityTest {
       orderName = "아디다스 슈퍼스타",
       amount = BigDecimal("99000.00"),
       currency = Currency.KRW,
-      method = PayMethod.BANK_TRANSFER,
-      methodDetail = PayMethodDetails.BankTransfer(
+      method = PaymentMethod.BANK_TRANSFER,
+      methodDetail = PaymentMethodDetails.BankTransfer(
         bankCode = "004",
         accountNumber = "110-123-456789"
       ),
@@ -113,9 +113,9 @@ class PaymentEntityTest {
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
-    assertEquals(PayMethod.BANK_TRANSFER, foundDomain.method)
-    assertTrue(foundDomain.methodDetail is PayMethodDetails.BankTransfer)
-    val bankDetail = foundDomain.methodDetail as PayMethodDetails.BankTransfer
+    assertEquals(PaymentMethod.BANK_TRANSFER, foundDomain.method)
+    assertTrue(foundDomain.methodDetail is PaymentMethodDetails.BankTransfer)
+    val bankDetail = foundDomain.methodDetail as PaymentMethodDetails.BankTransfer
     assertEquals("004", bankDetail.bankCode)
     assertEquals("110-123-456789", bankDetail.accountNumber)
   }
@@ -130,8 +130,8 @@ class PaymentEntityTest {
       orderName = "맥북 프로",
       amount = BigDecimal("2500000.00"),
       currency = Currency.KRW,
-      method = PayMethod.CARD,
-      methodDetail = PayMethodDetails.Card(
+      method = PaymentMethod.CARD,
+      methodDetail = PaymentMethodDetails.Card(
         cardNumber = "9410****1234",
         cardExpiry = "2612",
         cardCvc = "***",
@@ -153,7 +153,7 @@ class PaymentEntityTest {
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
-    val cardDetail = foundDomain.methodDetail as PayMethodDetails.Card
+    val cardDetail = foundDomain.methodDetail as PaymentMethodDetails.Card
     assertEquals(12, cardDetail.installmentPlan)
     assertEquals(true, cardDetail.useCardPoint)
     assertEquals(PaymentCardType.CREDIT, cardDetail.cardType)
@@ -169,8 +169,8 @@ class PaymentEntityTest {
       orderName = "스타벅스 아메리카노",
       amount = BigDecimal("4500.00"),
       currency = Currency.KRW,
-      method = PayMethod.CARD,
-      methodDetail = PayMethodDetails.Card(
+      method = PaymentMethod.CARD,
+      methodDetail = PaymentMethodDetails.Card(
         cardNumber = "9411****5678",
         cardExpiry = "2512",
         cardCvc = "123",
@@ -192,7 +192,7 @@ class PaymentEntityTest {
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
-    val cardDetail = foundDomain.methodDetail as PayMethodDetails.Card
+    val cardDetail = foundDomain.methodDetail as PaymentMethodDetails.Card
     assertEquals(PaymentCardType.DEBIT, cardDetail.cardType)
     assertEquals(0, cardDetail.installmentPlan)
     assertEquals(false, cardDetail.useCardPoint)
@@ -208,8 +208,8 @@ class PaymentEntityTest {
       orderName = "테스트 상품",
       amount = BigDecimal("10000.00"),
       currency = Currency.KRW,
-      method = PayMethod.CARD,
-      methodDetail = PayMethodDetails.Card(
+      method = PaymentMethod.CARD,
+      methodDetail = PaymentMethodDetails.Card(
         cardNumber = null,
         cardExpiry = null,
         cardCvc = null,
@@ -231,7 +231,7 @@ class PaymentEntityTest {
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
-    val cardDetail = foundDomain.methodDetail as PayMethodDetails.Card
+    val cardDetail = foundDomain.methodDetail as PaymentMethodDetails.Card
     assertNull(cardDetail.cardNumber)
     assertNull(cardDetail.cardExpiry)
     assertNull(cardDetail.cardCvc)
@@ -288,8 +288,8 @@ class PaymentEntityTest {
       orderName = "International Product",
       amount = BigDecimal("99.99"),
       currency = Currency.KRW,
-      method = PayMethod.CARD,
-      methodDetail = PayMethodDetails.Card(
+      method = PaymentMethod.CARD,
+      methodDetail = PaymentMethodDetails.Card(
         cardNumber = "4111****1111",
         cardExpiry = "2512",
         cardCvc = "123",
@@ -328,7 +328,7 @@ class PaymentEntityTest {
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
-    assertEquals(PayStatus.PENDING, foundDomain.status)
+    assertEquals(PaymentStatus.PENDING, foundDomain.status)
   }
 
   @Test
@@ -398,8 +398,8 @@ class PaymentEntityTest {
       orderName = "테스트 상품",
       amount = BigDecimal("10000.00"),
       currency = Currency.KRW,
-      method = PayMethod.CARD,
-      methodDetail = PayMethodDetails.Card(
+      method = PaymentMethod.CARD,
+      methodDetail = PaymentMethodDetails.Card(
         cardNumber = "1234****5678",
         cardExpiry = "2512",
         cardCvc = "123",
@@ -425,8 +425,8 @@ class PaymentEntityTest {
       orderName = "테스트 상품",
       amount = BigDecimal("10000.00"),
       currency = Currency.KRW,
-      method = PayMethod.BANK_TRANSFER,
-      methodDetail = PayMethodDetails.BankTransfer(
+      method = PaymentMethod.BANK_TRANSFER,
+      methodDetail = PaymentMethodDetails.BankTransfer(
         bankCode = "004",
         accountNumber = "110-123-456789"
       ),

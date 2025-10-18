@@ -21,8 +21,8 @@ data class Payment(
   val amount: Money,             // 상품 가격
 
   // 결제 수단 정보
-  val method: PayMethod,              // 결제 수단
-  val methodDetail: PayMethodDetails, // 결제 상세정보 ( CARD일 경우, 옵션 )
+  val method: PaymentMethod,              // 결제 수단
+  val methodDetail: PaymentMethodDetails, // 결제 상세정보 ( CARD일 경우, 옵션 )
 
   // 옵션 - 콜백 URL
   val successUrl: String? = null,
@@ -30,7 +30,7 @@ data class Payment(
   val failureUrl: String? = null,
 
   // 상태관리
-  val status: PayStatus,
+  val status: PaymentStatus,
   val reason: String? = null,
   val idempotencyKey: String?,        // 중복 결제 방지 키
 
@@ -65,8 +65,8 @@ data class Payment(
       orderName: String,
       amount: BigDecimal,
       currency: Currency,
-      method: PayMethod,
-      methodDetail: PayMethodDetails,
+      method: PaymentMethod,
+      methodDetail: PaymentMethodDetails,
       successUrl: String? = null,
       cancelUrl: String? = null,
       failureUrl: String? = null,
@@ -84,7 +84,7 @@ data class Payment(
         successUrl = successUrl,
         cancelUrl = cancelUrl,
         failureUrl = failureUrl,
-        status = PayStatus.PENDING,
+        status = PaymentStatus.PENDING,
         idempotencyKey = idempotencyKey,
         createdAt = now,
         updatedAt = now
@@ -111,30 +111,30 @@ data class Payment(
    * - failed
    */
   fun inProgress(): Payment {
-    require(status == PayStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    require(status == PaymentStatus.PENDING) { "결제 대기 상태가 아닙니다." }
     return this.copy(
-      status = PayStatus.IN_PROGRESS,
+      status = PaymentStatus.IN_PROGRESS,
       updatedAt = LocalDateTime.now(),
     )
   }
   fun success(): Payment {
-    require(status == PayStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    require(status == PaymentStatus.PENDING) { "결제 대기 상태가 아닙니다." }
     return this.copy(
-      status = PayStatus.SUCCEEDED,
+      status = PaymentStatus.SUCCEEDED,
       updatedAt = LocalDateTime.now(),
     )
   }
   fun cancel(): Payment {
-    require(status == PayStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    require(status == PaymentStatus.PENDING) { "결제 대기 상태가 아닙니다." }
     return this.copy(
-      status = PayStatus.CANCELLED,
+      status = PaymentStatus.CANCELLED,
       updatedAt = LocalDateTime.now(),
     )
   }
   fun failed(reason: String): Payment {
-    require(status == PayStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    require(status == PaymentStatus.PENDING) { "결제 대기 상태가 아닙니다." }
     return this.copy(
-      status = PayStatus.FAILED,
+      status = PaymentStatus.FAILED,
       reason = reason,
       updatedAt = LocalDateTime.now(),
     )
