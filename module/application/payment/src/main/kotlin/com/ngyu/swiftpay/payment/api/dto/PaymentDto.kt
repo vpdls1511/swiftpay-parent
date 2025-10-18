@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.ngyu.swiftpay.core.domain.money.Currency
 import com.ngyu.swiftpay.core.domain.order.Order
-import com.ngyu.swiftpay.core.domain.payment.PayMethod
-import com.ngyu.swiftpay.core.domain.payment.PayMethodDetails
-import com.ngyu.swiftpay.core.domain.payment.Payment
-import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
+import com.ngyu.swiftpay.core.domain.payment.*
 import io.swagger.v3.oas.annotations.media.Schema
 import java.math.BigDecimal
+import java.time.LocalDateTime
 
 @Schema(description = "주문서 생성 요청 Dto")
 data class OrderCreateRequestDto(
@@ -95,6 +93,36 @@ data class PaymentRequestDto(
     )
   }
 }
+
+@Schema(description = "결제 요청에 대한 응답 Dto")
+data class PaymentResponseDto(
+  @Schema(description = "payment Key 를 trnKey로 매핑하여 내려준다")
+  val trnKey: String,
+
+  val amount: BigDecimal,
+  val currency: Currency,
+  val orderName: String,
+  val status: PayStatus,
+  val trnDate: LocalDateTime
+) {
+  companion object {
+    fun fromDomain(domain: Payment): PaymentResponseDto {
+      return PaymentResponseDto(
+        trnKey = domain.id,
+        amount = domain.amount.toBigDecimal(),
+        currency = domain.amount.currency,
+        orderName= domain.orderName,
+        status = domain.status,
+        trnDate = domain.createdAt
+      )
+    }
+  }
+}
+
+
+/**
+ * 서브로 필요한 필드 정의
+ */
 
 @Schema(description = "결제 후 콜백 URL")
 data class PaymentCallback(
