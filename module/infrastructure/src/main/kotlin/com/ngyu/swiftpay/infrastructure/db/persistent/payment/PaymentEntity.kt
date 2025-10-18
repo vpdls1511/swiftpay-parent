@@ -50,6 +50,9 @@ class PaymentEntity(
   @Column(nullable = false, length = 20)
   val status: PayStatus,
 
+  @Column
+  val reason: String? = null,
+
   @Column(unique = true, length = 100)
   val idempotencyKey: String? = null,
 

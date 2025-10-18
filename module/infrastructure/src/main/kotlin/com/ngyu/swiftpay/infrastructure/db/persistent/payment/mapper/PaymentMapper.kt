@@ -21,6 +21,7 @@ object PaymentMapper {
       cancelUrl = domain.cancelUrl,
       failureUrl = domain.failureUrl,
       status = domain.status,
+      reason = domain.reason,
       idempotencyKey = domain.idempotencyKey,
       settlementId = domain.settlementId,
     )
@@ -39,6 +40,7 @@ object PaymentMapper {
       cancelUrl = entity.cancelUrl,
       failureUrl = entity.failureUrl,
       status = entity.status,
+      reason = entity.reason,
       idempotencyKey = entity.idempotencyKey,
       settlementId = entity.settlementId,
       createdAt = entity.createdAt,
