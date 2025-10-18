@@ -42,7 +42,7 @@ DROP TABLE IF EXISTS `payments`;
 CREATE TABLE `payments`
 (
     `id`               VARCHAR(50)                                                         NOT NULL COMMENT '결제 고유 ID',
-    `api_pair_key`     VARCHAR(100)                                                        NOT NULL COMMENT 'API 키 페어',
+    `merchant_id`       VARCHAR(100)                                                        NOT NULL COMMENT '가맹점 ID',
     `order_id`         VARCHAR(100)                                                        NOT NULL COMMENT '가맹점 주문 번호',
     `order_name`       VARCHAR(200)                                                        NOT NULL COMMENT '주문 상품명',
     `amount`           DECIMAL(19, 2)                                                      NOT NULL COMMENT '결제 금액',
@@ -71,8 +71,9 @@ CREATE TABLE `payments`
 
     -- 상태 관리
     `status`           ENUM ('PENDING', 'IN_PROGRESS', 'SUCCEEDED', 'FAILED', 'CANCELLED') NOT NULL COMMENT '결제 상태',
+    `reason`           varchar(255)                                                                 DEFAULT NULL COMMENT '실패 이유',
     `idempotency_key`  VARCHAR(100)                                                                 DEFAULT NULL COMMENT '중복 방지 키',
-    `settlementId`     VARCHAR(100)                                                                 DEFAULT NULL COMMENT '정산 관리 키',
+    `settlement_id`     VARCHAR(100)                                                                 DEFAULT NULL COMMENT '정산 관리 키',
 
     -- 시스템 정보
     `created_at`       DATETIME(6)                                                         NOT NULL COMMENT '생성 일시',
@@ -81,7 +82,8 @@ CREATE TABLE `payments`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_idempotency_key` (`idempotency_key`),
     INDEX `idx_order_id` (`order_id`),
-    INDEX `idx_api_pair_key` (`api_pair_key`),
+    INDEX `idx_merchant_id` (`merchant_id`),
+    INDEX `idx_settlement_id` (`settlement_id`),
     INDEX `idx_status` (`status`),
     INDEX `idx_created_at` (`created_at`),
     INDEX `idx_order_id_status` (`order_id`, `status`)

@@ -10,7 +10,8 @@ class PaymentCardStrategy(
   private val cardService: PaymentCardService,
 ): PaymentStrategy() {
   override fun shouldAsyncProcessing(payment: Payment): Boolean {
-    TODO("Not yet implemented")
+//    TODO("Not yet implemented")
+    return true
   }
 
   override suspend fun process(payment: Payment): PaymentResponseDto {
@@ -18,6 +19,6 @@ class PaymentCardStrategy(
   }
 
   override fun getStrategyName(): String {
-    TODO("Not yet implemented")
+    return "카드결제"
   }
 }
