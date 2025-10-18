@@ -35,6 +35,7 @@ class PaymentController(
       .body(response)
   }
 
+  @Operation(summary = "주문서 기반 결제 처리", description = "주문 정보를 기반으로 결제를 실행한다." )
   @PostMapping
   fun confirmPayment(
     @PaymentPrincipal principal: PaymentPrincipal,
