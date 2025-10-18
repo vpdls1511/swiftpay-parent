@@ -12,5 +12,4 @@ sealed class PaymentStrategy {
   abstract fun shouldAsyncProcessing(payment: Payment): Boolean
   abstract suspend fun process(payment: Payment): PaymentResponseDto
   abstract fun getStrategyName(): String
-
 }
