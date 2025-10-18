@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper
 
 import com.ngyu.swiftpay.core.domain.money.Money
-import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.domain.payment.model.Payment
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.PaymentEntity
 import java.math.BigDecimal
 

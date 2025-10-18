@@ -1,7 +1,11 @@
 package com.ngyu.swiftpay.payment.api.application.service.payment
 
 import com.ngyu.swiftpay.core.domain.money.Currency
-import com.ngyu.swiftpay.core.domain.payment.*
+import com.ngyu.swiftpay.core.domain.payment.model.PayMethod
+import com.ngyu.swiftpay.core.domain.payment.model.PayMethodDetails
+import com.ngyu.swiftpay.core.domain.payment.model.PayStatus
+import com.ngyu.swiftpay.core.domain.payment.model.Payment
+import com.ngyu.swiftpay.core.domain.payment.port.PaymentRepository
 import com.ngyu.swiftpay.payment.api.application.strategy.PaymentBankStrategy
 import com.ngyu.swiftpay.payment.api.application.strategy.PaymentCardStrategy
 import com.ngyu.swiftpay.payment.api.application.strategy.PaymentStrategyFactory

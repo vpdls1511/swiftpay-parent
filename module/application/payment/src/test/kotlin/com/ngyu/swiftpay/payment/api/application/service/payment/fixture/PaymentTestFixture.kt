@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.payment.api.application.service.payment
 
 import com.ngyu.swiftpay.core.domain.money.Currency
-import com.ngyu.swiftpay.core.domain.payment.*
+import com.ngyu.swiftpay.core.domain.payment.model.*
 import com.ngyu.swiftpay.payment.api.dto.PaymentCallback
 import com.ngyu.swiftpay.payment.api.dto.PaymentDtoMethodDetails
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto

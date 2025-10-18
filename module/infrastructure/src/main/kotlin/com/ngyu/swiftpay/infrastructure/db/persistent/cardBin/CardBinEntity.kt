@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.cardBin
 
-import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
+import com.ngyu.swiftpay.core.domain.payment.model.PaymentCardType
 import jakarta.persistence.*
 
 @Entity

@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.core.domain.payment
+package com.ngyu.swiftpay.core.domain.payment.model
 
 enum class PayStatus {
   PENDING,      // 결제 대기 (생성)

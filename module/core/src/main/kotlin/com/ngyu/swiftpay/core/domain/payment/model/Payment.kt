@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.core.domain.payment
+package com.ngyu.swiftpay.core.domain.payment.model
 
 import com.ngyu.swiftpay.core.domain.money.Currency
 import com.ngyu.swiftpay.core.domain.money.Money

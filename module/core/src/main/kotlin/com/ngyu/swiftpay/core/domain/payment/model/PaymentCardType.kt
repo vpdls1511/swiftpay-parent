@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.core.domain.payment
+package com.ngyu.swiftpay.core.domain.payment.model
 
 enum class PaymentCardType(
   val description: String,

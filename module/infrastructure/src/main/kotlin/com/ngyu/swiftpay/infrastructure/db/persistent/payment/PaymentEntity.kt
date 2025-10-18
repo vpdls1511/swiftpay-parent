@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment
 
 import com.ngyu.swiftpay.core.domain.money.Currency
-import com.ngyu.swiftpay.core.domain.payment.PayMethod
-import com.ngyu.swiftpay.core.domain.payment.PayStatus
+import com.ngyu.swiftpay.core.domain.payment.model.PayMethod
+import com.ngyu.swiftpay.core.domain.payment.model.PayStatus
 import com.ngyu.swiftpay.infrastructure.db.persistent.common.BaseTimeEntity
 import jakarta.persistence.*
 import java.math.BigDecimal

@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper
 
-import com.ngyu.swiftpay.core.domain.payment.PayMethodDetails
+import com.ngyu.swiftpay.core.domain.payment.model.PayMethodDetails
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.PayMethodDetailsEmbeddable
 
 object PayMethodDetailsEmbeddableMapper {

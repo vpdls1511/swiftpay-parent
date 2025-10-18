@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.core.domain.payment
+package com.ngyu.swiftpay.core.domain.payment.model
 
 // 결제 수단별 상세 정보
 sealed class PayMethodDetails {
