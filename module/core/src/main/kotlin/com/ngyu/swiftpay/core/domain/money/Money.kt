@@ -81,6 +81,7 @@ data class Money(
   }
 
   fun toLong(): Long = this.amount.toLong()
+  fun toBigDecimal(): BigDecimal = this.amount
 }
 
 enum class Currency(
