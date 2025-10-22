@@ -7,6 +7,7 @@ import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
+import com.ngyu.swiftpay.payment.application.service.EscrowService
 import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
 import com.ngyu.swiftpay.payment.application.usecase.PaymentUseCase
 import jakarta.transaction.Transactional
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
 class PaymentService(
   private val paymentStrategyFactory: PaymentStrategyFactory,
   private val paymentRepository: PaymentRepository,
+  private val escrowService: EscrowService,
 ) : PaymentUseCase {
 
   private val log = logger()
@@ -34,31 +36,15 @@ class PaymentService(
     val domain = this.savePayment(request)
     log.info("결제 정보 저장 완료 :: orderId = ${request.orderId} , paymentId = ${domain.paymentId}")
 
-    val strategy = paymentStrategyFactory.getStrategy(domain)
-    val shouldAsyncProcessing = strategy.shouldAsyncProcessing(domain)
-    log.info("결제 전략 선택 | paymentId=${domain.paymentId}, strategy=${strategy.getStrategyName()}, isAsync=${shouldAsyncProcessing}")
-
     // TODO  - 아직 각 전략의 내부 서비스를 완성하지 않은 단계. 우선, 도메인 생성 후 DB 저장까지만.
+    // TODO - 어느정도 결제 흐름 흘러가면, 그 후에 전략패턴으로 카드/계좌이체 나누자..
+    val result = this.processPayment(domain)
 
-    val result = if (shouldAsyncProcessing) {
-      log.info("비동기 결제 시작 | paymentId=${domain.paymentId}")
-      this.processAsync()
-      log.info("비동기 결제 완료 !! | paymentId=${domain.paymentId}")
-    } else {
-      log.info("동기 결제 시작 | paymentId=${domain.paymentId}")
-      this.processSync()
-      log.info("동기 결제 완료 !! | paymentId=${domain.paymentId}")
-    }
-
-    return PaymentResponseDto.fromDomain(domain)
+    return PaymentResponseDto.fromDomain(result)
   }
 
   private fun savePayment(request: PaymentRequestDto): Payment {
-    log.debug("결제 도메인 생성 | orderId=${request.orderId}")
-
     val domain = request.toDomain()
-    log.info("결제 상태 변경 | paymentId = ${domain.paymentId} , status: PENDING -> IN_PROGRESS")
-
     val updateDomain = domain.inProgress()
     paymentRepository.save(updateDomain)
     log.info("결제 정보 저장 완료 | paymentId = ${domain.paymentId}, status=${domain.status}")
@@ -66,11 +52,20 @@ class PaymentService(
     return updateDomain
   }
 
-  private fun processAsync() {
-    // TODO : 결제 진행 중... -> 에스크로 예치 -> 정산 플로우 시작점.
+  private fun processPayment(payment: Payment): Payment {
+    return try {
+      escrowService.hold(payment)
+      log.info("에스크로 예치 성공 | paymentId=${payment.paymentId}")
+
+      val successPayment = payment.success()
+      paymentRepository.save(successPayment)
+
+    } catch (e: Exception) {
+      log.error("결제 실패 | paymentId=${payment.paymentId}", e)
+
+      val failedPayment = payment.failed(e.message ?: "결제 처리 중 오류")
+      paymentRepository.save(failedPayment)
+    }
   }
 
-  private fun processSync() {
-    // TODO : 결제 진행 중... -> 에스크로 예치 -> 정산 플로우 시작점.
-  }
 }
