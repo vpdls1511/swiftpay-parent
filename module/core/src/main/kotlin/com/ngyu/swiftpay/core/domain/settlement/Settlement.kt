@@ -6,7 +6,8 @@ import java.time.LocalDateTime
 import java.util.*
 
 data class Settlement(
-  val id: String = UUID.randomUUID().toString(),
+  val id: Long? = null,
+  val settlementId: String = UUID.randomUUID().toString(),
   val merchantAccountNumber: String,
   val merchantName: String,
 
@@ -14,7 +15,7 @@ data class Settlement(
   val feeAmount: Money, // 총 수수료
   val settlementAmount: Money, // 실제 정산 금액
 
-  val paymentIds: List<String>, // 포함된 결제 ID들
+  val paymentIds: List<Long>, // 포함된 결제 ID들
   val settlementDate: LocalDate, // 정산 예정일
 
   val status: SettlementStatus = SettlementStatus.PENDING,
