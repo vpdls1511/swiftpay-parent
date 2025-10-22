@@ -53,11 +53,11 @@ class PaymentEntityTest {
     fakePaymentJpaRepository.save(entity)
 
     // Entity 조회 후 도메인으로 변환
-    val foundEntity = fakePaymentJpaRepository.findById(entity.id).get()
+    val foundEntity = fakePaymentJpaRepository.findById(entity.paymentId).get()
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then - 도메인 검증
-    assertEquals(payment.id, foundDomain.id)
+    assertEquals(payment.paymentId, foundDomain.paymentId)
     assertEquals("pair_key_001", foundDomain.merchantId)
     assertEquals("ORDER_001", foundDomain.orderId)
     assertEquals("나이키 에어포스", foundDomain.orderName)
@@ -109,7 +109,7 @@ class PaymentEntityTest {
     val entity = PaymentMapper.toEntity(payment)
     fakePaymentJpaRepository.save(entity)
 
-    val foundEntity = fakePaymentJpaRepository.findById(entity.id).get()
+    val foundEntity = fakePaymentJpaRepository.findById(entity.paymentId).get()
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
@@ -149,7 +149,7 @@ class PaymentEntityTest {
     val entity = PaymentMapper.toEntity(payment)
     fakePaymentJpaRepository.save(entity)
 
-    val foundEntity = fakePaymentJpaRepository.findById(entity.id).get()
+    val foundEntity = fakePaymentJpaRepository.findById(entity.paymentId).get()
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
@@ -188,7 +188,7 @@ class PaymentEntityTest {
     val entity = PaymentMapper.toEntity(payment)
     fakePaymentJpaRepository.save(entity)
 
-    val foundEntity = fakePaymentJpaRepository.findById(entity.id).get()
+    val foundEntity = fakePaymentJpaRepository.findById(entity.paymentId).get()
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
@@ -227,7 +227,7 @@ class PaymentEntityTest {
     val entity = PaymentMapper.toEntity(payment)
     fakePaymentJpaRepository.save(entity)
 
-    val foundEntity = fakePaymentJpaRepository.findById(entity.id).get()
+    val foundEntity = fakePaymentJpaRepository.findById(entity.paymentId).get()
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
@@ -271,8 +271,8 @@ class PaymentEntityTest {
     fakePaymentJpaRepository.save(entity)
 
     // then
-    assertTrue(payment.id.startsWith("swift_pay_"))
-    val parts = payment.id.split("_")
+    assertTrue(payment.paymentId.startsWith("swift_pay_"))
+    val parts = payment.paymentId.split("_")
     assertEquals(4, parts.size)
     assertEquals("swift", parts[0])
     assertEquals("pay", parts[1])
@@ -307,7 +307,7 @@ class PaymentEntityTest {
     val entity = PaymentMapper.toEntity(payment)
     fakePaymentJpaRepository.save(entity)
 
-    val foundEntity = fakePaymentJpaRepository.findById(entity.id).get()
+    val foundEntity = fakePaymentJpaRepository.findById(entity.paymentId).get()
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
@@ -324,7 +324,7 @@ class PaymentEntityTest {
     val entity = PaymentMapper.toEntity(payment)
     fakePaymentJpaRepository.save(entity)
 
-    val foundEntity = fakePaymentJpaRepository.findById(entity.id).get()
+    val foundEntity = fakePaymentJpaRepository.findById(entity.paymentId).get()
     val foundDomain = PaymentMapper.toDomain(foundEntity)
 
     // then
@@ -340,10 +340,10 @@ class PaymentEntityTest {
     fakePaymentJpaRepository.save(entity)
 
     // when
-    fakePaymentJpaRepository.deleteById(entity.id)
+    fakePaymentJpaRepository.deleteById(entity.paymentId)
 
     // then
-    val found = fakePaymentJpaRepository.findById(entity.id)
+    val found = fakePaymentJpaRepository.findById(entity.paymentId)
     assertFalse(found.isPresent)
   }
 
@@ -356,7 +356,7 @@ class PaymentEntityTest {
     fakePaymentJpaRepository.save(entity)
 
     // when
-    val exists = fakePaymentJpaRepository.existsById(entity.id)
+    val exists = fakePaymentJpaRepository.existsById(entity.paymentId)
     val notExists = fakePaymentJpaRepository.existsById("not_exist_id")
 
     // then

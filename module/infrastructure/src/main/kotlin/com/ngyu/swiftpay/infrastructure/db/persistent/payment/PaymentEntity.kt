@@ -11,8 +11,11 @@ import java.math.BigDecimal
 @Table(name = "payments")
 class PaymentEntity(
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  val id: Long? = null,
+
   @Column(length = 50)
-  val id: String,
+  val paymentId: String,
 
   @Column(nullable = false, length = 100)
   val merchantId: String,

@@ -17,10 +17,13 @@ class PaymentRepositoryAdapter(
     return PaymentMapper.toDomain(saveEntity)
   }
 
-  override fun findByPaymentId(domain: Payment): Payment {
-    val findEntity = repository.findByIdOrNull(domain.id)
-      ?: throw Exception("결제건을 찾을 수 없습니다")
+  override fun findByPayment(domain: Payment): Payment {
+    val paymentId = domain.id
+    requireNotNull(paymentId) { "Payment ID가 null입니다" }
 
-    return PaymentMapper.toDomain(findEntity)
+    val entity = repository.findByIdOrNull(paymentId)
+      ?: throw Exception("결제를 찾을 수 없습니다: $paymentId")
+
+    return PaymentMapper.toDomain(entity)
   }
 }

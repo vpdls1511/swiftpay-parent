@@ -14,7 +14,8 @@ import java.time.LocalDateTime
  */
 data class Payment(
   // 기본정보
-  val id: String,                     // 고유 ID
+  val id: Long? = null,
+  val paymentId: String,                     // 고유 ID
   val merchantId: String,             // 가맹점 Id
   val orderId: String,                // 가맹점의 주문번호
   val orderName: String,              // 상품 이름
@@ -74,7 +75,7 @@ data class Payment(
     ): Payment {
       val now = LocalDateTime.now()
       return Payment(
-        id = generatePaymentId(),
+        paymentId = generatePaymentId(),
         merchantId = merchantId,
         orderId = orderId,
         orderName = orderName,

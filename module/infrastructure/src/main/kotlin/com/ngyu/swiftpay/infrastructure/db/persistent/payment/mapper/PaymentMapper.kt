@@ -9,7 +9,7 @@ object PaymentMapper {
 
   fun toEntity(domain: Payment): PaymentEntity {
     return PaymentEntity(
-      id = domain.id,
+      paymentId = domain.paymentId,
       merchantId = domain.merchantId,
       orderId = domain.orderId,
       orderName = domain.orderName,
@@ -29,7 +29,7 @@ object PaymentMapper {
 
   fun toDomain(entity: PaymentEntity): Payment {
     return Payment(
-      id = entity.id,
+      paymentId = entity.paymentId,
       merchantId = entity.merchantId,
       orderId = entity.orderId,
       orderName = entity.orderName,

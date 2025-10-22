@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface PaymentJpaRepository: JpaRepository<PaymentEntity, String> {
+interface PaymentJpaRepository: JpaRepository<PaymentEntity, Long> {
 }

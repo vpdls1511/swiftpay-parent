@@ -15,7 +15,7 @@ class FakePaymentJpaRepository : PaymentJpaRepository {
   private val storage = mutableMapOf<String, PaymentEntity>()
 
   override fun <S : PaymentEntity?> save(entity: S & Any): S & Any {
-    storage[entity.id] = entity
+    storage[entity.paymentId] = entity
     return entity
   }
 
@@ -51,7 +51,7 @@ class FakePaymentJpaRepository : PaymentJpaRepository {
   override fun count(): Long = storage.size.toLong()
 
   override fun delete(entity: PaymentEntity) {
-    storage.remove(entity.id)
+    storage.remove(entity.paymentId)
   }
 
   override fun deleteAllById(ids: Iterable<String>) {
@@ -59,7 +59,7 @@ class FakePaymentJpaRepository : PaymentJpaRepository {
   }
 
   override fun deleteAll(entities: Iterable<PaymentEntity>) {
-    entities.forEach { storage.remove(it.id) }
+    entities.forEach { storage.remove(it.paymentId) }
   }
 
   override fun deleteAll() {

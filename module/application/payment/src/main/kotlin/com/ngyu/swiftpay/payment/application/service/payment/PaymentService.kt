@@ -32,22 +32,22 @@ class PaymentService(
   override fun processing(request: PaymentRequestDto): PaymentResponseDto {
     log.info("결제 처리 시작 | orderId=${request.orderId}, merchantId=${request.merchantId}, method=${request.method}, amount=${request.amount}")
     val domain = this.savePayment(request)
-    log.info("결제 정보 저장 완료 :: orderId = ${request.orderId} , paymentId = ${domain.id}")
+    log.info("결제 정보 저장 완료 :: orderId = ${request.orderId} , paymentId = ${domain.paymentId}")
 
     val strategy = paymentStrategyFactory.getStrategy(domain)
     val shouldAsyncProcessing = strategy.shouldAsyncProcessing(domain)
-    log.info("결제 전략 선택 | paymentId=${domain.id}, strategy=${strategy.getStrategyName()}, isAsync=${shouldAsyncProcessing}")
+    log.info("결제 전략 선택 | paymentId=${domain.paymentId}, strategy=${strategy.getStrategyName()}, isAsync=${shouldAsyncProcessing}")
 
     // TODO  - 아직 각 전략의 내부 서비스를 완성하지 않은 단계. 우선, 도메인 생성 후 DB 저장까지만.
 
     val result = if (shouldAsyncProcessing) {
-      log.info("비동기 결제 시작 | paymentId=${domain.id}")
+      log.info("비동기 결제 시작 | paymentId=${domain.paymentId}")
       this.processAsync()
-      log.info("비동기 결제 완료 !! | paymentId=${domain.id}")
+      log.info("비동기 결제 완료 !! | paymentId=${domain.paymentId}")
     } else {
-      log.info("동기 결제 시작 | paymentId=${domain.id}")
+      log.info("동기 결제 시작 | paymentId=${domain.paymentId}")
       this.processSync()
-      log.info("동기 결제 완료 !! | paymentId=${domain.id}")
+      log.info("동기 결제 완료 !! | paymentId=${domain.paymentId}")
     }
 
     return PaymentResponseDto.fromDomain(domain)
@@ -57,11 +57,11 @@ class PaymentService(
     log.debug("결제 도메인 생성 | orderId=${request.orderId}")
 
     val domain = request.toDomain()
-    log.info("결제 상태 변경 | paymentId = ${domain.id} , status: PENDING -> IN_PROGRESS")
+    log.info("결제 상태 변경 | paymentId = ${domain.paymentId} , status: PENDING -> IN_PROGRESS")
 
     val updateDomain = domain.inProgress()
     paymentRepository.save(updateDomain)
-    log.info("결제 정보 저장 완료 | paymentId = ${domain.id}, status=${domain.status}")
+    log.info("결제 정보 저장 완료 | paymentId = ${domain.paymentId}, status=${domain.status}")
 
     return updateDomain
   }

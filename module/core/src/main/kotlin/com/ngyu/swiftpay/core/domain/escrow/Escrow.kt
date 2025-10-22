@@ -21,7 +21,7 @@ data class Escrow(
       val now = LocalDateTime.now()
       return Escrow(
         escrowId = generateEscrowId(),
-        paymentId = payment.id,
+        paymentId = payment.paymentId,
         merchantId = payment.merchantId,
         amount = payment.amount,
         status = EscrowStatus.HOLD,

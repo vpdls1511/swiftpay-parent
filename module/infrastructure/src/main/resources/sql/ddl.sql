@@ -41,8 +41,9 @@ DROP TABLE IF EXISTS `payments`;
 -- payments 테이블 생성
 CREATE TABLE `payments`
 (
-    `id`               VARCHAR(50)                                                         NOT NULL COMMENT '결제 고유 ID',
-    `merchant_id`       VARCHAR(100)                                                        NOT NULL COMMENT '가맹점 ID',
+    `id`               BIGINT                                                              NOT NULL AUTO_INCREMENT NOT NULL COMMENT '결제 고유 ID',
+    `payment_id`       VARCHAR(50)                                                         NOT NULL COMMENT '결제 ID',
+    `merchant_id`      VARCHAR(100)                                                        NOT NULL COMMENT '가맹점 ID',
     `order_id`         VARCHAR(100)                                                        NOT NULL COMMENT '가맹점 주문 번호',
     `order_name`       VARCHAR(200)                                                        NOT NULL COMMENT '주문 상품명',
     `amount`           DECIMAL(19, 2)                                                      NOT NULL COMMENT '결제 금액',
@@ -73,7 +74,7 @@ CREATE TABLE `payments`
     `status`           ENUM ('PENDING', 'IN_PROGRESS', 'SUCCEEDED', 'FAILED', 'CANCELLED') NOT NULL COMMENT '결제 상태',
     `reason`           varchar(255)                                                                 DEFAULT NULL COMMENT '실패 이유',
     `idempotency_key`  VARCHAR(100)                                                                 DEFAULT NULL COMMENT '중복 방지 키',
-    `settlement_id`     VARCHAR(100)                                                                 DEFAULT NULL COMMENT '정산 관리 키',
+    `settlement_id`    VARCHAR(100)                                                                 DEFAULT NULL COMMENT '정산 관리 키',
 
     -- 시스템 정보
     `created_at`       DATETIME(6)                                                         NOT NULL COMMENT '생성 일시',

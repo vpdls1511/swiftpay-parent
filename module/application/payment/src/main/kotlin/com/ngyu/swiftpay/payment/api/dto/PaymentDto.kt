@@ -110,7 +110,7 @@ data class PaymentResponseDto(
   companion object {
     fun fromDomain(domain: Payment): PaymentResponseDto {
       return PaymentResponseDto(
-        trnKey = domain.id,
+        trnKey = domain.paymentId,
         orderId = domain.orderId,
         merchantId = domain.merchantId,
         amount = domain.amount.toBigDecimal(),
