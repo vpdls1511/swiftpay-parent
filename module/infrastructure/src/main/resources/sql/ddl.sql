@@ -203,3 +203,37 @@ CREATE TABLE `settlement`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
     COMMENT ='정산 테이블';
+
+-- orders 테이블 생성
+CREATE TABLE `orders`
+(
+    `id`              BIGINT                                                                        NOT NULL AUTO_INCREMENT COMMENT '주문 고유 ID (PK)',
+    `order_id`        VARCHAR(100)                                                                  NOT NULL COMMENT '주문 ID (외부 노출)',
+    `merchant_id`     VARCHAR(100)                                                                  NOT NULL COMMENT '가맹점 ID',
+    `order_name`      VARCHAR(200)                                                                  NOT NULL COMMENT '주문 상품명',
+
+    `total_amount`    DECIMAL(19, 2)                                                                NOT NULL COMMENT '총 주문 금액',
+    `balance_amount`  DECIMAL(19, 2)                                                                NOT NULL COMMENT '환불 가능 금액',
+    `supply_amount`   DECIMAL(19, 2)                                                                NOT NULL COMMENT '공급가액',
+    `tax`             DECIMAL(19, 2)                                                                NOT NULL COMMENT '부가세',
+    `currency`        VARCHAR(3)                                                                    NOT NULL DEFAULT 'KRW' COMMENT '통화',
+
+    `status`          ENUM ('READY', 'PROCESSING', 'DONE', 'PARTIAL_REFUNDED', 'REFUNDED', 'CANCELLED') NOT NULL COMMENT '주문 상태 (READY: 생성, PROCESSING: 진행중, DONE: 완료, PARTIAL_REFUNDED: 부분환불, REFUNDED: 전액환불, CANCELLED: 취소)',
+
+    -- 고객 정보
+    `customer_name`   VARCHAR(100)                                                                           DEFAULT NULL COMMENT '고객명',
+    `customer_email`  VARCHAR(100)                                                                           DEFAULT NULL COMMENT '고객 이메일',
+    `customer_phone`  VARCHAR(20)                                                                            DEFAULT NULL COMMENT '고객 전화번호',
+
+    `created_at`      DATETIME(6)                                                                   NOT NULL COMMENT '생성 일시',
+    `updated_at`      DATETIME(6)                                                                   NOT NULL COMMENT '수정 일시',
+
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_order_id` (`order_id`),
+    INDEX `idx_merchant_id` (`merchant_id`),
+    INDEX `idx_status` (`status`),
+    INDEX `idx_created_at` (`created_at`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci
+    COMMENT ='주문 테이블';

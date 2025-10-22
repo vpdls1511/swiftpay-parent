@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 data class Order(
+  val id: Long? = null,
   val orderId: String,
   val merchantId: String,
 
