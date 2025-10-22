@@ -43,9 +43,11 @@ class PaymentService(
     val result = if (shouldAsyncProcessing) {
       log.info("비동기 결제 시작 | paymentId=${domain.id}")
       this.processAsync()
+      log.info("비동기 결제 완료 !! | paymentId=${domain.id}")
     } else {
       log.info("동기 결제 시작 | paymentId=${domain.id}")
       this.processSync()
+      log.info("동기 결제 완료 !! | paymentId=${domain.id}")
     }
 
     return PaymentResponseDto.fromDomain(domain)
@@ -65,10 +67,10 @@ class PaymentService(
   }
 
   private fun processAsync() {
-
+    // TODO : 결제 진행 중... -> 에스크로 예치 -> 정산 플로우 시작점.
   }
 
   private fun processSync() {
-
+    // TODO : 결제 진행 중... -> 에스크로 예치 -> 정산 플로우 시작점.
   }
 }
