@@ -119,21 +119,21 @@ data class Payment(
     )
   }
   fun success(): Payment {
-    require(status == PaymentStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    require(status == PaymentStatus.IN_PROGRESS) { "결제 중 상태가 아닙니다." }
     return this.copy(
       status = PaymentStatus.SUCCEEDED,
       updatedAt = LocalDateTime.now(),
     )
   }
   fun cancel(): Payment {
-    require(status == PaymentStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    require(status == PaymentStatus.IN_PROGRESS) { "결제 중 상태가 아닙니다." }
     return this.copy(
       status = PaymentStatus.CANCELLED,
       updatedAt = LocalDateTime.now(),
     )
   }
   fun failed(reason: String): Payment {
-    require(status == PaymentStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    require(status == PaymentStatus.IN_PROGRESS) { "결제 중 상태가 아닙니다." }
     return this.copy(
       status = PaymentStatus.FAILED,
       reason = reason,
