@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.payment.application.service.payment
 
+import com.ngyu.swiftpay.core.domain.order.OrderRepository
 import com.ngyu.swiftpay.core.domain.payment.model.Payment
 import com.ngyu.swiftpay.core.domain.payment.port.PaymentRepository
 import com.ngyu.swiftpay.core.logger.logger
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
 @Service
 class PaymentService(
   private val paymentStrategyFactory: PaymentStrategyFactory,
+  private val orderRepository: OrderRepository,
   private val paymentRepository: PaymentRepository,
   private val escrowService: EscrowService,
 ) : PaymentUseCase {
@@ -25,9 +27,10 @@ class PaymentService(
   override fun readyOrder(request: OrderCreateRequestDto): OrderCreateResponseDto {
     log.info("주문서 생성 시작 | merchantId=${request.merchantId}, orderName=${request.orderName}, amount=${request.totalAmount}")
     val domain = request.toDomain()
+    val savedDomain = orderRepository.save(domain)
 
-    log.info("주문서 생성 완료 | orderId=${domain.orderId}, merchantId=${domain.merchantId}")
-    return OrderCreateResponseDto.fromDomain(domain)
+    log.info("주문서 생성 완료 | orderId=${savedDomain.orderId}, merchantId=${savedDomain.merchantId}")
+    return OrderCreateResponseDto.fromDomain(savedDomain)
   }
 
   @Transactional
