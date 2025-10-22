@@ -146,3 +146,60 @@ CREATE TABLE merchant
     INDEX idx_business_number (business_number),
     INDEX idx_status (status)
 );
+
+
+-- escrow 테이블 생성
+CREATE TABLE `escrow`
+(
+    `id`           BIGINT                               NOT NULL AUTO_INCREMENT COMMENT '에스크로 고유 ID (PK)',
+    `escrow_id`    VARCHAR(100)                         NOT NULL COMMENT '에스크로 ID (외부 노출)',
+    `payment_id`   VARCHAR(100)                         NOT NULL COMMENT '결제 ID (Payment.paymentId 참조)',
+    `merchant_id`  VARCHAR(100)                         NOT NULL COMMENT '가맹점 ID',
+    `amount`       DECIMAL(19, 2)                       NOT NULL COMMENT '보관 금액',
+    `currency`     VARCHAR(3)                           NOT NULL DEFAULT 'KRW' COMMENT '통화',
+    `status`       ENUM ('HOLD', 'SETTLED', 'REFUNDED') NOT NULL COMMENT '에스크로 상태 (HOLD: 보관중, SETTLED: 정산완료, REFUNDED: 환불완료)',
+
+    `created_at`   DATETIME(6)                          NOT NULL COMMENT '생성 일시',
+    `completed_at` DATETIME(6)                                   DEFAULT NULL COMMENT '완료 일시 (정산 or 환불)',
+    `updated_at`   DATETIME(6)                          NOT NULL COMMENT '수정 일시',
+
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_escrow_id` (`escrow_id`),
+    INDEX `idx_payment_id` (`payment_id`),
+    INDEX `idx_merchant_id` (`merchant_id`),
+    INDEX `idx_status` (`status`),
+    INDEX `idx_created_at` (`created_at`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci
+    COMMENT ='에스크로 (결제금 보관) 테이블';
+
+-- settlement 테이블 생성
+CREATE TABLE `settlement`
+(
+    `id`                      BIGINT                                                NOT NULL AUTO_INCREMENT COMMENT '정산 고유 ID (PK)',
+    `settlement_id`           VARCHAR(100)                                          NOT NULL COMMENT '정산 ID (외부 노출)',
+    `merchant_account_number` VARCHAR(50)                                           NOT NULL COMMENT '가맹점 계좌번호',
+    `merchant_name`           VARCHAR(100)                                          NOT NULL COMMENT '가맹점명',
+    `total_amount`            DECIMAL(19, 2)                                        NOT NULL COMMENT '총 결제 금액',
+    `fee_amount`              DECIMAL(19, 2)                                        NOT NULL COMMENT '총 수수료',
+    `settlement_amount`       DECIMAL(19, 2)                                        NOT NULL COMMENT '실제 정산 금액 (총액 - 수수료)',
+    `currency`                VARCHAR(3)                                            NOT NULL DEFAULT 'KRW' COMMENT '통화',
+    `payment_ids`             JSON                                                  NOT NULL COMMENT '포함된 결제 ID 목록 (JSON 배열)',
+    `settlement_date`         DATE                                                  NOT NULL COMMENT '정산 예정일',
+    `status`                  ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED') NOT NULL COMMENT '정산 상태 (PENDING: 대기, PROCESSING: 처리중, COMPLETED: 완료, FAILED: 실패)',
+    `fail_reason`             VARCHAR(500)                                                   DEFAULT NULL COMMENT '실패 사유',
+
+    `created_at`              DATETIME(6)                                           NOT NULL COMMENT '생성 일시',
+    `executed_at`             DATETIME(6)                                                    DEFAULT NULL COMMENT '실행 일시',
+
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_settlement_id` (`settlement_id`),
+    INDEX `idx_merchant_account` (`merchant_account_number`),
+    INDEX `idx_settlement_date` (`settlement_date`),
+    INDEX `idx_status` (`status`),
+    INDEX `idx_created_at` (`created_at`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci
+    COMMENT ='정산 테이블';
