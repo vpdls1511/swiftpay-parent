@@ -1,11 +1,10 @@
 package com.ngyu.swiftpay.payment.api.controller
 
-import com.ngyu.swiftpay.payment.application.service.MerchantService
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
-import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
+import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterResponseDto
+import com.ngyu.swiftpay.payment.application.service.MerchantService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,7 +22,7 @@ class MerchantController(
   @Operation(summary = "가맹점 등록", description = "가맹점을 등록할 수 있습니다. 원래는 승인이 필요하나, 개발단계에서는 등록과 동시에 자동승인")
   fun register(
     @RequestBody request: MerchantRegisterReqeust
-  ): ResponseEntity<PaymentCredentials> {
+  ): ResponseEntity<MerchantRegisterResponseDto> {
     val response = merchantService.register(request)
     return ResponseEntity.ok(response)
   }

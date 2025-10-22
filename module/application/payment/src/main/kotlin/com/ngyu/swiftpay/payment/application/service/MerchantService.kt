@@ -4,10 +4,11 @@ import com.ngyu.swiftpay.core.domain.merchant.MerchantRepository
 import com.ngyu.swiftpay.core.exception.DuplicateMerchantException
 import com.ngyu.swiftpay.core.exception.InvalidMerchantDataException
 import com.ngyu.swiftpay.core.logger.logger
+import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
+import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterResponseDto
+import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import com.ngyu.swiftpay.payment.application.usecase.MerchantUseCase
 import com.ngyu.swiftpay.payment.application.usecase.PaymentApiKeyUseCase
-import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
-import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import jakarta.transaction.Transactional
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
@@ -27,13 +28,18 @@ class MerchantService(
    * 상태 : PENDING
    */
   @Transactional
-  override fun register(request: MerchantRegisterReqeust): PaymentCredentials {
+  override fun register(request: MerchantRegisterReqeust): MerchantRegisterResponseDto {
     try {
       log.info("가맹점 등록 시작")
       val savedMerchant = merchantRepository.save(request.toDomain())
 
       log.info("가맹점 등록 완료 - merchantId = ${savedMerchant.id} STATUS = ${savedMerchant.status}")
-      return this.approve(savedMerchant.id)
+      val credentials = this.approve(savedMerchant.id)
+      return MerchantRegisterResponseDto(
+        merchantId = savedMerchant.id,
+        merchantName = savedMerchant.businessName,
+        credentials = credentials
+      )
     } catch (e: DataIntegrityViolationException) {
       if (e.message?.contains("Duplicate entry") == true) {
         log.error("이미 등록된 사업자 번호 - businessNumber = ${request.businessNumber}")

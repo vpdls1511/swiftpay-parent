@@ -25,3 +25,10 @@ data class MerchantRegisterReqeust(
     )
   }
 }
+
+
+data class MerchantRegisterResponseDto(
+  val merchantId: String,
+  val merchantName: String,
+  val credentials: PaymentCredentials
+)
