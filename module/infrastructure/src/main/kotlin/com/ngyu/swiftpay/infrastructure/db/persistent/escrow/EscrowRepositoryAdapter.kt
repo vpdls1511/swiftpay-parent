@@ -2,17 +2,27 @@ package com.ngyu.swiftpay.infrastructure.db.persistent.escrow
 
 import com.ngyu.swiftpay.core.domain.escrow.Escrow
 import com.ngyu.swiftpay.core.domain.escrow.EscrowRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
 class EscrowRepositoryAdapter(
   private val repository: EscrowJpaRepository
-): EscrowRepository {
+) : EscrowRepository {
   override fun save(domain: Escrow): Escrow {
-    TODO("Not yet implemented")
+    val entity = EscrowMapper.toEntity(domain)
+    val savedEntity = repository.save(entity)
+
+    return EscrowMapper.toDomain(savedEntity)
   }
 
   override fun findByEscrow(domain: Escrow): Escrow {
-    TODO("Not yet implemented")
+    val escrowId = domain.id
+    requireNotNull(escrowId) { "Settlement id가 Null 입니다" }
+
+    val entity = repository.findByIdOrNull(escrowId)
+      ?: throw Exception("결제를 찾을 수 없습니다: $escrowId")
+
+    return EscrowMapper.toDomain(entity)
   }
 }
