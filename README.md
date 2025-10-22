@@ -55,10 +55,15 @@ Infra
 ### Phase 1 - 기본 인프라
 - [x] 상점 등록 및 API Key 발급
 - [x] 결제 요청 API
-- [ ] 결제 예치 (Hold)
+> 이제 결제 요청 이후 검증해야 할 것.
+> 1. orderId 와 merchantId, apiKey 검증하여 유효한 주문요청인지 확인
+> 2. payment 의 amount가 orderId의 amount와 같은지 검증
+> 3. 결제 여부에 따라 orderId 사용 여-부 알려줘야함.
+>    4. 짧게 검증하는거니.. DB에 저장 안하고 Redis를 통해서 검증해도 될거같고.. 고민포인트
 
 
 ### Phase 2 - 에스크로 (진행중)
+- [x] 결제 예치 (Hold)
 - [ ] 구매 확정 처리
 - [ ] 판매자 정산 배치
 - [ ] 환불 처리
