@@ -5,7 +5,7 @@ import com.ngyu.swiftpay.core.domain.bank.BankCode
 interface AccountNumberGenerator {
   fun generate(): String
   fun validate(accountNumber: String): Boolean
-  fun toString(accountNumber: String): String
+  fun format(accountNumber: String): String
 
   fun supportedBankCode(): BankCode
 }

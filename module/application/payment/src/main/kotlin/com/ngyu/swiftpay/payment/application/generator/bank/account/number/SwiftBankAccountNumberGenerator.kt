@@ -51,7 +51,7 @@ class SwiftBankAccountNumberGenerator(
    * 16자리 계좌번호를 계좌 Role에맞게 포맷팅
    * @return 218-20-0000000001-2 형태로 리턴
    */
-  override fun toString(accountNumber: String): String {
+  override fun format(accountNumber: String): String {
     require(accountNumber.length == 16) { "계좌번호는 16자리여야 합니다" }
 
     val branchCode = accountNumber.substring(0, 3)      // 218

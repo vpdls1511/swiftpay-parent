@@ -29,4 +29,12 @@ class AccountNumberService(
     throw IllegalArgumentException("계좌번호 생성 실패")
   }
 
+  fun format(accountNumber: String, bankCode: BankCode): String {
+    val generator = generators[bankCode]
+      ?: throw IllegalArgumentException("지원하지 않는 은행 : $bankCode")
+
+    return generator.format(accountNumber)
+  }
+
+
 }
