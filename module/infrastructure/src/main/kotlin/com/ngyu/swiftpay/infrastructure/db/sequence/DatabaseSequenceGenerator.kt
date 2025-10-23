@@ -9,8 +9,10 @@ class DatabaseSequenceGenerator(
   private val entityManager: EntityManager,
 ): SequenceGenerator {
   override fun nextVal(): Long {
-    val query = entityManager.createQuery( "SELECT nextVal('account_nubmer_seq')" )
+    val query = entityManager.createNativeQuery(
+      "SELECT nextval(account_number_seq)"
+    )
 
-    return (query.singleResult as String).toLong()
+    return (query.singleResult as Number).toLong()
   }
 }
