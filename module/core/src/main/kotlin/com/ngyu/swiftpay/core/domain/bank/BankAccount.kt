@@ -3,7 +3,7 @@ package com.ngyu.swiftpay.core.domain.bank
 import com.ngyu.swiftpay.core.domain.money.Money
 import java.time.LocalDateTime
 
-data class Bank(
+data class BankAccount(
   val id: Long? = null,
 
   val bankCode: BankCode,
@@ -11,7 +11,7 @@ data class Bank(
   val accountNumber: String,
   val accountHolder: String,
 
-  val money: Money,
+  val amount: Money,
 
   val status: BankAccountStatus = BankAccountStatus.ACTIVE,
 
@@ -22,35 +22,35 @@ data class Bank(
   companion object {
     fun create(bankCode: BankCode,
                holder: String,
-               accountNumber: String): Bank {
-      return Bank(
+               accountNumber: String): BankAccount {
+      return BankAccount(
         bankCode = bankCode,
         accountHolder = holder,
         accountNumber = accountNumber,
-        money = Money.ZERO
+        amount = Money.ZERO
       )
     }
   }
 
   // 출금 가능 여부 확인
   fun canWithdraw(other: Money): Boolean {
-    return status == BankAccountStatus.ACTIVE && money >= other
+    return status == BankAccountStatus.ACTIVE && amount >= other
   }
 
   // 출금 처리
-  fun withdraw(other: Money): Bank {
+  fun withdraw(other: Money): BankAccount {
     require(canWithdraw(other)) { "잔액이 부족하거나 계좌 상태가 비활성입니다" }
     return this.copy(
-      money = money - other,
+      amount = amount - other,
       updatedAt = LocalDateTime.now()
     )
   }
 
   // 입금 처리
-  fun deposit(other: Money): Bank {
+  fun deposit(other: Money): BankAccount {
     require(status == BankAccountStatus.ACTIVE) { "계좌 상태가 비활성입니다" }
     return this.copy(
-      money = money + other,
+      amount = amount + other,
       updatedAt = LocalDateTime.now()
     )
   }
