@@ -1,0 +1,16 @@
+package com.ngyu.swiftpay.infrastructure.db.sequence
+
+import com.ngyu.swiftpay.core.domain.port.SequenceGenerator
+import jakarta.persistence.EntityManager
+import org.springframework.stereotype.Component
+
+@Component
+class DatabaseSequenceGenerator(
+  private val entityManager: EntityManager,
+): SequenceGenerator {
+  override fun nextVal(): Long {
+    val query = entityManager.createQuery( "SELECT nextVal('account_nubmer_seq')" )
+
+    return (query.singleResult as String).toLong()
+  }
+}
