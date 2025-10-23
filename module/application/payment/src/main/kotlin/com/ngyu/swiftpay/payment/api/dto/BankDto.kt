@@ -2,7 +2,6 @@ package com.ngyu.swiftpay.payment.api.dto
 
 import com.ngyu.swiftpay.core.domain.bank.BankAccount
 import com.ngyu.swiftpay.core.domain.bank.BankCode
-import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Size
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank
@@ -13,9 +12,7 @@ data class BankAccountCreateDto(
   @field:NotBlank(message = "예금주명은 필수입니다")
   @field:Size(min = 2, max = 100, message = "예금주명은 2~100자")
   val holder: String,
-
-  @Hidden
-  val bankCode: BankCode = BankCode.SWIFT,
+  val bankCode: BankCode
 )
 
 
