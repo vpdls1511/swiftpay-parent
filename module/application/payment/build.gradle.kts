@@ -38,6 +38,7 @@ dependencies {
   testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
   testImplementation("com.h2database:h2")
 
+  testImplementation("io.mockk:mockk:1.13.8")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
