@@ -4,10 +4,9 @@ import com.ngyu.swiftpay.core.domain.money.Money
 import java.time.LocalDateTime
 
 data class Bank(
-  val id: String,
+  val id: Long? = null,
 
-  val bankCode: String,
-  val bankName: String,
+  val bankCode: BankCode,
 
   val accountNumber: String,
   val accountHolder: String,
@@ -19,6 +18,20 @@ data class Bank(
   val createdAt: LocalDateTime = LocalDateTime.now(),
   val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
+
+  companion object {
+    fun create(bankCode: BankCode,
+               holder: String,
+               accountNumber: String): Bank {
+      return Bank(
+        bankCode = bankCode,
+        accountHolder = holder,
+        accountNumber = accountNumber,
+        money = Money.ZERO
+      )
+    }
+  }
+
   // 출금 가능 여부 확인
   fun canWithdraw(other: Money): Boolean {
     return status == BankAccountStatus.ACTIVE && money >= other
@@ -48,3 +61,5 @@ enum class BankAccountStatus {
   SUSPENDED,   // 정지
   CLOSED       // 해지
 }
+
+
