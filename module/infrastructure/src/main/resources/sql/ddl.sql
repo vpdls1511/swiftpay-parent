@@ -207,26 +207,26 @@ CREATE TABLE `settlement`
 -- orders 테이블 생성
 CREATE TABLE `orders`
 (
-    `id`              BIGINT                                                                        NOT NULL AUTO_INCREMENT COMMENT '주문 고유 ID (PK)',
-    `order_id`        VARCHAR(100)                                                                  NOT NULL COMMENT '주문 ID (외부 노출)',
-    `merchant_id`     VARCHAR(100)                                                                  NOT NULL COMMENT '가맹점 ID',
-    `order_name`      VARCHAR(200)                                                                  NOT NULL COMMENT '주문 상품명',
+    `id`             BIGINT                                                                            NOT NULL AUTO_INCREMENT COMMENT '주문 고유 ID (PK)',
+    `order_id`       VARCHAR(100)                                                                      NOT NULL COMMENT '주문 ID (외부 노출)',
+    `merchant_id`    VARCHAR(100)                                                                      NOT NULL COMMENT '가맹점 ID',
+    `order_name`     VARCHAR(200)                                                                      NOT NULL COMMENT '주문 상품명',
 
-    `total_amount`    DECIMAL(19, 2)                                                                NOT NULL COMMENT '총 주문 금액',
-    `balance_amount`  DECIMAL(19, 2)                                                                NOT NULL COMMENT '환불 가능 금액',
-    `supply_amount`   DECIMAL(19, 2)                                                                NOT NULL COMMENT '공급가액',
-    `tax`             DECIMAL(19, 2)                                                                NOT NULL COMMENT '부가세',
-    `currency`        VARCHAR(3)                                                                    NOT NULL DEFAULT 'KRW' COMMENT '통화',
+    `total_amount`   DECIMAL(19, 2)                                                                    NOT NULL COMMENT '총 주문 금액',
+    `balance_amount` DECIMAL(19, 2)                                                                    NOT NULL COMMENT '환불 가능 금액',
+    `supply_amount`  DECIMAL(19, 2)                                                                    NOT NULL COMMENT '공급가액',
+    `tax`            DECIMAL(19, 2)                                                                    NOT NULL COMMENT '부가세',
+    `currency`       VARCHAR(3)                                                                        NOT NULL DEFAULT 'KRW' COMMENT '통화',
 
-    `status`          ENUM ('READY', 'PROCESSING', 'DONE', 'PARTIAL_REFUNDED', 'REFUNDED', 'CANCELLED') NOT NULL COMMENT '주문 상태 (READY: 생성, PROCESSING: 진행중, DONE: 완료, PARTIAL_REFUNDED: 부분환불, REFUNDED: 전액환불, CANCELLED: 취소)',
+    `status`         ENUM ('READY', 'PROCESSING', 'DONE', 'PARTIAL_REFUNDED', 'REFUNDED', 'CANCELLED') NOT NULL COMMENT '주문 상태 (READY: 생성, PROCESSING: 진행중, DONE: 완료, PARTIAL_REFUNDED: 부분환불, REFUNDED: 전액환불, CANCELLED: 취소)',
 
     -- 고객 정보
-    `customer_name`   VARCHAR(100)                                                                           DEFAULT NULL COMMENT '고객명',
-    `customer_email`  VARCHAR(100)                                                                           DEFAULT NULL COMMENT '고객 이메일',
-    `customer_phone`  VARCHAR(20)                                                                            DEFAULT NULL COMMENT '고객 전화번호',
+    `customer_name`  VARCHAR(100)                                                                               DEFAULT NULL COMMENT '고객명',
+    `customer_email` VARCHAR(100)                                                                               DEFAULT NULL COMMENT '고객 이메일',
+    `customer_phone` VARCHAR(20)                                                                                DEFAULT NULL COMMENT '고객 전화번호',
 
-    `created_at`      DATETIME(6)                                                                   NOT NULL COMMENT '생성 일시',
-    `updated_at`      DATETIME(6)                                                                   NOT NULL COMMENT '수정 일시',
+    `created_at`     DATETIME(6)                                                                       NOT NULL COMMENT '생성 일시',
+    `updated_at`     DATETIME(6)                                                                       NOT NULL COMMENT '수정 일시',
 
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_order_id` (`order_id`),
@@ -237,3 +237,34 @@ CREATE TABLE `orders`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
     COMMENT ='주문 테이블';
+
+-- 기존 테이블 삭제
+DROP TABLE IF EXISTS `bank_account`;
+
+CREATE TABLE `bank_account`
+(
+    `id`              BIGINT                                 NOT NULL AUTO_INCREMENT COMMENT '계좌 고유 ID (PK)',
+    `bank_code`       VARCHAR(20)                            NOT NULL COMMENT '은행 코드 (001: SWIFT)',
+    `account_number`  VARCHAR(20)                            NOT NULL COMMENT '계좌번호 (고유)',
+    `account_holder`  VARCHAR(100)                           NOT NULL COMMENT '예금주명',
+
+    `amount`          DECIMAL(19, 2)                         NOT NULL COMMENT '계좌 잔액',
+    `currency`        VARCHAR(3)                             NOT NULL DEFAULT 'KRW' COMMENT '통화 (KRW, USD 등)',
+
+    `status`          ENUM ('ACTIVE', 'SUSPENDED', 'CLOSED') NOT NULL DEFAULT 'ACTIVE' COMMENT '계좌 상태 (ACTIVE: 정상, SUSPENDED: 정지, CLOSED: 해지)',
+
+    `created_at`      DATETIME(6)                            NOT NULL COMMENT '생성 일시',
+    `updated_at`      DATETIME(6)                            NOT NULL COMMENT '수정 일시',
+
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_account_number` (`account_number`),
+    INDEX `idx_bank_code` (`bank_code`),
+    INDEX `idx_account_holder` (`account_holder`),
+    INDEX `idx_status` (`status`),
+    INDEX `idx_created_at` (`created_at`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci
+    COMMENT ='은행 계좌 테이블';
+
+
