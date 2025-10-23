@@ -147,6 +147,7 @@ CREATE TABLE merchant
     INDEX idx_status (status)
 );
 
+drop table `escrow`;
 
 -- escrow 테이블 생성
 CREATE TABLE `escrow`
@@ -154,6 +155,7 @@ CREATE TABLE `escrow`
     `id`           BIGINT                               NOT NULL AUTO_INCREMENT COMMENT '에스크로 고유 ID (PK)',
     `escrow_id`    VARCHAR(100)                         NOT NULL COMMENT '에스크로 ID (외부 노출)',
     `payment_id`   VARCHAR(100)                         NOT NULL COMMENT '결제 ID (Payment.paymentId 참조)',
+    `settlement_id`   BIGINT                         NULL COMMENT '정산 ID (Settlement.id 참조)',
     `merchant_id`  VARCHAR(100)                         NOT NULL COMMENT '가맹점 ID',
     `amount`       DECIMAL(19, 2)                       NOT NULL COMMENT '보관 금액',
     `currency`     VARCHAR(3)                           NOT NULL DEFAULT 'KRW' COMMENT '통화',
@@ -166,6 +168,7 @@ CREATE TABLE `escrow`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_escrow_id` (`escrow_id`),
     INDEX `idx_payment_id` (`payment_id`),
+    INDEX `idx_settlement_id` (`settlement_id`),
     INDEX `idx_merchant_id` (`merchant_id`),
     INDEX `idx_status` (`status`),
     INDEX `idx_created_at` (`created_at`)
@@ -173,6 +176,8 @@ CREATE TABLE `escrow`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
     COMMENT ='에스크로 (결제금 보관) 테이블';
+
+drop table `settlement`;
 
 -- settlement 테이블 생성
 CREATE TABLE `settlement`
@@ -185,7 +190,6 @@ CREATE TABLE `settlement`
     `fee_amount`              DECIMAL(19, 2)                                        NOT NULL COMMENT '총 수수료',
     `settlement_amount`       DECIMAL(19, 2)                                        NOT NULL COMMENT '실제 정산 금액 (총액 - 수수료)',
     `currency`                VARCHAR(3)                                            NOT NULL DEFAULT 'KRW' COMMENT '통화',
-    `payment_ids`             JSON                                                  NOT NULL COMMENT '포함된 결제 ID 목록 (JSON 배열)',
     `settlement_date`         DATE                                                  NOT NULL COMMENT '정산 예정일',
     `status`                  ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED') NOT NULL COMMENT '정산 상태 (PENDING: 대기, PROCESSING: 처리중, COMPLETED: 완료, FAILED: 실패)',
     `fail_reason`             VARCHAR(500)                                                   DEFAULT NULL COMMENT '실패 사유',

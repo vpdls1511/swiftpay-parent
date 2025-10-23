@@ -25,4 +25,12 @@ class EscrowRepositoryAdapter(
 
     return EscrowMapper.toDomain(entity)
   }
+
+  override fun findBySettlementId(settlementId: String): List<Escrow> {
+    TODO("Not yet implemented")
+  }
+
+  override fun findByPaymentId(paymentId: String): Escrow? {
+    TODO("Not yet implemented")
+  }
 }

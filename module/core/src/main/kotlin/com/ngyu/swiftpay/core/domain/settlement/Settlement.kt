@@ -15,7 +15,6 @@ data class Settlement(
   val feeAmount: Money, // 총 수수료
   val settlementAmount: Money, // 실제 정산 금액
 
-  val paymentIds: List<Long>, // 포함된 결제 ID들
   val settlementDate: LocalDate, // 정산 예정일
 
   val status: SettlementStatus = SettlementStatus.PENDING,
@@ -24,11 +23,6 @@ data class Settlement(
   val createdAt: LocalDateTime = LocalDateTime.now(),
   val executedAt: LocalDateTime? = null
 ){
-
-  init {
-    require(this.paymentIds.isNotEmpty()) { "정산받을 내역이 존재하지 않습니다." }
-  }
-
   fun process(): Settlement {
     require(this.status == SettlementStatus.PENDING) { "정산 대기 상태가 아닙니다." }
     return this.copy(
@@ -52,8 +46,6 @@ data class Settlement(
       executedAt = LocalDateTime.now(),
     )
   }
-
-  fun getPaymentCount(): Int = this.paymentIds.size
 }
 
 enum class SettlementStatus {

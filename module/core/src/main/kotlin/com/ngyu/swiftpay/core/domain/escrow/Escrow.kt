@@ -12,6 +12,9 @@ data class Escrow(
   val amount: Money,
   val status: EscrowStatus,
 
+  val settlementId: Long? = null,
+
+
   val createdAt: LocalDateTime,
   val completedAt: LocalDateTime? = null,  // settle or refund 완료 시간
   val updatedAt: LocalDateTime
@@ -39,6 +42,7 @@ data class Escrow(
     require(status == EscrowStatus.HOLD) { "HOLD 상태가 아닙니다." }
     val now = LocalDateTime.now()
     return copy(
+      settlementId = settlementId,  // 추가!
       status = EscrowStatus.SETTLED,
       completedAt = now,
       updatedAt = now

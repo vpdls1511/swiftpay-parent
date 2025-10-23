@@ -22,6 +22,9 @@ class EscrowEntity(
   @Column(name = "merchant_id", nullable = false, length = 100)
   val merchantId: String,
 
+  @Column(name = "settlement_id")
+  val settlementId: Long? = null,
+
   @Column(name = "amount", nullable = false, precision = 19, scale = 2)
   val amount: BigDecimal,
 

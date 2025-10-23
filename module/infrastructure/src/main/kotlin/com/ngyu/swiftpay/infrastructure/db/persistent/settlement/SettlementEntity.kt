@@ -2,8 +2,6 @@ package com.ngyu.swiftpay.infrastructure.db.persistent.settlement
 
 import com.ngyu.swiftpay.core.domain.settlement.SettlementStatus
 import jakarta.persistence.*
-import org.hibernate.annotations.JdbcTypeCode
-import org.hibernate.type.SqlTypes
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -36,10 +34,6 @@ class SettlementEntity(
 
   @Column(name = "currency", nullable = false, length = 3)
   val currency: String,
-
-  @JdbcTypeCode(SqlTypes.JSON)
-  @Column(name = "payment_ids", nullable = false, columnDefinition = "json")
-  val paymentIds: List<Long>,
 
   @Column(name = "settlement_date", nullable = false)
   val settlementDate: LocalDate,
