@@ -4,7 +4,9 @@ import com.ngyu.swiftpay.core.domain.bank.BankAccount
 import com.ngyu.swiftpay.core.domain.bank.BankAccountRepository
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Component
 
+@Component
 class BankAccountRepositoryAdapter(
   private val repository: BankAccountJpaRepository
 ): BankAccountRepository {
@@ -23,5 +25,9 @@ class BankAccountRepositoryAdapter(
       ?: throw EntityNotFoundException("계좌번호를 찾을 수 없습니다.")
 
     return BankAccountMapper.toDomain(entity)
+  }
+
+  override fun existByBankAccount(accountNumber: String): Boolean {
+    return repository.existsByAccountNumber(accountNumber)
   }
 }

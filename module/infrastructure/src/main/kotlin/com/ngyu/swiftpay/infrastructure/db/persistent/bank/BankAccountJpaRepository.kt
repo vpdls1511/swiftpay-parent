@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface BankAccountJpaRepository: JpaRepository<BankAccountEntity, Long> {
+  fun existsByAccountNumber(accountNumber: String): Boolean
 }
