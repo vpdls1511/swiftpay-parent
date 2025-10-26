@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment
 
-import com.ngyu.swiftpay.core.domain.payment.model.Payment
-import com.ngyu.swiftpay.core.domain.payment.port.PaymentRepository
+import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.port.PaymentRepository
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper.PaymentMapper
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component

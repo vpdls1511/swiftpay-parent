@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.security.util
 
-import com.ngyu.swiftpay.core.constant.ServiceConstant
-import com.ngyu.swiftpay.core.logger.logger
+import com.ngyu.swiftpay.core.common.constant.ServiceConstant
+import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.security.vo.ApiKeyPair
 import org.springframework.security.crypto.bcrypt.BCrypt
 import java.security.MessageDigest

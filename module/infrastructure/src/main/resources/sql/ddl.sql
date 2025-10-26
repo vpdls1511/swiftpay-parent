@@ -16,14 +16,20 @@ CREATE TABLE member
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
-CREATE TABLE api_key
+
+-- 기존 테이블 삭제
+DROP TABLE IF EXISTS `api_credentials`;
+
+
+CREATE TABLE api_credentials
 (
     api_key    VARCHAR(255) NOT NULL PRIMARY KEY,
     lookup_key VARCHAR(255) NOT NULL,
-    user_id    INT          NULL,
-    call_limit VARCHAR(100) NOT NULL,
+    user_id    BIGINT       NULL,
+    call_limit INT          NOT NULL,
     status     VARCHAR(20)  NOT NULL DEFAULT 'ACTIVE',
     issued_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP    NOT NULL,
     updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     INDEX idx_lookup_key (lookup_key),
@@ -152,18 +158,18 @@ drop table `escrow`;
 -- escrow 테이블 생성
 CREATE TABLE `escrow`
 (
-    `id`           BIGINT                               NOT NULL AUTO_INCREMENT COMMENT '에스크로 고유 ID (PK)',
-    `escrow_id`    VARCHAR(100)                         NOT NULL COMMENT '에스크로 ID (외부 노출)',
-    `payment_id`   VARCHAR(100)                         NOT NULL COMMENT '결제 ID (Payment.paymentId 참조)',
-    `settlement_id`   BIGINT                         NULL COMMENT '정산 ID (Settlement.id 참조)',
-    `merchant_id`  VARCHAR(100)                         NOT NULL COMMENT '가맹점 ID',
-    `amount`       DECIMAL(19, 2)                       NOT NULL COMMENT '보관 금액',
-    `currency`     VARCHAR(3)                           NOT NULL DEFAULT 'KRW' COMMENT '통화',
-    `status`       ENUM ('HOLD', 'SETTLED', 'REFUNDED') NOT NULL COMMENT '에스크로 상태 (HOLD: 보관중, SETTLED: 정산완료, REFUNDED: 환불완료)',
+    `id`            BIGINT                               NOT NULL AUTO_INCREMENT COMMENT '에스크로 고유 ID (PK)',
+    `escrow_id`     VARCHAR(100)                         NOT NULL COMMENT '에스크로 ID (외부 노출)',
+    `payment_id`    VARCHAR(100)                         NOT NULL COMMENT '결제 ID (Payment.paymentId 참조)',
+    `settlement_id` BIGINT                               NULL COMMENT '정산 ID (Settlement.id 참조)',
+    `merchant_id`   VARCHAR(100)                         NOT NULL COMMENT '가맹점 ID',
+    `amount`        DECIMAL(19, 2)                       NOT NULL COMMENT '보관 금액',
+    `currency`      VARCHAR(3)                           NOT NULL DEFAULT 'KRW' COMMENT '통화',
+    `status`        ENUM ('HOLD', 'SETTLED', 'REFUNDED') NOT NULL COMMENT '에스크로 상태 (HOLD: 보관중, SETTLED: 정산완료, REFUNDED: 환불완료)',
 
-    `created_at`   DATETIME(6)                          NOT NULL COMMENT '생성 일시',
-    `completed_at` DATETIME(6)                                   DEFAULT NULL COMMENT '완료 일시 (정산 or 환불)',
-    `updated_at`   DATETIME(6)                          NOT NULL COMMENT '수정 일시',
+    `created_at`    DATETIME(6)                          NOT NULL COMMENT '생성 일시',
+    `completed_at`  DATETIME(6)                                   DEFAULT NULL COMMENT '완료 일시 (정산 or 환불)',
+    `updated_at`    DATETIME(6)                          NOT NULL COMMENT '수정 일시',
 
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_escrow_id` (`escrow_id`),
@@ -247,18 +253,18 @@ DROP TABLE IF EXISTS `bank_account`;
 
 CREATE TABLE `bank_account`
 (
-    `id`              BIGINT                                 NOT NULL AUTO_INCREMENT COMMENT '계좌 고유 ID (PK)',
-    `bank_code`       VARCHAR(20)                            NOT NULL COMMENT '은행 코드 (001: SWIFT)',
-    `account_number`  VARCHAR(20)                            NOT NULL COMMENT '계좌번호 (고유)',
-    `account_holder`  VARCHAR(100)                           NOT NULL COMMENT '예금주명',
+    `id`             BIGINT                                 NOT NULL AUTO_INCREMENT COMMENT '계좌 고유 ID (PK)',
+    `bank_code`      VARCHAR(20)                            NOT NULL COMMENT '은행 코드 (001: SWIFT)',
+    `account_number` VARCHAR(20)                            NOT NULL COMMENT '계좌번호 (고유)',
+    `account_holder` VARCHAR(100)                           NOT NULL COMMENT '예금주명',
 
-    `amount`          DECIMAL(19, 2)                         NOT NULL COMMENT '계좌 잔액',
-    `currency`        VARCHAR(3)                             NOT NULL DEFAULT 'KRW' COMMENT '통화 (KRW, USD 등)',
+    `amount`         DECIMAL(19, 2)                         NOT NULL COMMENT '계좌 잔액',
+    `currency`       VARCHAR(3)                             NOT NULL DEFAULT 'KRW' COMMENT '통화 (KRW, USD 등)',
 
-    `status`          ENUM ('ACTIVE', 'SUSPENDED', 'CLOSED') NOT NULL DEFAULT 'ACTIVE' COMMENT '계좌 상태 (ACTIVE: 정상, SUSPENDED: 정지, CLOSED: 해지)',
+    `status`         ENUM ('ACTIVE', 'SUSPENDED', 'CLOSED') NOT NULL DEFAULT 'ACTIVE' COMMENT '계좌 상태 (ACTIVE: 정상, SUSPENDED: 정지, CLOSED: 해지)',
 
-    `created_at`      DATETIME(6)                            NOT NULL COMMENT '생성 일시',
-    `updated_at`      DATETIME(6)                            NOT NULL COMMENT '수정 일시',
+    `created_at`     DATETIME(6)                            NOT NULL COMMENT '생성 일시',
+    `updated_at`     DATETIME(6)                            NOT NULL COMMENT '수정 일시',
 
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_account_number` (`account_number`),

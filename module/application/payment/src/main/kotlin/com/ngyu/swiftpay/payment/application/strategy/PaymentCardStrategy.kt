@@ -1,9 +1,9 @@
 package com.ngyu.swiftpay.payment.application.strategy
 
 import com.ngyu.swiftpay.core.domain.money.Money
-import com.ngyu.swiftpay.core.domain.payment.model.Payment
-import com.ngyu.swiftpay.core.domain.payment.model.PaymentMethod
-import com.ngyu.swiftpay.core.domain.payment.port.BankApiClientPort
+import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
+import com.ngyu.swiftpay.core.port.BankApiClientPort
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.payment.PaymentCardService
 import org.springframework.stereotype.Component

@@ -1,37 +1,37 @@
 package com.ngyu.swiftpay.security.fake
 
-import com.ngyu.swiftpay.core.domain.apiKey.ApiKey
-import com.ngyu.swiftpay.infrastructure.db.persistent.apiKey.ApiKeyEntity
-import com.ngyu.swiftpay.infrastructure.db.persistent.apiKey.ApiKeyMapper
+import com.ngyu.swiftpay.core.domain.apiCredentials.ApiCredentials
+import com.ngyu.swiftpay.infrastructure.db.persistent.apiCredentials.ApiCredentialsEntity
+import com.ngyu.swiftpay.infrastructure.db.persistent.apiCredentials.ApiCredentialsMapper
 import org.springframework.data.domain.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.query.FluentQuery
 import java.util.*
 import java.util.function.Function
 
-class FakeApiKeyJpaRepository : JpaRepository<ApiKeyEntity, String> {
+class FakeApiKeyJpaRepository : JpaRepository<ApiCredentialsEntity, String> {
 
-  private val storage: MutableMap<String, ApiKeyEntity> = mutableMapOf()
+  private val storage: MutableMap<String, ApiCredentialsEntity> = mutableMapOf()
 
-  fun save(domain: ApiKey): ApiKeyEntity {
-    val entity = ApiKeyMapper.toEntity(domain)
+  fun save(domain: ApiCredentials): ApiCredentialsEntity {
+    val entity = ApiCredentialsMapper.toEntity(domain)
     return save(entity)
   }
 
-  fun findByLookUpKey(lookUpKey: String): ApiKeyEntity? {
+  fun findByLookUpKey(lookUpKey: String): ApiCredentialsEntity? {
     return storage[lookUpKey]
   }
 
-  override fun <S : ApiKeyEntity> save(entity: S): S {
+  override fun <S : ApiCredentialsEntity> save(entity: S): S {
     storage[entity.lookupKey] = entity
     return entity
   }
 
-  override fun <S : ApiKeyEntity> saveAll(entities: MutableIterable<S>): MutableList<S> {
+  override fun <S : ApiCredentialsEntity> saveAll(entities: MutableIterable<S>): MutableList<S> {
     return entities.map { save(it) }.toMutableList()
   }
 
-  override fun findById(id: String): Optional<ApiKeyEntity> {
+  override fun findById(id: String): Optional<ApiCredentialsEntity> {
     return Optional.ofNullable(storage.values.find { it.apiKey == id })
   }
 
@@ -39,22 +39,22 @@ class FakeApiKeyJpaRepository : JpaRepository<ApiKeyEntity, String> {
     return storage.values.any { it.apiKey == id }
   }
 
-  override fun findAll(): MutableList<ApiKeyEntity> {
+  override fun findAll(): MutableList<ApiCredentialsEntity> {
     return storage.values.toMutableList()
   }
 
-  override fun findAll(sort: Sort): MutableList<ApiKeyEntity> {
+  override fun findAll(sort: Sort): MutableList<ApiCredentialsEntity> {
     return findAll()
   }
 
-  override fun findAll(pageable: Pageable): Page<ApiKeyEntity> {
+  override fun findAll(pageable: Pageable): Page<ApiCredentialsEntity> {
     val all = findAll()
     val start = pageable.offset.toInt()
     val end = minOf(start + pageable.pageSize, all.size)
     return PageImpl(all.subList(start, end), pageable, all.size.toLong())
   }
 
-  override fun findAllById(ids: MutableIterable<String>): MutableList<ApiKeyEntity> {
+  override fun findAllById(ids: MutableIterable<String>): MutableList<ApiCredentialsEntity> {
     return storage.values.filter { it.apiKey in ids }.toMutableList()
   }
 
@@ -66,7 +66,7 @@ class FakeApiKeyJpaRepository : JpaRepository<ApiKeyEntity, String> {
     storage.values.removeIf { it.apiKey == id }
   }
 
-  override fun delete(entity: ApiKeyEntity) {
+  override fun delete(entity: ApiCredentialsEntity) {
     storage.remove(entity.lookupKey)
   }
 
@@ -74,7 +74,7 @@ class FakeApiKeyJpaRepository : JpaRepository<ApiKeyEntity, String> {
     ids.forEach { deleteById(it) }
   }
 
-  override fun deleteAll(entities: MutableIterable<ApiKeyEntity>) {
+  override fun deleteAll(entities: MutableIterable<ApiCredentialsEntity>) {
     entities.forEach { delete(it) }
   }
 
@@ -84,11 +84,11 @@ class FakeApiKeyJpaRepository : JpaRepository<ApiKeyEntity, String> {
 
   override fun flush() {}
 
-  override fun <S : ApiKeyEntity> saveAndFlush(entity: S): S {
+  override fun <S : ApiCredentialsEntity> saveAndFlush(entity: S): S {
     return save(entity)
   }
 
-  override fun <S : ApiKeyEntity> saveAllAndFlush(entities: MutableIterable<S>): MutableList<S> {
+  override fun <S : ApiCredentialsEntity> saveAllAndFlush(entities: MutableIterable<S>): MutableList<S> {
     return saveAll(entities)
   }
 
@@ -100,47 +100,47 @@ class FakeApiKeyJpaRepository : JpaRepository<ApiKeyEntity, String> {
     deleteAllById(ids)
   }
 
-  override fun deleteAllInBatch(entities: MutableIterable<ApiKeyEntity>) {
+  override fun deleteAllInBatch(entities: MutableIterable<ApiCredentialsEntity>) {
     deleteAll(entities)
   }
 
-  override fun getOne(id: String): ApiKeyEntity {
+  override fun getOne(id: String): ApiCredentialsEntity {
     return findById(id).orElseThrow()
   }
 
-  override fun getById(id: String): ApiKeyEntity {
+  override fun getById(id: String): ApiCredentialsEntity {
     return findById(id).orElseThrow()
   }
 
-  override fun getReferenceById(id: String): ApiKeyEntity {
+  override fun getReferenceById(id: String): ApiCredentialsEntity {
     return findById(id).orElseThrow()
   }
 
-  override fun <S : ApiKeyEntity> findAll(example: Example<S>): MutableList<S> {
+  override fun <S : ApiCredentialsEntity> findAll(example: Example<S>): MutableList<S> {
     throw UnsupportedOperationException("Not implemented for fake repository")
   }
 
-  override fun <S : ApiKeyEntity> findAll(example: Example<S>, sort: Sort): MutableList<S> {
+  override fun <S : ApiCredentialsEntity> findAll(example: Example<S>, sort: Sort): MutableList<S> {
     throw UnsupportedOperationException("Not implemented for fake repository")
   }
 
-  override fun <S : ApiKeyEntity> findAll(example: Example<S>, pageable: Pageable): Page<S> {
+  override fun <S : ApiCredentialsEntity> findAll(example: Example<S>, pageable: Pageable): Page<S> {
     throw UnsupportedOperationException("Not implemented for fake repository")
   }
 
-  override fun <S : ApiKeyEntity> findOne(example: Example<S>): Optional<S> {
+  override fun <S : ApiCredentialsEntity> findOne(example: Example<S>): Optional<S> {
     throw UnsupportedOperationException("Not implemented for fake repository")
   }
 
-  override fun <S : ApiKeyEntity> count(example: Example<S>): Long {
+  override fun <S : ApiCredentialsEntity> count(example: Example<S>): Long {
     throw UnsupportedOperationException("Not implemented for fake repository")
   }
 
-  override fun <S : ApiKeyEntity> exists(example: Example<S>): Boolean {
+  override fun <S : ApiCredentialsEntity> exists(example: Example<S>): Boolean {
     throw UnsupportedOperationException("Not implemented for fake repository")
   }
 
-  override fun <S : ApiKeyEntity, R : Any?> findBy(
+  override fun <S : ApiCredentialsEntity, R : Any?> findBy(
     example: Example<S>,
     queryFunction: Function<FluentQuery.FetchableFluentQuery<S>, R>
   ): R & Any {

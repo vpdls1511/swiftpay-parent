@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.escrow
 
 import com.ngyu.swiftpay.core.domain.escrow.Escrow
-import com.ngyu.swiftpay.core.domain.escrow.EscrowRepository
+import com.ngyu.swiftpay.core.port.EscrowRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 

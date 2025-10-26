@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.db.sequence
 
-import com.ngyu.swiftpay.core.domain.port.SequenceGenerator
+import com.ngyu.swiftpay.core.port.SequenceGenerator
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Component
 

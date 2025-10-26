@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.payment.application.strategy
 
-import com.ngyu.swiftpay.core.domain.payment.model.Payment
+import com.ngyu.swiftpay.core.domain.payment.Payment
 import org.springframework.stereotype.Component
 
 @Component

@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.infrastructure.redis.service
 
-import com.ngyu.swiftpay.core.domain.apiKey.ApiKey
-import com.ngyu.swiftpay.core.domain.apiKey.ApiKeyStatus
-import com.ngyu.swiftpay.core.exception.PrincipalException
+import com.ngyu.swiftpay.core.domain.apiCredentials.ApiCredentials
+import com.ngyu.swiftpay.core.domain.apiCredentials.ApiKeyStatus
+import com.ngyu.swiftpay.core.common.exception.PrincipalException
 import com.ngyu.swiftpay.infrastructure.redis.constant.RedisKey
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Service
@@ -15,25 +15,25 @@ class ApiKeyCacheService(
 ) {
   private val hashOps = redisTemplate.opsForHash<String, String>()
 
-  fun save(apiKey: ApiKey) {
-    val key = RedisKey.apiKey(apiKey.lookupKey)
+  fun save(apiCredentials: ApiCredentials) {
+    val key = RedisKey.apiKey(apiCredentials.lookupKey)
 
     val map = mapOf(
-      "apiKey" to apiKey.apiKey,
-      "lookupKey" to apiKey.lookupKey,
-      "userId" to (apiKey.userId?.toString() ?: ""),  // 이렇게 수정
-      "issuedAt" to apiKey.issuedAt.toString(),
-      "expiresAt" to apiKey.expiresAt.toString(),
-      "status" to apiKey.status.toString(),
+      "apiKey" to apiCredentials.apiKey,
+      "lookupKey" to apiCredentials.lookupKey,
+      "userId" to (apiCredentials.userId?.toString() ?: ""),  // 이렇게 수정
+      "issuedAt" to apiCredentials.issuedAt.toString(),
+      "expiresAt" to apiCredentials.expiresAt.toString(),
+      "status" to apiCredentials.status.toString(),
     )
 
     hashOps.putAll(key, map)
 
-    val duration = Duration.between(LocalDateTime.now(), apiKey.expiresAt).coerceAtLeast(Duration.ZERO)
+    val duration = Duration.between(LocalDateTime.now(), apiCredentials.expiresAt).coerceAtLeast(Duration.ZERO)
     redisTemplate.expire(key, duration)
   }
 
-  fun find(apiPairKey: String): ApiKey? {
+  fun find(apiPairKey: String): ApiCredentials? {
     val key = RedisKey.apiKey(apiPairKey)
     val entries = hashOps.entries(key)
 
@@ -56,8 +56,8 @@ class ApiKeyCacheService(
     redisTemplate.delete(key)
   }
 
-  private fun Map<String, String>.toDomain(): ApiKey {
-    return ApiKey(
+  private fun Map<String, String>.toDomain(): ApiCredentials {
+    return ApiCredentials(
       apiKey = this["apiKey"] ?: throw PrincipalException("apiKey가 없습니다."),
       lookupKey = this["lookupKey"] ?: throw PrincipalException("lookupKey가 없습니다."),
       userId = this["userId"]?.toLongOrNull() ?: 0,

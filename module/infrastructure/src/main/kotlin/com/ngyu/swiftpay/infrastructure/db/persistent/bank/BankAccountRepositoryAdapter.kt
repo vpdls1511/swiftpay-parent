@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.bank
 
 import com.ngyu.swiftpay.core.domain.bank.BankAccount
-import com.ngyu.swiftpay.core.domain.bank.BankAccountRepository
+import com.ngyu.swiftpay.core.port.BankAccountRepository
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component

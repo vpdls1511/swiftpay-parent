@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.core.domain
 
 import com.ngyu.swiftpay.core.domain.bank.BankCode
-import com.ngyu.swiftpay.core.domain.port.SequenceGenerator
-import com.ngyu.swiftpay.core.logger.logger
+import com.ngyu.swiftpay.core.port.SequenceGenerator
+import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.payment.application.generator.bank.account.number.SwiftBankAccountNumberGenerator
 import io.mockk.every
 import io.mockk.mockk

@@ -1,9 +1,9 @@
 package com.ngyu.swiftpay.payment.application.service.payment
 
-import com.ngyu.swiftpay.core.domain.order.OrderRepository
-import com.ngyu.swiftpay.core.domain.payment.model.Payment
-import com.ngyu.swiftpay.core.domain.payment.port.PaymentRepository
-import com.ngyu.swiftpay.core.logger.logger
+import com.ngyu.swiftpay.core.port.OrderRepository
+import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.port.PaymentRepository
+import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto

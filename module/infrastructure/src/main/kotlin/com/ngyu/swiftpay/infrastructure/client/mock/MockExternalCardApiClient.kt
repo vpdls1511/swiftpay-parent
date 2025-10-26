@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.client.mock
 
-import com.ngyu.swiftpay.core.domain.payment.model.Payment
-import com.ngyu.swiftpay.core.domain.payment.port.CardApiClientPort
+import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.port.CardApiClientPort
 import org.springframework.stereotype.Component
 
 @Component

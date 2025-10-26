@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.order
 
 import com.ngyu.swiftpay.core.domain.order.Order
-import com.ngyu.swiftpay.core.domain.order.OrderRepository
+import com.ngyu.swiftpay.core.port.OrderRepository
 import com.ngyu.swiftpay.infrastructure.db.persistent.order.mapper.OrderMapper
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component

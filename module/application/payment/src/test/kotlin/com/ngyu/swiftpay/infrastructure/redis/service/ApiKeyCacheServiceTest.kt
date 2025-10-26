@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.infrastructure.redis.service
 
-import com.ngyu.swiftpay.core.domain.apiKey.ApiKey
-import com.ngyu.swiftpay.core.domain.apiKey.ApiKeyStatus
-import com.ngyu.swiftpay.core.exception.PrincipalException
+import com.ngyu.swiftpay.core.domain.apiCredentials.ApiCredentials
+import com.ngyu.swiftpay.core.domain.apiCredentials.ApiKeyStatus
+import com.ngyu.swiftpay.core.common.exception.PrincipalException
 import com.ngyu.swiftpay.infrastructure.redis.constant.RedisKey
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -14,7 +14,7 @@ import org.springframework.data.redis.core.StringRedisTemplate
 import java.time.LocalDateTime
 
 @DisplayName("ApiKeyCacheService 단위 테스트")
-class ApiKeyCacheServiceUnitTest {
+class ApiCredentialsCacheServiceUnitTest {
 
  private val redisTemplate = mock(StringRedisTemplate::class.java)
  private val hashOps = mock(HashOperations::class.java) as HashOperations<String, String, String>
@@ -87,7 +87,7 @@ class ApiKeyCacheServiceUnitTest {
  @DisplayName("save() - ApiKey를 Redis Hash에 저장할 때 putAll과 expire가 호출된다")
  fun save_shouldCallPutAllAndExpire() {
   // given
-  val apiKey = ApiKey(
+  val apiCredentials = ApiCredentials(
    apiKey = "api-key-1234",
    lookupKey = "pair-1234",
    userId = 1001L,
@@ -98,7 +98,7 @@ class ApiKeyCacheServiceUnitTest {
   )
 
   // when
-  service.save(apiKey)
+  service.save(apiCredentials)
 
   // then
   verify(hashOps, times(1)).putAll(eq(RedisKey.apiKey("pair-1234")), anyMap())

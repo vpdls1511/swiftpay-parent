@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.security.provider
 
-import com.ngyu.swiftpay.core.logger.logger
+import com.ngyu.swiftpay.core.common.logger.logger
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.slf4j.Logger
