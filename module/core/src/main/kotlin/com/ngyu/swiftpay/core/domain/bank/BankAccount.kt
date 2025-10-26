@@ -1,10 +1,11 @@
 package com.ngyu.swiftpay.core.domain.bank
 
+import com.ngyu.swiftpay.core.domain.BaseDomain
 import com.ngyu.swiftpay.core.domain.money.Money
 import java.time.LocalDateTime
 
-data class BankAccount(
-  val id: Long? = null,
+class BankAccount(
+  override val id: Long? = null,
 
   val bankCode: BankCode,
 
@@ -17,7 +18,7 @@ data class BankAccount(
 
   val createdAt: LocalDateTime = LocalDateTime.now(),
   val updatedAt: LocalDateTime = LocalDateTime.now()
-) {
+): BaseDomain<Long>() {
 
   companion object {
     fun create(bankCode: BankCode,
@@ -30,11 +31,6 @@ data class BankAccount(
         amount = Money.ZERO
       )
     }
-  }
-
-  // 출금 가능 여부 확인
-  fun canWithdraw(other: Money): Boolean {
-    return status == BankAccountStatus.ACTIVE && amount >= other
   }
 
   // 출금 처리
@@ -52,6 +48,28 @@ data class BankAccount(
     return this.copy(
       amount = amount + other,
       updatedAt = LocalDateTime.now()
+    )
+  }
+
+
+  // 출금 가능 여부 확인
+  private fun canWithdraw(other: Money): Boolean {
+    return status == BankAccountStatus.ACTIVE && amount >= other
+  }
+
+  private fun copy(
+    amount: Money = this.amount,
+    updatedAt: LocalDateTime = LocalDateTime.now()
+  ): BankAccount {
+    return BankAccount(
+      id = this.id,
+      bankCode = this.bankCode,
+      accountNumber = this.accountNumber,
+      accountHolder = this.accountHolder,
+      amount = amount,
+      status = this.status,
+      createdAt = this.createdAt,
+      updatedAt = updatedAt
     )
   }
 }
