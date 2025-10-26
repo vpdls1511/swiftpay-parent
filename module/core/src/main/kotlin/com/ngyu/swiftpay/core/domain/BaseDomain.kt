@@ -12,16 +12,21 @@ import java.io.Serializable
  */
 abstract class BaseDomain<ID : Serializable> {
 
-  abstract fun id(): ID
+  abstract val id: ID?
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
-    if (other !is BaseDomain<*>) return false
+    if (javaClass != other?.javaClass) return false
 
-    return id() == other.id()
+    other as BaseDomain<*>
+    if (id == null || other.id == null) return false
+
+
+    return id == other.id
   }
 
   override fun hashCode(): Int {
-    return id().hashCode()
+    return id?.hashCode() ?: 0
   }
+
 }
