@@ -19,7 +19,6 @@ import java.time.LocalDate
 @Service
 class MerchantService(
   private val paymentApiKeyUseCase: PaymentApiKeyUseCase,
-  private val merchantRepository: MerchantRepository
   private val merchantRepository: MerchantRepository,
   private val sequenceGenerator: SequenceGenerator
 ) : MerchantUseCase {
@@ -35,8 +34,10 @@ class MerchantService(
   override fun register(request: MerchantRegisterReqeust): MerchantRegisterResponseDto {
     try {
       log.info("가맹점 등록 시작")
-      val savedMerchant = merchantRepository.save(request.toDomain())
       val merchantSeq = sequenceGenerator.nextMerchantId()
+      val merchantId = Merchant.createMerchantId(merchantSeq)
+      val merchant = request.toDomain(merchantSeq, merchantId)
+      val savedMerchant = merchantRepository.save(merchant)
 
       log.info("가맹점 등록 완료 - merchantId = ${savedMerchant.merchantId} STATUS = ${savedMerchant.status}")
       val credentials = this.approve(savedMerchant.merchantId)

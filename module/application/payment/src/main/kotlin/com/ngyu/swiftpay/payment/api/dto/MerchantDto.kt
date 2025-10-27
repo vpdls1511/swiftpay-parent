@@ -12,8 +12,10 @@ data class MerchantRegisterReqeust(
   val address: String,
   val bankAccountNumber: String
 ) {
-  fun toDomain(): Merchant {
+  fun toDomain(seq: Long, merchantId: String): Merchant {
     return Merchant(
+      id = seq,
+      merchantId = merchantId,
       businessNumber = this.businessNumber,
       businessName = this.businessName,
       representativeName = this.representativeName,
