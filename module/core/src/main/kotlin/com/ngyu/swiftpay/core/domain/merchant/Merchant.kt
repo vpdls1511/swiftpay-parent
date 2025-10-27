@@ -4,12 +4,11 @@ import com.ngyu.swiftpay.core.domain.BaseDomain
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
 
 class Merchant(
   override val id: Long,
 
-  val merchantId: String = UUID.randomUUID().toString(),
+  val merchantId: String,
   val userId: Long? = null,
 
   // 사업자 정보
@@ -38,6 +37,16 @@ class Merchant(
   val updatedAt: LocalDateTime = LocalDateTime.now(),
   val approvedAt: LocalDateTime? = null
 ) : BaseDomain<Long>() {
+
+  companion object {
+    private const val PREFIX = "SWIFT_MERCH_"
+    private const val PADDING_LENGTH = 8
+
+    fun createMerchantId(seq: Long): String {
+      return "$PREFIX${seq.toString().padStart(PADDING_LENGTH, '0')}"
+    }
+  }
+
   fun approved(startDate: LocalDate): Merchant {
     require(this.status == MerchantStatus.PENDING) { "승인 대기 상태가 아닙니다." }
     return this.copy(
