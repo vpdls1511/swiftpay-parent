@@ -1,12 +1,13 @@
 package com.ngyu.swiftpay.core.domain.settlement
 
+import com.ngyu.swiftpay.core.domain.BaseDomain
 import com.ngyu.swiftpay.core.domain.money.Money
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
-data class Settlement(
-  val id: Long? = null,
+class Settlement(
+  override val id: Long? = null,
   val settlementId: String = UUID.randomUUID().toString(),
   val merchantAccountNumber: String,
   val merchantName: String,
@@ -22,7 +23,7 @@ data class Settlement(
 
   val createdAt: LocalDateTime = LocalDateTime.now(),
   val executedAt: LocalDateTime? = null
-){
+) : BaseDomain<Long>() {
   fun process(): Settlement {
     require(this.status == SettlementStatus.PENDING) { "정산 대기 상태가 아닙니다." }
     return this.copy(
@@ -44,6 +45,36 @@ data class Settlement(
       status = SettlementStatus.FAILED,
       failReason = reason,
       executedAt = LocalDateTime.now(),
+    )
+  }
+
+  private fun copy(
+    id: Long? = this.id,
+    settlementId: String = this.settlementId,
+    merchantAccountNumber: String = this.merchantAccountNumber,
+    merchantName: String = this.merchantName,
+    totalAmount: Money = this.totalAmount,
+    feeAmount: Money = this.feeAmount,
+    settlementAmount: Money = this.settlementAmount,
+    settlementDate: LocalDate = this.settlementDate,
+    status: SettlementStatus = this.status,
+    failReason: String? = this.failReason,
+    createdAt: LocalDateTime = this.createdAt,
+    executedAt: LocalDateTime? = this.executedAt
+  ): Settlement {
+    return Settlement(
+      id = id,
+      settlementId = settlementId,
+      merchantAccountNumber = merchantAccountNumber,
+      merchantName = merchantName,
+      totalAmount = totalAmount,
+      feeAmount = feeAmount,
+      settlementAmount = settlementAmount,
+      settlementDate = settlementDate,
+      status = status,
+      failReason = failReason,
+      createdAt = createdAt,
+      executedAt = executedAt,
     )
   }
 }

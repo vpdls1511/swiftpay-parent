@@ -1,13 +1,14 @@
 package com.ngyu.swiftpay.core.domain.order
 
+import com.ngyu.swiftpay.core.domain.BaseDomain
 import com.ngyu.swiftpay.core.domain.money.Currency
 import com.ngyu.swiftpay.core.domain.money.Money
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
-data class Order(
-  val id: Long? = null,
+class Order(
+  override val id: Long? = null,
   val orderId: String,
   val merchantId: String,
 
@@ -27,7 +28,7 @@ data class Order(
 
   val createdAt: LocalDateTime,
   val updatedAt: LocalDateTime,
-) {
+) : BaseDomain<Long>() {
 
   companion object {
     val taxFee = 11L
@@ -81,32 +82,62 @@ data class Order(
       status = status,
       balanceAmount = newBalance,
       tax = this.tax - refundTax,
-      supplyAmount = this.supplyAmount - refundSupply,
-      updatedAt = LocalDateTime.now(),
+      supplyAmount = this.supplyAmount - refundSupply
     )
   }
 
   fun processing(): Order {
     require(this.status == OrderStatus.READY) { "주문 대기 상태가 아닙니다." }
     return this.copy(
-      status = OrderStatus.PROCESSING,
-      updatedAt = LocalDateTime.now()
+      status = OrderStatus.PROCESSING
     )
   }
 
   fun done(): Order {
     require(this.status == OrderStatus.PROCESSING) { "주문 진행중 상태가 아닙니다." }
     return this.copy(
-      status = OrderStatus.DONE,
-      updatedAt = LocalDateTime.now()
+      status = OrderStatus.DONE
     )
   }
 
   fun cancel(): Order {
     require(this.status == OrderStatus.PROCESSING) { "주문 진행중 상태가 아닙니다." }
     return this.copy(
-      status = OrderStatus.CANCELLED,
-      updatedAt = LocalDateTime.now()
+      status = OrderStatus.CANCELLED
+    )
+  }
+
+  private fun copy(
+    id: Long? = this.id,
+    orderId: String = this.orderId,
+    merchantId: String = this.merchantId,
+    orderName: String = this.orderName,
+    totalAmount: Money = this.totalAmount,
+    balanceAmount: Money = this.balanceAmount,
+    supplyAmount: Money = this.supplyAmount,
+    tax: Money = this.tax,
+    status: OrderStatus = this.status,
+    customerName: String? = this.customerName,
+    customerEmail: String? = this.customerEmail,
+    customerPhone: String? = this.customerPhone,
+    createdAt: LocalDateTime = this.createdAt,
+    updatedAt: LocalDateTime = this.updatedAt,
+  ): Order {
+    return Order(
+      id = id,
+      orderId = orderId,
+      merchantId = merchantId,
+      orderName = orderName,
+      totalAmount = totalAmount,
+      balanceAmount = balanceAmount,
+      supplyAmount = supplyAmount,
+      tax = tax,
+      status = status,
+      customerName = customerName,
+      customerEmail = customerEmail,
+      customerPhone = customerPhone,
+      createdAt = createdAt,
+      updatedAt = updatedAt,
     )
   }
 }

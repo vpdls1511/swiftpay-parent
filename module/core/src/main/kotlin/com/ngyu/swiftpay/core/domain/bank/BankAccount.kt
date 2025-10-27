@@ -58,18 +58,24 @@ class BankAccount(
   }
 
   private fun copy(
+    id: Long? = this.id,
+    bankCode: BankCode = this.bankCode,
+    accountNumber: String = this.accountNumber,
+    accountHolder: String = this.accountHolder,
     amount: Money = this.amount,
-    updatedAt: LocalDateTime = LocalDateTime.now()
+    status: BankAccountStatus = this.status,
+    createdAt: LocalDateTime = this.createdAt,
+    updatedAt: LocalDateTime = this.updatedAt
   ): BankAccount {
     return BankAccount(
-      id = this.id,
-      bankCode = this.bankCode,
-      accountNumber = this.accountNumber,
-      accountHolder = this.accountHolder,
+      id = id,
+      bankCode = bankCode,
+      accountNumber = accountNumber,
+      accountHolder = accountHolder,
       amount = amount,
-      status = this.status,
-      createdAt = this.createdAt,
-      updatedAt = updatedAt
+      status = status,
+      createdAt = createdAt,
+      updatedAt = updatedAt,
     )
   }
 }

@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.core.domain.payment
 
+import com.ngyu.swiftpay.core.domain.BaseDomain
 import com.ngyu.swiftpay.core.domain.money.Currency
 import com.ngyu.swiftpay.core.domain.money.Money
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
@@ -10,23 +11,23 @@ import java.time.LocalDateTime
  * ### 결제 도메인 엔티티
  *
  * 결제의 생명주기를 관리하며, 결제 요청부터 완료/취소까지의
- *
  * 모든 상태와 정보를 포함한다.
  */
-data class Payment(
+class Payment(
+  override val id: Long? = null,
+
   // 기본정보
-  val id: Long? = null,
-  val paymentId: String,                     // 고유 ID
+  val paymentId: String,              // 고유 ID
   val merchantId: String,             // 가맹점 Id
   val orderId: String,                // 가맹점의 주문번호
   val orderName: String,              // 상품 이름
-  val amount: Money,             // 상품 가격
+  val amount: Money,                  // 결제 금액
 
   // 결제 수단 정보
   val method: PaymentMethod,              // 결제 수단
-  val methodDetail: PaymentMethodDetails, // 결제 상세정보 ( CARD일 경우, 옵션 )
+  val methodDetail: PaymentMethodDetails, // 결제 상세정보 (예: 카드)
 
-  // 옵션 - 콜백 URL
+  // 콜백 URL
   val successUrl: String? = null,
   val cancelUrl: String? = null,
   val failureUrl: String? = null,
@@ -34,32 +35,18 @@ data class Payment(
   // 상태관리
   val status: PaymentStatus,
   val reason: String? = null,
-  val idempotencyKey: String?,        // 중복 결제 방지 키
+  val idempotencyKey: String? = null,   // 중복 결제 방지 키
+  val settlementId: String? = null,     // 정산 관리 Id
 
-  val settlementId: String? = null, // 정산 관리 Id
-
-  // 시스템정보
+  // 시스템 정보
   val createdAt: LocalDateTime,
   val updatedAt: LocalDateTime
-) {
+) : BaseDomain<Long>() {
+
   companion object {
     /**
      * 새로운 결제를 생성한다.
-     *
      * 초기 상태는 PENDING이며, 고유한 결제 ID가 자동 생성된다.
-     *
-     * @param merchantId 가맹점 아이디
-     * @param orderId 가맹점 주문 번호
-     * @param orderName 주문 상품명
-     * @param amount 결제 금액
-     * @param currency 통화 (기본: KRW)
-     * @param method 결제 수단
-     * @param methodDetail 결제 수단 상세
-     * @param successUrl 성공 콜백 URL
-     * @param cancelUrl 취소 콜백 URL
-     * @param failureUrl 실패 콜백 URL
-     * @param idempotencyKey 중복 방지 키
-     * @return 생성된 Payment 도메인 객체
      */
     fun create(
       merchantId: String,
@@ -93,52 +80,75 @@ data class Payment(
       )
     }
 
- /**
+    /**
      * 고유한 결제 ID를 생성한다.
-     *
      * 형식: swift_pay_{timestamp}_{random}
-     *
-     * 예시: swift_pay_1696752000000_5837
      */
     private fun generatePaymentId(): String {
       return "swift_pay_${System.currentTimeMillis()}_${(1000..9999).random()}"
     }
   }
 
-  /**
-   * 상태관리를 위한 메서드 리스트
-   * - inProgress
-   * - succeed
-   * - cancelled
-   * - failed
-   */
+  // ===== 상태 전이 메서드 =====
+
   fun inProgress(): Payment {
     require(status == PaymentStatus.PENDING) { "결제 대기 상태가 아닙니다." }
-    return this.copy(
-      status = PaymentStatus.IN_PROGRESS,
-      updatedAt = LocalDateTime.now(),
-    )
+    return copy(status = PaymentStatus.IN_PROGRESS)
   }
+
   fun success(): Payment {
     require(status == PaymentStatus.IN_PROGRESS) { "결제 중 상태가 아닙니다." }
-    return this.copy(
-      status = PaymentStatus.SUCCEEDED,
-      updatedAt = LocalDateTime.now(),
-    )
+    return copy(status = PaymentStatus.SUCCEEDED)
   }
+
   fun cancel(): Payment {
     require(status == PaymentStatus.IN_PROGRESS) { "결제 중 상태가 아닙니다." }
-    return this.copy(
-      status = PaymentStatus.CANCELLED,
-      updatedAt = LocalDateTime.now(),
-    )
+    return copy(status = PaymentStatus.CANCELLED)
   }
+
   fun failed(reason: String): Payment {
     require(status == PaymentStatus.IN_PROGRESS) { "결제 중 상태가 아닙니다." }
-    return this.copy(
-      status = PaymentStatus.FAILED,
+    return copy(status = PaymentStatus.FAILED, reason = reason)
+  }
+
+  // ===== 불변 복제(copy) 메서드 =====
+  private fun copy(
+    id: Long? = this.id,
+    paymentId: String = this.paymentId,
+    merchantId: String = this.merchantId,
+    orderId: String = this.orderId,
+    orderName: String = this.orderName,
+    amount: Money = this.amount,
+    method: PaymentMethod = this.method,
+    methodDetail: PaymentMethodDetails = this.methodDetail,
+    successUrl: String? = this.successUrl,
+    cancelUrl: String? = this.cancelUrl,
+    failureUrl: String? = this.failureUrl,
+    status: PaymentStatus = this.status,
+    reason: String? = this.reason,
+    idempotencyKey: String? = this.idempotencyKey,
+    settlementId: String? = this.settlementId,
+    createdAt: LocalDateTime = this.createdAt,
+    updatedAt: LocalDateTime = LocalDateTime.now()
+  ): Payment {
+    return Payment(
+      id = id,
+      paymentId = paymentId,
+      merchantId = merchantId,
+      orderId = orderId,
+      orderName = orderName,
+      amount = amount,
+      method = method,
+      methodDetail = methodDetail,
+      successUrl = successUrl,
+      cancelUrl = cancelUrl,
+      failureUrl = failureUrl,
+      status = status,
       reason = reason,
-      updatedAt = LocalDateTime.now(),
+      idempotencyKey = idempotencyKey,
+      settlementId = settlementId,
+      createdAt = createdAt,
+      updatedAt = updatedAt
     )
   }
 }

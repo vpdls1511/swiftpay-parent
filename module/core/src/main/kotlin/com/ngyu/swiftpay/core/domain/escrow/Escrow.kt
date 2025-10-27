@@ -1,11 +1,13 @@
 package com.ngyu.swiftpay.core.domain.escrow
 
+import com.ngyu.swiftpay.core.domain.BaseDomain
 import com.ngyu.swiftpay.core.domain.money.Money
 import com.ngyu.swiftpay.core.domain.payment.Payment
 import java.time.LocalDateTime
 
-data class Escrow(
-  val id: Long? = null,
+class Escrow(
+  override val id: Long? = null,
+
   val escrowId: String,
   val paymentId: String,
   val merchantId: String,
@@ -18,7 +20,7 @@ data class Escrow(
   val createdAt: LocalDateTime,
   val completedAt: LocalDateTime? = null,  // settle or refund 완료 시간
   val updatedAt: LocalDateTime
-) {
+) : BaseDomain<Long>() {
   companion object {
     fun hold(payment: Payment): Escrow {
       val now = LocalDateTime.now()
@@ -55,7 +57,32 @@ data class Escrow(
     return copy(
       status = EscrowStatus.REFUNDED,
       completedAt = now,
-      updatedAt = now
+    )
+  }
+
+  private fun copy(
+    id: Long? = this.id,
+    escrowId: String = this.escrowId,
+    paymentId: String = this.paymentId,
+    merchantId: String = this.merchantId,
+    amount: Money = this.amount,
+    status: EscrowStatus = this.status,
+    settlementId: Long? = this.settlementId,
+    createdAt: LocalDateTime = this.createdAt,
+    completedAt: LocalDateTime? = this.completedAt,
+    updatedAt: LocalDateTime = LocalDateTime.now(),
+  ): Escrow {
+    return Escrow(
+      id = id,
+      escrowId = escrowId,
+      paymentId = paymentId,
+      merchantId = merchantId,
+      amount = amount,
+      status = status,
+      settlementId = settlementId,
+      createdAt = createdAt,
+      completedAt = completedAt,
+      updatedAt = updatedAt
     )
   }
 }

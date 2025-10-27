@@ -1,13 +1,15 @@
 package com.ngyu.swiftpay.core.domain.merchant
 
+import com.ngyu.swiftpay.core.domain.BaseDomain
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
-data class Merchant(
-  val id: String = UUID.randomUUID().toString(),
+class Merchant(
+  override val id: Long? = null,
 
+  val merchantId: String = UUID.randomUUID().toString(),
   val userId: Long? = null,
 
   // 사업자 정보
@@ -35,14 +37,13 @@ data class Merchant(
   val createdAt: LocalDateTime = LocalDateTime.now(),
   val updatedAt: LocalDateTime = LocalDateTime.now(),
   val approvedAt: LocalDateTime? = null
-) {
+) : BaseDomain<Long>() {
   fun approved(startDate: LocalDate): Merchant {
     require(this.status == MerchantStatus.PENDING) { "승인 대기 상태가 아닙니다." }
     return this.copy(
       status = MerchantStatus.ACTIVE,
       contractStartDate = startDate,
-      approvedAt = LocalDateTime.now(),
-      updatedAt = LocalDateTime.now(),
+      approvedAt = LocalDateTime.now()
     )
   }
 
@@ -50,16 +51,14 @@ data class Merchant(
     require(this.status == MerchantStatus.ACTIVE) { "활성 상태가 아닙니다" }
     return this.copy(
       status = MerchantStatus.SUSPENDED,
-      suspendedReason = reason,
-      updatedAt = LocalDateTime.now(),
+      suspendedReason = reason
     )
   }
 
   fun resume(): Merchant {
     require(this.status == MerchantStatus.SUSPENDED) { "정지 상태가 아닙니다" }
     return this.copy(
-      status = MerchantStatus.ACTIVE,
-      updatedAt = LocalDateTime.now(),
+      status = MerchantStatus.ACTIVE
     )
   }
 
@@ -67,8 +66,55 @@ data class Merchant(
     require(this.status != MerchantStatus.TERMINATED) { "이미 종료된 가맹점입니다" }
     return this.copy(
       status = MerchantStatus.TERMINATED,
-      contractEndDate = endDate,
-      updatedAt = LocalDateTime.now(),
+      contractEndDate = endDate
+    )
+  }
+
+  private fun copy(
+    id: Long? = this.id,
+    merchantId: String = this.merchantId,
+    userId: Long? = this.userId,
+    businessNumber: String = this.businessNumber,
+    businessName: String = this.businessName,
+    representativeName: String = this.representativeName,
+    businessType: String = this.businessType,
+    email: String = this.bankAccountNumber,
+    phoneNumber: String = this.bankAccountNumber,
+    address: String = this.address,
+    apiPairKey: String = this.bankAccountNumber,
+    bankAccountNumber: String = this.bankAccountNumber,
+    feeRate: BigDecimal = this.feeRate,
+    settlementCycle: SettlementCycle = this.settlementCycle,
+    status: MerchantStatus = this.status,
+    suspendedReason: String? = this.suspendedReason,
+    contractStartDate: LocalDate? = this.contractStartDate,
+    contractEndDate: LocalDate? = this.contractEndDate,
+    createdAt: LocalDateTime = this.createdAt,
+    updatedAt: LocalDateTime = this.updatedAt,
+    approvedAt: LocalDateTime? = this.approvedAt
+  ): Merchant {
+    return Merchant(
+      id = id,
+      merchantId = merchantId,
+      userId = userId,
+      businessNumber = businessNumber,
+      businessName = businessName,
+      representativeName = representativeName,
+      businessType = businessType,
+      email = email,
+      phoneNumber = phoneNumber,
+      address = address,
+      apiPairKey = apiPairKey,
+      bankAccountNumber = bankAccountNumber,
+      feeRate = feeRate,
+      settlementCycle = settlementCycle,
+      status = status,
+      suspendedReason = suspendedReason,
+      contractStartDate = contractStartDate,
+      contractEndDate = contractEndDate,
+      createdAt = createdAt,
+      updatedAt = updatedAt,
+      approvedAt = approvedAt,
     )
   }
 
