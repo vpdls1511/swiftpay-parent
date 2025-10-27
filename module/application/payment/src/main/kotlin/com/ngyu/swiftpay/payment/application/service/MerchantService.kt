@@ -3,7 +3,9 @@ package com.ngyu.swiftpay.payment.application.service
 import com.ngyu.swiftpay.core.common.exception.DuplicateMerchantException
 import com.ngyu.swiftpay.core.common.exception.InvalidMerchantDataException
 import com.ngyu.swiftpay.core.common.logger.logger
+import com.ngyu.swiftpay.core.domain.merchant.Merchant
 import com.ngyu.swiftpay.core.port.MerchantRepository
+import com.ngyu.swiftpay.core.port.SequenceGenerator
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
@@ -18,6 +20,8 @@ import java.time.LocalDate
 class MerchantService(
   private val paymentApiKeyUseCase: PaymentApiKeyUseCase,
   private val merchantRepository: MerchantRepository
+  private val merchantRepository: MerchantRepository,
+  private val sequenceGenerator: SequenceGenerator
 ) : MerchantUseCase {
 
   private val log = logger()
@@ -32,6 +36,7 @@ class MerchantService(
     try {
       log.info("가맹점 등록 시작")
       val savedMerchant = merchantRepository.save(request.toDomain())
+      val merchantSeq = sequenceGenerator.nextMerchantId()
 
       log.info("가맹점 등록 완료 - merchantId = ${savedMerchant.merchantId} STATUS = ${savedMerchant.status}")
       val credentials = this.approve(savedMerchant.merchantId)
