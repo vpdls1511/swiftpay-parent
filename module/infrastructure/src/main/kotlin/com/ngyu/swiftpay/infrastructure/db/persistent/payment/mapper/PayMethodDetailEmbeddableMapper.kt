@@ -34,20 +34,20 @@ object PayMethodDetailsEmbeddableMapper {
   fun toDomain(embeddable: PayMethodDetailsEmbeddable): PaymentMethodDetails {
     return when (embeddable.type) {
       "CARD" -> PaymentMethodDetails.Card(
-        cardNumber = embeddable.cardNumber,
-        cardExpiry = embeddable.cardExpiry,
-        cardCvc = embeddable.cardCvc,
-        cardType = embeddable.cardType,
-        installmentPlan = embeddable.installmentPlan,
+        cardNumber = requireNotNull(embeddable.cardNumber) { "카드번호 필수" },
+        cardExpiry = requireNotNull(embeddable.cardExpiry) { "유효기간 필수" },
+        cardCvc = requireNotNull(embeddable.cardCvc) { "CVC 필수" },
+        cardType = requireNotNull(embeddable.cardType) { "카드타입 필수" },
+        installmentPlan = embeddable.installmentPlan ?: 0,
         useCardPoint = embeddable.useCardPoint ?: false
       )
 
       "BANK_TRANSFER" -> PaymentMethodDetails.BankTransfer(
-        bankCode = embeddable.bankCode,
-        accountNumber = embeddable.accountNumber
+        bankCode = requireNotNull(embeddable.bankCode) { "은행코드 필수" },
+        accountNumber = requireNotNull(embeddable.accountNumber) { "계좌번호 필수" }
       )
 
-      else -> throw IllegalArgumentException("알 수 없는 결제 수단 타입입니다: ${embeddable.type}")
+      else -> throw IllegalArgumentException("알 수 없는 타입: ${embeddable.type}")
     }
   }
 }

@@ -1,8 +1,11 @@
 package com.ngyu.swiftpay.infrastructure.fake
 
-import com.ngyu.swiftpay.core.vo.Currency
-import com.ngyu.swiftpay.core.domain.payment.*
+import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
+import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
+import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
+import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper.PaymentMapper
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -171,11 +174,11 @@ class PaymentEntityTest {
       currency = Currency.KRW,
       method = PaymentMethod.CARD,
       methodDetail = PaymentMethodDetails.Card(
-        cardNumber = null,
-        cardExpiry = null,
-        cardCvc = null,
-        installmentPlan = null,
-        cardType = null,
+        cardNumber = "1231231231",
+        cardExpiry = "1212",
+        cardCvc = "122",
+        installmentPlan = 2,
+        cardType = PaymentCardType.CREDIT,
         useCardPoint = false
       ),
       successUrl = null,

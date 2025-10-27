@@ -2,11 +2,16 @@ package com.ngyu.swiftpay.payment.api.dto
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.domain.order.Order
-import com.ngyu.swiftpay.core.domain.payment.*
+import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
+import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
+import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
+import com.ngyu.swiftpay.core.vo.Currency
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -153,36 +158,35 @@ data class PaymentCallback(
 sealed class PaymentDtoMethodDetails {
   abstract fun toDomain(): PaymentMethodDetails
 
-  @Schema(description = "카드 결제 옵션")
   data class Card(
-    val cardNumber: String?,
-    val cardExpiry: String?,
-    val cardCvc: String?,
-    val installmentPlan: Int? = 0,
-    val cardType: PaymentCardType?,
+    @field:NotBlank val cardNumber: String,
+    @field:NotBlank val cardExpiry: String,
+    @field:NotBlank val cardCvc: String,
+    val installmentPlan: Int = 0,
+    @field:NotNull val cardType: PaymentCardType,
     val useCardPoint: Boolean = false
   ) : PaymentDtoMethodDetails() {
     override fun toDomain(): PaymentMethodDetails.Card {
       return PaymentMethodDetails.Card(
-        cardNumber = this.cardNumber,
-        cardExpiry = this.cardExpiry,
-        cardCvc = this.cardCvc,
-        installmentPlan = this.installmentPlan,
-        cardType = this.cardType,
-        useCardPoint = this.useCardPoint
+        cardNumber = cardNumber,
+        cardExpiry = cardExpiry,
+        cardCvc = cardCvc,
+        installmentPlan = installmentPlan,
+        cardType = cardType,
+        useCardPoint = useCardPoint
       )
     }
   }
 
   @Schema(description = "계좌 이체 옵션")
   data class BankTransfer(
-    val bankCode: String?,
-    val accountNumber: String?
+    @field:NotBlank val bankCode: String,
+    @field:NotBlank val accountNumber: String
   ) : PaymentDtoMethodDetails() {
     override fun toDomain(): PaymentMethodDetails.BankTransfer {
       return PaymentMethodDetails.BankTransfer(
-        bankCode = this.bankCode,
-        accountNumber = this.accountNumber
+        bankCode = bankCode,
+        accountNumber = accountNumber,
       )
     }
   }
