@@ -57,9 +57,9 @@ class PaymentService(
     val paymentId = Payment.createPaymentId(paymentSeq)
     val domain = request.toDomain(paymentSeq, paymentId)
 
-    val pendingPayment = paymentRepository.save(domain)
+    // TODO - pending -> progress 결제 요청 자체의 유효성을 검사해야한다..
 
-    val updateDomain = paymentRepository.save(pendingPayment.inProgress())
+    val updateDomain = paymentRepository.save(domain.inProgress())
     log.info("결제 정보 저장 완료 | paymentId = ${domain.paymentId}, status=${domain.status}")
 
     return updateDomain
