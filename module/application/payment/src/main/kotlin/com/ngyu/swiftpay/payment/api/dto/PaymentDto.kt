@@ -2,7 +2,7 @@ package com.ngyu.swiftpay.payment.api.dto
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.ngyu.swiftpay.core.domain.money.Currency
+import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.domain.order.Order
 import com.ngyu.swiftpay.core.domain.payment.*
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails

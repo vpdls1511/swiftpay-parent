@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.core.domain.money
+package com.ngyu.swiftpay.core.vo
 
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -12,13 +12,13 @@ data class Money(
     /**
      * 원화(KRW) Money 생성
      */
-    fun won(amount: Long):Money = Money(BigDecimal.valueOf(amount), Currency.KRW)
-    fun won(amount: Int):Money = this.won(amount.toLong())
+    fun won(amount: Long): Money = Money(BigDecimal.valueOf(amount), Currency.KRW)
+    fun won(amount: Int): Money = won(amount.toLong())
 
     /**
      * Money.won(0) 이 아닌 Money.ZERO 를 이용하여 더 직관적인 표현을 할 수 있게 한다.
      */
-    val ZERO: Money = this.won(0)
+    val ZERO: Money = won(0)
   }
 
   /**

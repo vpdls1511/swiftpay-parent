@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.settlement
 
-import com.ngyu.swiftpay.core.domain.money.Currency
-import com.ngyu.swiftpay.core.domain.money.Money
+import com.ngyu.swiftpay.core.vo.Currency
+import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.core.domain.settlement.Settlement
 
 object SettlementMapper {

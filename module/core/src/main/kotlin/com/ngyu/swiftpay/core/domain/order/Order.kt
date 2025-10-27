@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.core.domain.order
 
 import com.ngyu.swiftpay.core.domain.BaseDomain
-import com.ngyu.swiftpay.core.domain.money.Currency
-import com.ngyu.swiftpay.core.domain.money.Money
+import com.ngyu.swiftpay.core.vo.Currency
+import com.ngyu.swiftpay.core.vo.Money
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*

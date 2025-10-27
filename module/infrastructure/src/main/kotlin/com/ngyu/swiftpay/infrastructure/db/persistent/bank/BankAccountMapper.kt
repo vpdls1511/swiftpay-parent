@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.bank
 
 import com.ngyu.swiftpay.core.domain.bank.BankAccount
-import com.ngyu.swiftpay.core.domain.money.Money
+import com.ngyu.swiftpay.core.vo.Money
 
 object  BankAccountMapper {
   fun toEntity(domain: BankAccount): BankAccountEntity {

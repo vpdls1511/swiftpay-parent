@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.payment.api.application.service.payment
 
-import com.ngyu.swiftpay.core.domain.money.Currency
+import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus

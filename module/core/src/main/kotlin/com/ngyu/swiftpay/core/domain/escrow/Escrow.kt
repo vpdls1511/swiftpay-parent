@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.core.domain.escrow
 
 import com.ngyu.swiftpay.core.domain.BaseDomain
-import com.ngyu.swiftpay.core.domain.money.Money
+import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.core.domain.payment.Payment
 import java.time.LocalDateTime
 

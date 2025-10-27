@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.core.domain
 
-import com.ngyu.swiftpay.core.domain.money.Currency
-import com.ngyu.swiftpay.core.domain.money.Money
+import com.ngyu.swiftpay.core.vo.Currency
+import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.core.domain.order.Order
 import com.ngyu.swiftpay.core.domain.order.OrderStatus
 import org.assertj.core.api.Assertions.assertThat

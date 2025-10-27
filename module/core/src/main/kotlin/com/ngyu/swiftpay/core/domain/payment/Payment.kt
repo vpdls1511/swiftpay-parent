@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.core.domain.payment
 
 import com.ngyu.swiftpay.core.domain.BaseDomain
-import com.ngyu.swiftpay.core.domain.money.Currency
-import com.ngyu.swiftpay.core.domain.money.Money
+import com.ngyu.swiftpay.core.vo.Currency
+import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
 import java.math.BigDecimal
 import java.time.LocalDateTime

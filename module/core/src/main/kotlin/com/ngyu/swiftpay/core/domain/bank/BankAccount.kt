@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.core.domain.bank
 
 import com.ngyu.swiftpay.core.domain.BaseDomain
-import com.ngyu.swiftpay.core.domain.money.Money
+import com.ngyu.swiftpay.core.vo.Money
 import java.time.LocalDateTime
 
 class BankAccount(

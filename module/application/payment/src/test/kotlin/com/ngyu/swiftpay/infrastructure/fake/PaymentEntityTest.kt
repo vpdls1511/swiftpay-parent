@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.fake
 
-import com.ngyu.swiftpay.core.domain.money.Currency
+import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.domain.payment.*
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper.PaymentMapper

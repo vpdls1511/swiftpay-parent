@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment
 
-import com.ngyu.swiftpay.core.domain.money.Currency
+import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.infrastructure.db.persistent.common.BaseTimeEntity
