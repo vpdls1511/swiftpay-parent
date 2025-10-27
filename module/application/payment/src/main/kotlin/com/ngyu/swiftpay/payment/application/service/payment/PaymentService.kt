@@ -1,9 +1,11 @@
 package com.ngyu.swiftpay.payment.application.service.payment
 
-import com.ngyu.swiftpay.core.port.OrderRepository
-import com.ngyu.swiftpay.core.domain.payment.Payment
-import com.ngyu.swiftpay.core.port.PaymentRepository
 import com.ngyu.swiftpay.core.common.logger.logger
+import com.ngyu.swiftpay.core.domain.order.Order
+import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.port.OrderRepository
+import com.ngyu.swiftpay.core.port.PaymentRepository
+import com.ngyu.swiftpay.core.port.SequenceGenerator
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
@@ -20,14 +22,18 @@ class PaymentService(
   private val orderRepository: OrderRepository,
   private val paymentRepository: PaymentRepository,
   private val escrowService: EscrowService,
+  private val sequenceGenerator: SequenceGenerator
 ) : PaymentUseCase {
 
   private val log = logger()
 
   override fun readyOrder(request: OrderCreateRequestDto): OrderCreateResponseDto {
     log.info("주문서 생성 시작 | merchantId=${request.merchantId}, orderName=${request.orderName}, amount=${request.totalAmount}")
-    val domain = request.toDomain()
-    val savedDomain = orderRepository.save(domain)
+    //TODO - 추후에 merchantId 검증 로직 필요
+    val orderSeq = sequenceGenerator.nextOrderId()
+    val orderId = Order.createOrderId(orderSeq)
+    val order = request.toDomain(orderSeq, orderId)
+    val savedDomain = orderRepository.save(order)
 
     log.info("주문서 생성 완료 | orderId=${savedDomain.orderId}, merchantId=${savedDomain.merchantId}")
     return OrderCreateResponseDto.fromDomain(savedDomain)

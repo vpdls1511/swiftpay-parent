@@ -25,8 +25,10 @@ data class OrderCreateRequestDto(
   val customerEmail: String? = null,
   val customerPhone: String? = null
 ) {
-  fun toDomain(): Order {
+  fun toDomain(seq: Long, orderId: String): Order {
     return Order.create(
+      orderSeq = seq,
+      orderId = orderId,
       merchantId = this.merchantId,
       orderName = this.orderName,
       totalAmount = this.totalAmount,
@@ -50,7 +52,7 @@ data class OrderCreateResponseDto(
     fun fromDomain(domain: Order): OrderCreateResponseDto {
       return OrderCreateResponseDto(
         orderId = domain.orderId,
-        orderName= domain.orderName,
+        orderName = domain.orderName,
         amount = domain.totalAmount.toLong(),
         customerName = domain.customerName,
         customerEmail = domain.customerEmail
@@ -121,7 +123,7 @@ data class PaymentResponseDto(
         merchantId = domain.merchantId,
         amount = domain.amount.toBigDecimal(),
         currency = domain.amount.currency,
-        orderName= domain.orderName,
+        orderName = domain.orderName,
         status = domain.status,
         trnDate = domain.createdAt
       )

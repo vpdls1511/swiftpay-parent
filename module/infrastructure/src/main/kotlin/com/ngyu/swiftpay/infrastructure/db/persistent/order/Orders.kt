@@ -19,7 +19,7 @@ class OrderEntity(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  val id: Long? = null,
+  val id: Long,
 
   @Column(name = "order_id", nullable = false, unique = true, length = 100)
   val orderId: String,

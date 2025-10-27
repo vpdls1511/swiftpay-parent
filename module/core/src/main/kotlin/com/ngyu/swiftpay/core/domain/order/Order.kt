@@ -5,10 +5,9 @@ import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.vo.Money
 import java.math.BigDecimal
 import java.time.LocalDateTime
-import java.util.*
 
 class Order(
-  override val id: Long? = null,
+  override val id: Long,
   val orderId: String,
   val merchantId: String,
 
@@ -31,9 +30,16 @@ class Order(
 ) : BaseDomain<Long>() {
 
   companion object {
+    val PREFIX = "SWIFT_ORDER_"
+    val PADDING_LENGTH = 8
+
     val taxFee = 11L
 
+    fun createOrderId(seq: Long): String = "${PREFIX}${seq.toString().padStart(PADDING_LENGTH, '0')}"
+
     fun create(
+      orderSeq: Long,
+      orderId: String,
       merchantId: String,
       orderName: String,
       totalAmount: Long,
@@ -47,7 +53,8 @@ class Order(
       val supplyAmount = amount - tax
 
       return Order(
-        orderId = UUID.randomUUID().toString(),
+        id = orderSeq,
+        orderId = orderId,
         merchantId = merchantId,
         orderName = orderName,
         totalAmount = amount,
@@ -108,7 +115,7 @@ class Order(
   }
 
   private fun copy(
-    id: Long? = this.id,
+    id: Long = this.id,
     orderId: String = this.orderId,
     merchantId: String = this.merchantId,
     orderName: String = this.orderName,
