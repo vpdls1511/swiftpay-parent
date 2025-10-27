@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 class Merchant(
-  override val id: Long? = null,
+  override val id: Long,
 
   val merchantId: String = UUID.randomUUID().toString(),
   val userId: Long? = null,
@@ -71,7 +71,7 @@ class Merchant(
   }
 
   private fun copy(
-    id: Long? = this.id,
+    id: Long = this.id,
     merchantId: String = this.merchantId,
     userId: Long? = this.userId,
     businessNumber: String = this.businessNumber,
