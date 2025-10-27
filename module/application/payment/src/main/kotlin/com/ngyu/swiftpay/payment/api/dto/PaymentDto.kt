@@ -85,8 +85,10 @@ data class PaymentRequestDto(
   // 옵션 - 콜백 URL
   val callBack: PaymentCallback? = null,
 ) {
-  fun toDomain(): Payment {
+  fun toDomain(seq: Long, paymentId: String): Payment {
     return Payment.create(
+      paymentSeq = seq,
+      paymentId = paymentId,
       merchantId = this.merchantId,
       orderId = this.orderId,
       orderName = this.orderName,

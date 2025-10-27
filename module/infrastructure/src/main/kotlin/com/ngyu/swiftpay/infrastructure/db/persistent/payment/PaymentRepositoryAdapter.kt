@@ -12,7 +12,7 @@ class PaymentRepositoryAdapter(
 ): PaymentRepository {
   override fun save(domain: Payment): Payment {
     val entity = PaymentMapper.toEntity(domain)
-    val saveEntity = repository.saveAndFlush(entity)
+    val saveEntity = repository.save(entity)
 
     return PaymentMapper.toDomain(saveEntity)
   }

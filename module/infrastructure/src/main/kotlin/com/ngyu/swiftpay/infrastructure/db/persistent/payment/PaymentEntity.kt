@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment
 
-import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
+import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.infrastructure.db.persistent.common.BaseTimeEntity
 import jakarta.persistence.*
 import java.math.BigDecimal
@@ -12,7 +12,7 @@ import java.math.BigDecimal
 class PaymentEntity(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  val id: Long? = null,
+  val id: Long,
 
   @Column(length = 50)
   val paymentId: String,

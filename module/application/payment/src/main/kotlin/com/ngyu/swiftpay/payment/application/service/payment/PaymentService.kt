@@ -53,8 +53,13 @@ class PaymentService(
   }
 
   private fun savePayment(request: PaymentRequestDto): Payment {
-    val domain = request.toDomain()
-    val updateDomain = paymentRepository.save(domain.inProgress())
+    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentId = Payment.createPaymentId(paymentSeq)
+    val domain = request.toDomain(paymentSeq, paymentId)
+
+    val pendingPayment = paymentRepository.save(domain)
+
+    val updateDomain = paymentRepository.save(pendingPayment.inProgress())
     log.info("결제 정보 저장 완료 | paymentId = ${domain.paymentId}, status=${domain.status}")
 
     return updateDomain

@@ -1,9 +1,9 @@
 package com.ngyu.swiftpay.core.domain.payment
 
 import com.ngyu.swiftpay.core.domain.BaseDomain
+import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
 import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.vo.Money
-import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -14,7 +14,7 @@ import java.time.LocalDateTime
  * 모든 상태와 정보를 포함한다.
  */
 class Payment(
-  override val id: Long? = null,
+  override val id: Long,
 
   // 기본정보
   val paymentId: String,              // 고유 ID
@@ -44,11 +44,18 @@ class Payment(
 ) : BaseDomain<Long>() {
 
   companion object {
+    val PREFIX = "SWIFT_PAYMENT_"
+    val PADDING_LENGTH = 20
+
+    fun createPaymentId(seq: Long): String = "${PREFIX}${seq.toString().padStart(PADDING_LENGTH, '0')}"
+
     /**
      * 새로운 결제를 생성한다.
      * 초기 상태는 PENDING이며, 고유한 결제 ID가 자동 생성된다.
      */
     fun create(
+      paymentSeq: Long,
+      paymentId: String,
       merchantId: String,
       orderId: String,
       orderName: String,
@@ -63,7 +70,8 @@ class Payment(
     ): Payment {
       val now = LocalDateTime.now()
       return Payment(
-        paymentId = generatePaymentId(),
+        id = paymentSeq,
+        paymentId = paymentId,
         merchantId = merchantId,
         orderId = orderId,
         orderName = orderName,
@@ -78,14 +86,6 @@ class Payment(
         createdAt = now,
         updatedAt = now
       )
-    }
-
-    /**
-     * 고유한 결제 ID를 생성한다.
-     * 형식: swift_pay_{timestamp}_{random}
-     */
-    private fun generatePaymentId(): String {
-      return "swift_pay_${System.currentTimeMillis()}_${(1000..9999).random()}"
     }
   }
 
@@ -113,7 +113,7 @@ class Payment(
 
   // ===== 불변 복제(copy) 메서드 =====
   private fun copy(
-    id: Long? = this.id,
+    id: Long = this.id,
     paymentId: String = this.paymentId,
     merchantId: String = this.merchantId,
     orderId: String = this.orderId,
