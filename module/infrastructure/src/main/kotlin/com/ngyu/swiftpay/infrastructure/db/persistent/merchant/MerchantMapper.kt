@@ -6,6 +6,7 @@ object MerchantMapper {
   fun toEntity(domain: Merchant): MerchantEntity {
     return MerchantEntity(
       id = domain.id,
+      merchantId = domain.merchantId,
       userId = domain.userId,
       businessNumber = domain.businessNumber,
       businessName = domain.businessName,
@@ -27,6 +28,7 @@ object MerchantMapper {
   fun toDomain(entity: MerchantEntity): Merchant {
     return Merchant(
       id = entity.id,
+      merchantId = entity.merchantId,
       userId = entity.userId,
       businessNumber = entity.businessNumber,
       businessName = entity.businessName,

@@ -1,9 +1,9 @@
 package com.ngyu.swiftpay.payment.application.service
 
-import com.ngyu.swiftpay.core.port.MerchantRepository
 import com.ngyu.swiftpay.core.common.exception.DuplicateMerchantException
 import com.ngyu.swiftpay.core.common.exception.InvalidMerchantDataException
 import com.ngyu.swiftpay.core.common.logger.logger
+import com.ngyu.swiftpay.core.port.MerchantRepository
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
@@ -33,10 +33,10 @@ class MerchantService(
       log.info("가맹점 등록 시작")
       val savedMerchant = merchantRepository.save(request.toDomain())
 
-      log.info("가맹점 등록 완료 - merchantId = ${savedMerchant.id} STATUS = ${savedMerchant.status}")
-      val credentials = this.approve(savedMerchant.id)
+      log.info("가맹점 등록 완료 - merchantId = ${savedMerchant.merchantId} STATUS = ${savedMerchant.status}")
+      val credentials = this.approve(savedMerchant.merchantId)
       return MerchantRegisterResponseDto(
-        merchantId = savedMerchant.id,
+        merchantId = savedMerchant.merchantId,
         merchantName = savedMerchant.businessName,
         credentials = credentials
       )
@@ -60,8 +60,10 @@ class MerchantService(
    */
   override fun approve(merchantId: String): PaymentCredentials {
     log.info("가맹점 승인 시작 PENDING → ACTIVE")
+
     val domain = merchantRepository.findByMerchantId(merchantId)
     log.info("가맹점 승인 중.. STATUS = ${domain.status}")
+
     val approvedDomain = domain.approved(LocalDate.now().plusDays(1))
     val savedMerchant = merchantRepository.save(approvedDomain)
     log.info("가맹점 승인 완료 - merchantId = $merchantId STATUS = ${savedMerchant.status}")

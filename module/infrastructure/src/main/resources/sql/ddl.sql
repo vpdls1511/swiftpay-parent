@@ -122,9 +122,12 @@ CREATE TABLE card_bin
     CONSTRAINT chk_card_type CHECK (card_type IN ('CREDIT', 'DEBIT'))
 );
 
+DROP TABLE merchant;
+
 CREATE TABLE merchant
 (
-    id                  VARCHAR(36) PRIMARY KEY,
+    id                  BIGINT PRIMARY KEY,
+    merchant_id         VARCHAR(36),
     user_id             BIGINT,
 
     business_number     VARCHAR(20)   NOT NULL UNIQUE,

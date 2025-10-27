@@ -13,7 +13,10 @@ import java.time.LocalDateTime
 class MerchantEntity(
   @Id
   @Column(name = "id")
-  val id: String,
+  val id: Long? = null,
+
+  @Column(name = "merchant_id")
+  val merchantId: String,
 
   @Column(name = "user_id")
   val userId: Long? = null,
