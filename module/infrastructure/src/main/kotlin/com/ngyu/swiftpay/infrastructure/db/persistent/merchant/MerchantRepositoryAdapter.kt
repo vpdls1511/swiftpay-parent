@@ -2,7 +2,6 @@ package com.ngyu.swiftpay.infrastructure.db.persistent.merchant
 
 import com.ngyu.swiftpay.core.domain.merchant.Merchant
 import com.ngyu.swiftpay.core.port.MerchantRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
@@ -17,7 +16,7 @@ class MerchantRepositoryAdapter(
   }
 
   override fun findByMerchantId(merchantId: String): Merchant {
-    val entity = merchantRepository.findByIdOrNull(merchantId)
+    val entity = merchantRepository.findByMerchantId(merchantId)
       ?: throw Exception("Merchant not found")
 
     return MerchantMapper.toDomain(entity)
