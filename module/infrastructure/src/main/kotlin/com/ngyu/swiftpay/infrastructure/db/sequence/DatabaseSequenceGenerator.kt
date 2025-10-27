@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 @Component
 class SequenceGeneratorImpl(
   private val entityManager: EntityManager,
-): SequenceGenerator {
+) : SequenceGenerator {
 
   override fun nextBankAccountNumber(): Long = nextVal("account_number_seq")
   override fun nextMerchantId(): Long = nextVal("merchant_number_seq")
@@ -17,7 +17,9 @@ class SequenceGeneratorImpl(
   override fun nextSettlementId(): Long = nextVal("settlement_number_seq")
 
   private fun nextVal(sequenceName: String): Long {
-    val query = entityManager.createNativeQuery("SELECT nextval('$sequenceName')")
+    val query = entityManager.createNativeQuery(
+      "SELECT NEXT VALUE FOR $sequenceName"
+    )
     return (query.singleResult as Number).toLong()
   }
 }
