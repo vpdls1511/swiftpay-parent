@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.core.domain
 
+import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.bank.BankCode
 import com.ngyu.swiftpay.core.port.SequenceGenerator
-import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.payment.application.generator.bank.account.number.SwiftBankAccountNumberGenerator
 import io.mockk.every
 import io.mockk.mockk
@@ -29,7 +29,7 @@ class BankAccountTest {
   @DisplayName("계좌번호를 생성할 수 있다")
   fun createAccountNumber() {
     // given
-    every { sequenceGenerator.nextVal() } returns 1234L
+    every { sequenceGenerator.nextBankAccountNumber() } returns 1234L
 
     // when
     val accountNumber = generator.generate()
@@ -44,7 +44,7 @@ class BankAccountTest {
   @DisplayName("생성된 계좌번호는 체크섬 검증을 통과한다")
   fun validateGeneratedAccountNumber() {
     // given
-    every { sequenceGenerator.nextVal() } returns 1234L
+    every { sequenceGenerator.nextBankAccountNumber() } returns 1234L
 
     // when
     val accountNumber = generator.generate()
@@ -87,7 +87,7 @@ class BankAccountTest {
   @DisplayName("체크섬이 틀리면 검증 실패한다")
   fun validateInvalidChecksum() {
     // given
-    every { sequenceGenerator.nextVal() } returns 1234L
+    every { sequenceGenerator.nextBankAccountNumber() } returns 1234L
     val accountNumber = generator.generate()
     val invalidChecksum = accountNumber.dropLast(1) + "9"
 
@@ -99,7 +99,7 @@ class BankAccountTest {
   @DisplayName("계좌번호를 포맷팅할 수 있다")
   fun formatAccountNumber() {
     // given
-    every { sequenceGenerator.nextVal() } returns 1234L
+    every { sequenceGenerator.nextBankAccountNumber() } returns 1234L
     val accountNumber = generator.generate()
 
     // when

@@ -23,7 +23,7 @@ class SwiftBankAccountNumberGenerator(
   override fun generate(): String {
     // 218 20 0000000001 2
     // BRANCH_CODE PRODUCT_CODE sequence CHECKSUM
-    val sequence = sequenceGenerator.nextVal()
+    val sequence = sequenceGenerator.nextBankAccountNumber()
       .toString()
       .padStart(SEQUENCE_LENGTH, '0')
 
