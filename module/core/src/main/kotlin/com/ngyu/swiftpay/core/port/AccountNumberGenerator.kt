@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.application.generator.bank.account.number
+package com.ngyu.swiftpay.core.port
 
 import com.ngyu.swiftpay.core.domain.bank.BankCode
 

@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.application.service
+package com.ngyu.swiftpay.payment.application.service.escrow
 
 import com.ngyu.swiftpay.core.domain.escrow.Escrow
 import com.ngyu.swiftpay.core.port.EscrowRepository

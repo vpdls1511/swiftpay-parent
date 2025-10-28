@@ -34,7 +34,7 @@ class PaymentPrincipalResolver : HandlerMethodArgumentResolver {
       throw PrincipalException("인증 정보가 존재하지 않습니다.")
     }
 
-    require(authentication.principal is PaymentCredentials) {
+    if (authentication.principal is PaymentCredentials) {
       log.error("인증 정보 타입이 PaymentPrincipal이 아님")
       throw PrincipalException("유효하지 않은 인증 정보입니다.")
     }

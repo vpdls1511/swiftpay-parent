@@ -2,7 +2,7 @@ package com.ngyu.swiftpay.payment.api.controller
 
 import com.ngyu.swiftpay.payment.api.dto.BankAccountCreateDto
 import com.ngyu.swiftpay.payment.api.dto.BankAccountResponseDto
-import com.ngyu.swiftpay.payment.application.service.BankService
+import com.ngyu.swiftpay.payment.application.service.bank.BankService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
