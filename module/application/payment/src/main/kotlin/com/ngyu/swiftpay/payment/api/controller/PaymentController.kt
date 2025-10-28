@@ -2,6 +2,7 @@ package com.ngyu.swiftpay.payment.api.controller
 
 import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.payment.api.dto.*
+import com.ngyu.swiftpay.payment.application.service.order.OrderService
 import com.ngyu.swiftpay.payment.application.service.payment.PaymentService
 import com.ngyu.swiftpay.payment.security.PaymentPrincipal
 import io.swagger.v3.oas.annotations.Operation
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/payment")
 class PaymentController(
-  private val paymentService: PaymentService
+  private val orderService: OrderService,
+  private val paymentService: PaymentService,
 ) {
 
   private val log = logger()
@@ -29,7 +31,7 @@ class PaymentController(
     @RequestBody request: OrderCreateRequestDto
   ): ResponseEntity<OrderCreateResponseDto> {
     log.info("주문서 생성 시작")
-    val response = paymentService.readyOrder(request)
+    val response = orderService.createOrder(request)
     return ResponseEntity
       .status(HttpStatus.CREATED)
       .body(response)

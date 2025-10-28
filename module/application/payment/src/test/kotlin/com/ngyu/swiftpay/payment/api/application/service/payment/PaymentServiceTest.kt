@@ -1,16 +1,17 @@
 package com.ngyu.swiftpay.payment.api.application.service.payment
 
-import com.ngyu.swiftpay.core.vo.Currency
-import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
-import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
-import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
+import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
+import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
 import com.ngyu.swiftpay.core.port.PaymentRepository
+import com.ngyu.swiftpay.core.vo.Currency
+import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
+import com.ngyu.swiftpay.payment.application.service.order.OrderService
+import com.ngyu.swiftpay.payment.application.service.payment.PaymentService
 import com.ngyu.swiftpay.payment.application.strategy.PaymentBankStrategy
 import com.ngyu.swiftpay.payment.application.strategy.PaymentCardStrategy
 import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
-import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
-import com.ngyu.swiftpay.payment.application.service.payment.PaymentService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -41,6 +42,9 @@ class PaymentServiceTest {
  @InjectMocks
  private lateinit var paymentService: PaymentService
 
+ @InjectMocks
+ private lateinit var orderService: OrderService
+
  private lateinit var testPayment: Payment
 
  @BeforeEach
@@ -63,7 +67,7 @@ class PaymentServiceTest {
   )
 
   // when
-  val result = paymentService.readyOrder(request)
+  val result = orderService.createOrder(request)
 
   // then
   assertThat(result).isNotNull
