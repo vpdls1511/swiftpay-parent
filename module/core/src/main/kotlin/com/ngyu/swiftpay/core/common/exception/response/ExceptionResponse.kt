@@ -14,6 +14,7 @@ import org.slf4j.MDC
  * @property path 예외가 발생한 API 경로
  */
 data class ExceptionResponse(
+  val errorCode: String,
   val message: String,
   val requestId: String,
   val timestamp: Long,
@@ -21,13 +22,17 @@ data class ExceptionResponse(
   val path: String,
 ) {
   companion object {
-    fun create(message: String, request: HttpServletRequest): ExceptionResponse {
+    fun create(errorCode: String = "UNKNOWN_EXCEPTION",
+               message: String,
+               request: HttpServletRequest
+    ): ExceptionResponse {
       val requestId = MDC.get(RequestIdFilter.REQUEST_ID_MDC_KEY)
         ?: "unknown"
       val requestTime = MDC.get(RequestIdFilter.REQUEST_TIME_MDC_KEY)?.toLongOrNull()
         ?: System.currentTimeMillis()
 
       return ExceptionResponse(
+        errorCode = errorCode,
         message = message,
         requestId = requestId,
         timestamp = System.currentTimeMillis(),

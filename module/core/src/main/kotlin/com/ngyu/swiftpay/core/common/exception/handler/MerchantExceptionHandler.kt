@@ -30,10 +30,11 @@ class MerchantExceptionHandler {
   ): ResponseEntity<ExceptionResponse> {
     log.error("MerchantException = ${e.message}")
     return ResponseEntity
-      .status(HttpStatus.INTERNAL_SERVER_ERROR)
+      .status(HttpStatus.BAD_REQUEST)
       .body(
         ExceptionResponse.create(
-          message = e.message ?: "MerchantException",
+          errorCode = e.errorCode,
+          message = e.message ?: "가맹 문제 발생",
           request = request
         )
       )
