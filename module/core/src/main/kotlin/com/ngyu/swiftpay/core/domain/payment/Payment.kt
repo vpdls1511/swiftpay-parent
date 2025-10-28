@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.core.domain.payment
 
+import com.ngyu.swiftpay.core.common.exception.InvalidPaymentStatusException
 import com.ngyu.swiftpay.core.domain.BaseDomain
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
 import com.ngyu.swiftpay.core.vo.Currency
@@ -91,26 +92,34 @@ class Payment(
 
   // ===== 상태 전이 메서드 =====
 
+  // Payment 도메인
   fun inProgress(): Payment {
-    require(status == PaymentStatus.PENDING) { "결제 대기 상태가 아닙니다." }
+    if (status != PaymentStatus.PENDING) {
+      throw InvalidPaymentStatusException("결제 대기 상태가 아닙니다. 현재: $status")
+    }
     return copy(status = PaymentStatus.IN_PROGRESS)
   }
 
   fun success(): Payment {
-    require(status == PaymentStatus.IN_PROGRESS) { "결제 중 상태가 아닙니다." }
+    if (status != PaymentStatus.IN_PROGRESS) {
+      throw InvalidPaymentStatusException("결제 중 상태가 아닙니다. 현재: $status")
+    }
     return copy(status = PaymentStatus.SUCCEEDED)
   }
 
   fun cancel(): Payment {
-    require(status == PaymentStatus.IN_PROGRESS) { "결제 중 상태가 아닙니다." }
+    if (status != PaymentStatus.IN_PROGRESS) {
+      throw InvalidPaymentStatusException("결제 중 상태가 아닙니다. 현재: $status")
+    }
     return copy(status = PaymentStatus.CANCELLED)
   }
 
   fun failed(reason: String): Payment {
-    require(status == PaymentStatus.IN_PROGRESS) { "결제 중 상태가 아닙니다." }
+    if (status != PaymentStatus.IN_PROGRESS) {
+      throw InvalidPaymentStatusException("결제 중 상태가 아닙니다. 현재: $status")
+    }
     return copy(status = PaymentStatus.FAILED, reason = reason)
   }
-
   // ===== 불변 복제(copy) 메서드 =====
   private fun copy(
     id: Long = this.id,
