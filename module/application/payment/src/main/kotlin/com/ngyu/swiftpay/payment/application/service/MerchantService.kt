@@ -9,8 +9,6 @@ import com.ngyu.swiftpay.core.port.SequenceGenerator
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
-import com.ngyu.swiftpay.payment.application.usecase.MerchantUseCase
-import com.ngyu.swiftpay.payment.application.usecase.PaymentApiKeyUseCase
 import jakarta.transaction.Transactional
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
@@ -18,10 +16,10 @@ import java.time.LocalDate
 
 @Service
 class MerchantService(
-  private val paymentApiKeyUseCase: PaymentApiKeyUseCase,
+  private val paymentApiKeyService: PaymentApiKeyService,
   private val merchantRepository: MerchantRepository,
   private val sequenceGenerator: SequenceGenerator
-) : MerchantUseCase {
+) {
 
   private val log = logger()
 
@@ -31,7 +29,7 @@ class MerchantService(
    * 상태 : PENDING
    */
   @Transactional
-  override fun register(request: MerchantRegisterReqeust): MerchantRegisterResponseDto {
+  fun register(request: MerchantRegisterReqeust): MerchantRegisterResponseDto {
     try {
       log.info("가맹점 등록 시작")
       val merchantSeq = sequenceGenerator.nextMerchantId()
@@ -64,7 +62,7 @@ class MerchantService(
    *
    * 상태 : PENDING → ACTIVE
    */
-  override fun approve(merchantId: String): PaymentCredentials {
+  fun approve(merchantId: String): PaymentCredentials {
     log.info("가맹점 승인 시작 PENDING → ACTIVE")
 
     val domain = merchantRepository.findByMerchantId(merchantId)
@@ -74,7 +72,7 @@ class MerchantService(
     val savedMerchant = merchantRepository.save(approvedDomain)
     log.info("가맹점 승인 완료 - merchantId = $merchantId STATUS = ${savedMerchant.status}")
 
-    return paymentApiKeyUseCase.issueKey()
+    return paymentApiKeyService.issueKey()
   }
 
 }

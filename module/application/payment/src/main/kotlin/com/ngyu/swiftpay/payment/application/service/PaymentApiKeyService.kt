@@ -4,7 +4,6 @@ import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.apiCredentials.ApiCredentials
 import com.ngyu.swiftpay.core.port.ApiCredentialsRepository
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
-import com.ngyu.swiftpay.payment.application.usecase.PaymentApiKeyUseCase
 import com.ngyu.swiftpay.security.provider.PaymentTokenProvider
 import com.ngyu.swiftpay.security.vo.ApiKeyPair
 import org.springframework.stereotype.Service
@@ -13,11 +12,11 @@ import org.springframework.stereotype.Service
 class PaymentApiKeyService(
   private val paymentTokenProvider: PaymentTokenProvider,
   private val apiCredentialsRepository: ApiCredentialsRepository
-) : PaymentApiKeyUseCase {
+) {
 
   private val log = logger()
 
-  override fun issueKey(): PaymentCredentials {
+  fun issueKey(): PaymentCredentials {
     log.info("API 키 발급 시작 - ")
     val pair: ApiKeyPair = paymentTokenProvider.issue()
     val apiCredentials: ApiCredentials = ApiCredentials.create(pair.hashed, pair.lookupKey)

@@ -7,7 +7,6 @@ import com.ngyu.swiftpay.core.port.MerchantRepository
 import com.ngyu.swiftpay.core.port.SequenceGenerator
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
-import com.ngyu.swiftpay.payment.application.usecase.PaymentApiKeyUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -21,17 +20,17 @@ import java.time.LocalDate
 
 class MerchantServiceTest {
 
-  private lateinit var paymentApiKeyUseCase: PaymentApiKeyUseCase
+  private lateinit var paymentApiKeyService: PaymentApiKeyService
   private lateinit var merchantRepository: MerchantRepository
   private lateinit var sequenceGenerator: SequenceGenerator
   private lateinit var merchantService: MerchantService
 
   @BeforeEach
   fun setUp() {
-    paymentApiKeyUseCase = mockk()
+    paymentApiKeyService = mockk()
     merchantRepository = mockk()
     sequenceGenerator = mockk()
-    merchantService = MerchantService(paymentApiKeyUseCase, merchantRepository, sequenceGenerator)
+    merchantService = MerchantService(paymentApiKeyService, merchantRepository, sequenceGenerator)
   }
 
   @Test
@@ -59,7 +58,7 @@ class MerchantServiceTest {
     every { merchantRepository.save(merchant) } returns merchant  // 첫 번째 save
     every { merchantRepository.findByMerchantId(merchantId) } returns merchant
     every { merchantRepository.save(approvedMerchant) } returns approvedMerchant  // 두 번째 save
-    every { paymentApiKeyUseCase.issueKey() } returns credentials
+    every { paymentApiKeyService.issueKey() } returns credentials
 
     // when
     val result = merchantService.register(request)
@@ -71,7 +70,7 @@ class MerchantServiceTest {
 
     verify(exactly = 1) { sequenceGenerator.nextMerchantId() }
     verify(exactly = 2) { merchantRepository.save(any()) }
-    verify(exactly = 1) { paymentApiKeyUseCase.issueKey() }
+    verify(exactly = 1) { paymentApiKeyService.issueKey() }
   }
 
   @Test

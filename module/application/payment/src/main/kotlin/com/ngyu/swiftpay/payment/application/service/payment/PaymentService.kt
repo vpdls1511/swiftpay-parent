@@ -12,7 +12,6 @@ import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.EscrowService
 import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
-import com.ngyu.swiftpay.payment.application.usecase.PaymentUseCase
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -23,11 +22,11 @@ class PaymentService(
   private val paymentRepository: PaymentRepository,
   private val escrowService: EscrowService,
   private val sequenceGenerator: SequenceGenerator
-) : PaymentUseCase {
+) {
 
   private val log = logger()
 
-  override fun readyOrder(request: OrderCreateRequestDto): OrderCreateResponseDto {
+  fun readyOrder(request: OrderCreateRequestDto): OrderCreateResponseDto {
     log.info("주문서 생성 시작 | merchantId=${request.merchantId}, orderName=${request.orderName}, amount=${request.totalAmount}")
     //TODO - 추후에 merchantId 검증 로직 필요
     val orderSeq = sequenceGenerator.nextOrderId()
@@ -40,7 +39,7 @@ class PaymentService(
   }
 
   @Transactional
-  override fun processing(request: PaymentRequestDto): PaymentResponseDto {
+  fun processing(request: PaymentRequestDto): PaymentResponseDto {
     log.info("결제 처리 시작 | orderId=${request.orderId}, merchantId=${request.merchantId}, method=${request.method}, amount=${request.amount}")
     val domain = this.savePayment(request)
     log.info("결제 정보 저장 완료 :: orderId = ${request.orderId} , paymentId = ${domain.paymentId}")
