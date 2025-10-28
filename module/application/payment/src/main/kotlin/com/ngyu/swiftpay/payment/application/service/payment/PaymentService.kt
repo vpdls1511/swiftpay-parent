@@ -54,7 +54,9 @@ class PaymentService(
       payment.success()
     } catch (e: Exception) {
       log.error("결제 실패 | paymentId=${payment.paymentId}", e)
-      payment.failed(e.message ?: "결제 처리 중 오류")
+      val failure = payment.failed(e.message ?: "결제 처리 중 오류")
+      paymentRepository.save(failure)
+      throw e
     }
   }
 
