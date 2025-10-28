@@ -10,7 +10,7 @@ import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
 import com.ngyu.swiftpay.payment.api.dto.OrderCreateResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
-import com.ngyu.swiftpay.payment.application.service.EscrowService
+import com.ngyu.swiftpay.payment.application.service.escrow.EscrowService
 import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service

@@ -2,7 +2,7 @@ package com.ngyu.swiftpay.payment.api.controller
 
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterResponseDto
-import com.ngyu.swiftpay.payment.application.service.MerchantService
+import com.ngyu.swiftpay.payment.application.service.merchant.MerchantService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity

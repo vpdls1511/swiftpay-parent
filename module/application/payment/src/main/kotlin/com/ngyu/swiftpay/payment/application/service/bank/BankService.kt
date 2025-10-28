@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.application.service
+package com.ngyu.swiftpay.payment.application.service.bank
 
 import com.ngyu.swiftpay.core.domain.bank.BankAccount
 import com.ngyu.swiftpay.core.port.BankAccountRepository

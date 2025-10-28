@@ -8,6 +8,7 @@ import com.ngyu.swiftpay.core.port.SequenceGenerator
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import com.ngyu.swiftpay.payment.application.auth.ApiCredentialsService
+import com.ngyu.swiftpay.payment.application.service.merchant.MerchantService
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

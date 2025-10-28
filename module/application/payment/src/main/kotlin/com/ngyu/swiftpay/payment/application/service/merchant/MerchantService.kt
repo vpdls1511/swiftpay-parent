@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.application.service
+package com.ngyu.swiftpay.payment.application.service.merchant
 
 import com.ngyu.swiftpay.core.common.exception.DuplicateMerchantException
 import com.ngyu.swiftpay.core.common.exception.InvalidMerchantDataException
