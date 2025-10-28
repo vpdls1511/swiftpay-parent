@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.payment.application.service.payment
 
+import com.ngyu.swiftpay.core.common.exception.PaymentProcessException
 import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.payment.Payment
 import com.ngyu.swiftpay.core.port.PaymentRepository
@@ -56,7 +57,7 @@ class PaymentService(
       log.error("결제 실패 | paymentId=${payment.paymentId}", e)
       val failure = payment.failed(e.message ?: "결제 처리 중 오류")
       paymentRepository.save(failure)
-      throw e
+      throw PaymentProcessException()
     }
   }
 
