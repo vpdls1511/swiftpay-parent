@@ -1,6 +1,7 @@
-package com.ngyu.swiftpay.payment.application.generator.bank.account.number
+package com.ngyu.swiftpay.infrastructure.db.generator
 
 import com.ngyu.swiftpay.core.domain.bank.BankCode
+import com.ngyu.swiftpay.core.port.AccountNumberGenerator
 import com.ngyu.swiftpay.core.port.SequenceGenerator
 import org.springframework.stereotype.Component
 
