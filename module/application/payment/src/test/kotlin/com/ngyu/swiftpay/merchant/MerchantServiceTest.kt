@@ -20,17 +20,17 @@ import java.time.LocalDate
 
 class MerchantServiceTest {
 
-  private lateinit var paymentApiKeyService: PaymentApiKeyService
+  private lateinit var apiCredentialsService: ApiCredentialsService
   private lateinit var merchantRepository: MerchantRepository
   private lateinit var sequenceGenerator: SequenceGenerator
   private lateinit var merchantService: MerchantService
 
   @BeforeEach
   fun setUp() {
-    paymentApiKeyService = mockk()
+    apiCredentialsService = mockk()
     merchantRepository = mockk()
     sequenceGenerator = mockk()
-    merchantService = MerchantService(paymentApiKeyService, merchantRepository, sequenceGenerator)
+    merchantService = MerchantService(apiCredentialsService, merchantRepository, sequenceGenerator)
   }
 
   @Test
@@ -58,7 +58,7 @@ class MerchantServiceTest {
     every { merchantRepository.save(merchant) } returns merchant  // 첫 번째 save
     every { merchantRepository.findByMerchantId(merchantId) } returns merchant
     every { merchantRepository.save(approvedMerchant) } returns approvedMerchant  // 두 번째 save
-    every { paymentApiKeyService.issueKey() } returns credentials
+    every { apiCredentialsService.issueKey() } returns credentials
 
     // when
     val result = merchantService.register(request)
@@ -70,7 +70,7 @@ class MerchantServiceTest {
 
     verify(exactly = 1) { sequenceGenerator.nextMerchantId() }
     verify(exactly = 2) { merchantRepository.save(any()) }
-    verify(exactly = 1) { paymentApiKeyService.issueKey() }
+    verify(exactly = 1) { apiCredentialsService.issueKey() }
   }
 
   @Test

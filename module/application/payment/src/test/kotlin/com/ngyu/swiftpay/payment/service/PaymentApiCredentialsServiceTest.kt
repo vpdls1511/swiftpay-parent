@@ -23,7 +23,7 @@ class PaymentApiCredentialsServiceTest {
     val signature: ApiKeyPair = paymentTokenProvider.issue()
     apiKeyPair = signature
 
-    val apiCredentials: ApiCredentials = ApiCredentials.create(apiKeyPair.plain, apiKeyPair.lookupKey)
+    val apiCredentials: ApiCredentials = ApiCredentials.create(apiKeyPair.plain, apiKeyPair.apiPairKey)
 
     fakeApiKeyJpaRepository.save(apiCredentials)
   }
@@ -59,7 +59,7 @@ class PaymentApiCredentialsServiceTest {
   fun findApiKey() {
     val pair: ApiKeyPair = apiKeyPair
 
-    val apiKey: ApiCredentialsEntity? = fakeApiKeyJpaRepository.findByLookUpKey(pair.lookupKey)
+    val apiKey: ApiCredentialsEntity? = fakeApiKeyJpaRepository.findByLookUpKey(pair.apiPairKey)
 
     assertThat(apiKey).isNotNull()
     assertThat(apiKey?.apiKey).isEqualTo(pair.plain)

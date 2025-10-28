@@ -16,7 +16,7 @@ import java.time.LocalDate
 
 @Service
 class MerchantService(
-  private val paymentApiKeyService: PaymentApiKeyService,
+  private val apiCredentialsService: ApiCredentialsService,
   private val merchantRepository: MerchantRepository,
   private val sequenceGenerator: SequenceGenerator
 ) {
@@ -72,7 +72,7 @@ class MerchantService(
     val savedMerchant = merchantRepository.save(approvedDomain)
     log.info("가맹점 승인 완료 - merchantId = $merchantId STATUS = ${savedMerchant.status}")
 
-    return paymentApiKeyService.issueKey()
+    return apiCredentialsService.issueKey()
   }
 
 }
