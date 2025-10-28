@@ -9,6 +9,7 @@ import com.ngyu.swiftpay.core.port.SequenceGenerator
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
+import com.ngyu.swiftpay.payment.application.auth.ApiCredentialsService
 import jakarta.transaction.Transactional
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service

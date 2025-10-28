@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.application.service
+package com.ngyu.swiftpay.payment.application.auth
 
 import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.apiCredentials.ApiCredentials
