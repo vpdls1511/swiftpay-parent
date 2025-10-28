@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.core.domain.settlement
 
+import com.ngyu.swiftpay.core.common.exception.InvalidSettlementStatusException
 import com.ngyu.swiftpay.core.domain.BaseDomain
 import com.ngyu.swiftpay.core.vo.Money
 import java.time.LocalDate
@@ -25,14 +26,18 @@ class Settlement(
   val executedAt: LocalDateTime? = null
 ) : BaseDomain<Long>() {
   fun process(): Settlement {
-    require(this.status == SettlementStatus.PENDING) { "정산 대기 상태가 아닙니다." }
+    if (this.status != SettlementStatus.PENDING) {
+      throw InvalidSettlementStatusException("정산 대기 상태가 아닙니다.")
+    }
     return this.copy(
       status = SettlementStatus.PROCESSING
     )
   }
 
   fun complete(): Settlement {
-    require(this.status == SettlementStatus.PROCESSING) { "정산 처리 중 상태가 아닙니다." }
+    if (this.status != SettlementStatus.PROCESSING) {
+      throw InvalidSettlementStatusException("정산 처리 중 상태가 아닙니다.")
+    }
     return this.copy(
       status = SettlementStatus.COMPLETED,
       executedAt = LocalDateTime.now(),
@@ -40,7 +45,9 @@ class Settlement(
   }
 
   fun fail(reason: String): Settlement {
-    require(this.status == SettlementStatus.PROCESSING) { "정산 처리 중 상태가 아닙니다." }
+    if (this.status != SettlementStatus.PROCESSING) {
+      throw InvalidSettlementStatusException("정산 처리 중 상태가 아닙니다.")
+    }
     return this.copy(
       status = SettlementStatus.FAILED,
       failReason = reason,

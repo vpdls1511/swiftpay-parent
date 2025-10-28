@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.core.vo
 
+import com.ngyu.swiftpay.core.common.exception.InvalidAmountException
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -28,7 +29,6 @@ data class Money(
     require(other.currency == this.currency) { "통화가 다릅니다." }
     return Money(this.amount + other.amount, this.currency)
   }
-
   /**
    * '-' operator 를 이용한 연산이 가능
    */
@@ -38,6 +38,7 @@ data class Money(
   }
 
   operator fun div(divider: Long): Money {
+    require(divider != 0L) { "0으로 나눌 수 없습니다." }
     return Money(
       this.amount.divide(BigDecimal.valueOf(divider), this.currency.decimalFormat, RoundingMode.HALF_UP),
       this.currency
@@ -57,7 +58,9 @@ data class Money(
    * @return Int
    */
   operator fun compareTo(other: Money): Int {
-    require(other.currency == this.currency) { "통화가 다릅니다." }
+    if (other.currency == this.currency) {
+      throw InvalidAmountException("통화가 다릅니다.")
+    }
     return this.amount.compareTo(other.amount)
   }
 

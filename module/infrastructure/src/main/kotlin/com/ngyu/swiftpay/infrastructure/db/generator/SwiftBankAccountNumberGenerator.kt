@@ -55,10 +55,10 @@ class SwiftBankAccountNumberGenerator(
   override fun format(accountNumber: String): String {
     require(accountNumber.length == 16) { "계좌번호는 16자리여야 합니다" }
 
-    val branchCode = accountNumber.substring(0, 3)      // 218
-    val productCode = accountNumber.substring(3, 5)     // 20
-    val sequence = accountNumber.substring(5, 15)       // 0000000001
-    val checksum = accountNumber.substring(15)          // 2
+    val branchCode = accountNumber.substring(0, 3)
+    val productCode = accountNumber.substring(3, 5)
+    val sequence = accountNumber.substring(5, 15)
+    val checksum = accountNumber.substring(15)
 
     return "$branchCode-$productCode-$sequence-$checksum"
   }

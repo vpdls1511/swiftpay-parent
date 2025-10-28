@@ -1,5 +1,7 @@
 package com.ngyu.swiftpay.core.domain.order
 
+import com.ngyu.swiftpay.core.common.exception.InvalidAmountException
+import com.ngyu.swiftpay.core.common.exception.InvalidOrderStatusException
 import com.ngyu.swiftpay.core.domain.BaseDomain
 import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.vo.Money
@@ -72,8 +74,12 @@ class Order(
   }
 
   fun refund(amount: Money): Order {
-    require(status == OrderStatus.DONE || status == OrderStatus.PARTIAL_REFUNDED) { "환불 가능한 상태가 아닙니다." }
-    require(balanceAmount >= amount) { "환불 금액이 환불 가능 금액보다 큽니다." }
+    if (status == OrderStatus.DONE || status == OrderStatus.PARTIAL_REFUNDED) {
+      throw InvalidOrderStatusException("환불 가능한 상태가 아닙니다.")
+    }
+    if (balanceAmount >= amount) {
+      throw InvalidAmountException("환불 금액이 환불 가능 금액보다 큽니다.")
+    }
 
     val refundTax = amount / taxFee
     val refundSupply = amount - refundTax
@@ -94,21 +100,27 @@ class Order(
   }
 
   fun processing(): Order {
-    require(this.status == OrderStatus.READY) { "주문 대기 상태가 아닙니다." }
+    if (this.status == OrderStatus.READY) {
+      throw InvalidOrderStatusException("주문 대기 상태가 아닙니다.")
+    }
     return this.copy(
       status = OrderStatus.PROCESSING
     )
   }
 
   fun done(): Order {
-    require(this.status == OrderStatus.PROCESSING) { "주문 진행중 상태가 아닙니다." }
+    if (this.status == OrderStatus.PROCESSING) {
+      throw InvalidOrderStatusException("주문 진행중 상태가 아닙니다.")
+    }
     return this.copy(
       status = OrderStatus.DONE
     )
   }
 
   fun cancel(): Order {
-    require(this.status == OrderStatus.PROCESSING) { "주문 진행중 상태가 아닙니다." }
+    if (this.status == OrderStatus.PROCESSING) {
+      throw InvalidOrderStatusException("주문 진행중 상태가 아닙니다.")
+    }
     return this.copy(
       status = OrderStatus.CANCELLED
     )

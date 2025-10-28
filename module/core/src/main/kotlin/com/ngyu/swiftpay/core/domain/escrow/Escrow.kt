@@ -1,8 +1,9 @@
 package com.ngyu.swiftpay.core.domain.escrow
 
+import com.ngyu.swiftpay.core.common.exception.InvalidEscrowStatusException
 import com.ngyu.swiftpay.core.domain.BaseDomain
-import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.vo.Money
 import java.time.LocalDateTime
 
 class Escrow(
@@ -41,7 +42,9 @@ class Escrow(
   }
 
   fun settle(): Escrow {
-    require(status == EscrowStatus.HOLD) { "HOLD 상태가 아닙니다." }
+    if (status != EscrowStatus.HOLD) {
+      throw InvalidEscrowStatusException("HOLD 상태가 아닙니다.")
+    }
     val now = LocalDateTime.now()
     return copy(
       settlementId = settlementId,  // 추가!
@@ -52,7 +55,9 @@ class Escrow(
   }
 
   fun refund(): Escrow {
-    require(status == EscrowStatus.HOLD) { "HOLD 상태가 아닙니다." }
+    if (status != EscrowStatus.HOLD) {
+      throw InvalidEscrowStatusException("HOLD 상태가 아닙니다.")
+    }
     val now = LocalDateTime.now()
     return copy(
       status = EscrowStatus.REFUNDED,

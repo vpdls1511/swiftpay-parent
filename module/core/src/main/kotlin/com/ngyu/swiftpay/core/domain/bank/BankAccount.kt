@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.core.domain.bank
 
+import com.ngyu.swiftpay.core.common.exception.InvalidBankStatusException
 import com.ngyu.swiftpay.core.domain.BaseDomain
 import com.ngyu.swiftpay.core.vo.Money
 import java.time.LocalDateTime
@@ -35,7 +36,9 @@ class BankAccount(
 
   // 출금 처리
   fun withdraw(other: Money): BankAccount {
-    require(canWithdraw(other)) { "잔액이 부족하거나 계좌 상태가 비활성입니다" }
+    if (!canWithdraw(other)) {
+      throw InvalidBankStatusException("잔액이 부족하거나 계좌 상태가 비활성입니다")
+    }
     return this.copy(
       amount = amount - other,
       updatedAt = LocalDateTime.now()
@@ -44,7 +47,9 @@ class BankAccount(
 
   // 입금 처리
   fun deposit(other: Money): BankAccount {
-    require(status == BankAccountStatus.ACTIVE) { "계좌 상태가 비활성입니다" }
+    if (status != BankAccountStatus.ACTIVE) {
+      throw InvalidBankStatusException("계좌 상태가 비활성입니다")
+    }
     return this.copy(
       amount = amount + other,
       updatedAt = LocalDateTime.now()

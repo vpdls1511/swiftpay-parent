@@ -1,5 +1,6 @@
 package com.ngyu.swiftpay.core.domain.merchant
 
+import com.ngyu.swiftpay.core.common.exception.InvalidMerchantStatusException
 import com.ngyu.swiftpay.core.domain.BaseDomain
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -48,7 +49,9 @@ class Merchant(
   }
 
   fun approved(startDate: LocalDate): Merchant {
-    require(this.status == MerchantStatus.PENDING) { "승인 대기 상태가 아닙니다." }
+    if (this.status != MerchantStatus.PENDING) {
+      throw InvalidMerchantStatusException("승인 대기 상태가 아닙니다.")
+    }
     return this.copy(
       status = MerchantStatus.ACTIVE,
       contractStartDate = startDate,
@@ -57,7 +60,9 @@ class Merchant(
   }
 
   fun suspended(reason: String): Merchant {
-    require(this.status == MerchantStatus.ACTIVE) { "활성 상태가 아닙니다" }
+    if (this.status != MerchantStatus.ACTIVE) {
+      throw InvalidMerchantStatusException("활성 상태가 아닙니다")
+    }
     return this.copy(
       status = MerchantStatus.SUSPENDED,
       suspendedReason = reason
@@ -65,14 +70,18 @@ class Merchant(
   }
 
   fun resume(): Merchant {
-    require(this.status == MerchantStatus.SUSPENDED) { "정지 상태가 아닙니다" }
+    if (this.status != MerchantStatus.SUSPENDED) {
+      throw InvalidMerchantStatusException("정지 상태가 아닙니다")
+    }
     return this.copy(
       status = MerchantStatus.ACTIVE
     )
   }
 
   fun terminate(endDate: LocalDate): Merchant {
-    require(this.status != MerchantStatus.TERMINATED) { "이미 종료된 가맹점입니다" }
+    if (this.status != MerchantStatus.TERMINATED) {
+      throw InvalidMerchantStatusException("이미 종료된 가맹점입니다")
+    }
     return this.copy(
       status = MerchantStatus.TERMINATED,
       contractEndDate = endDate
