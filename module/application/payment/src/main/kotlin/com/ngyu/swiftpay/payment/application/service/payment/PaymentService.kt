@@ -36,9 +36,16 @@ class PaymentService(
     return PaymentResponseDto.fromDomain(saved)
   }
 
+  /**
+   * 1. 중복된 orderId 인지 검증
+   * 2. 금액의 유효성 ( 0원보다 작은지 )
+   * 3. 결제를 하고자 하는 가맹점이 활성화 상태인지
+   * 4. 해당 결제수단을 지원하는지
+   *
+   * 위 조건을 모두 만족하지 못한다면, Exception 발생.
+   */
   private fun validatePaymentRequest(request: PaymentRequestDto) {
     // TODO - pending -> progress 결제 요청 자체의 유효성을 검사해야한다..
-    // 검증 중 오류가 발생시 throw
   }
 
   private fun createPayment(request: PaymentRequestDto): Payment {
