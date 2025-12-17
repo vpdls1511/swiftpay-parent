@@ -32,9 +32,8 @@ class PaymentController(
   ): ResponseEntity<OrderCreateResponseDto> {
     log.info("주문서 생성 시작")
     val response = orderService.createOrder(request)
-    return ResponseEntity
-      .status(HttpStatus.CREATED)
-      .body(response)
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(response)
   }
 
   @Operation(
@@ -56,8 +55,7 @@ class PaymentController(
   ): ResponseEntity<PaymentResponseDto> {
     log.info("결제 처리 시작")
     val response = paymentService.processing(request)
-    return ResponseEntity
-      .status(HttpStatus.ACCEPTED)
-      .body(response)
+
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(response)
   }
 }
