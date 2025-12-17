@@ -59,7 +59,10 @@ class FilterChainExceptionHandler(
     response.characterEncoding = "UTF-8"
 
     try {
-      val errorResponse = ExceptionResponse.create(message, request)
+      val errorResponse = ExceptionResponse.create(
+        message = message,
+        request = request
+      )
       val json = objectMapper.writeValueAsString(errorResponse)
 
       response.writer.write(json)
