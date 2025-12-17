@@ -1,9 +1,9 @@
 package com.ngyu.swiftpay.core.domain
 
-import com.ngyu.swiftpay.core.vo.Currency
-import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.core.domain.order.Order
 import com.ngyu.swiftpay.core.domain.order.OrderStatus
+import com.ngyu.swiftpay.core.vo.Currency
+import com.ngyu.swiftpay.core.vo.Money
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -18,7 +18,12 @@ class OrderTest {
 
   @BeforeEach
   fun setUp() {
+    val orderSeq = 1L
+    val orderId = Order.createOrderId(orderSeq)
+
     order = Order.create(
+      orderSeq = orderSeq,
+      orderId = orderId,
       merchantId = UUID.randomUUID().toString(),
       orderName = "테스트 상품",
       totalAmount = 110000L,
