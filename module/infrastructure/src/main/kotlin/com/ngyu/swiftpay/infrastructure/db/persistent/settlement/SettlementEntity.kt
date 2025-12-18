@@ -10,7 +10,6 @@ import java.time.LocalDateTime
 @Table(name = "settlement")
 class SettlementEntity(
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   val id: Long? = null,
 

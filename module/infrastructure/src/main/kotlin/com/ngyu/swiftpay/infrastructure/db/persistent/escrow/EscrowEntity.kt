@@ -9,7 +9,6 @@ import java.time.LocalDateTime
 @Table(name = "escrow")
 class EscrowEntity(
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   val id: Long? = null,
 

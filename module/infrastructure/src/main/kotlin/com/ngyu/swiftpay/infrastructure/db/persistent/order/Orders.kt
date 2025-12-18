@@ -17,8 +17,6 @@ import java.time.LocalDateTime
 )
 class OrderEntity(
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
   val id: Long,
 
   @Column(name = "order_id", nullable = false, unique = true, length = 100)
