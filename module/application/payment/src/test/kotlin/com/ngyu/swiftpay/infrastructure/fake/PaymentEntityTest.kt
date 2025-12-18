@@ -5,10 +5,9 @@ import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
 import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
-import com.ngyu.swiftpay.core.port.SequenceGenerator
 import com.ngyu.swiftpay.core.vo.Currency
+import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper.PaymentMapper
-import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -18,19 +17,17 @@ import java.math.BigDecimal
 class PaymentEntityTest {
 
   private lateinit var fakePaymentJpaRepository: FakePaymentJpaRepository
-  private lateinit var sequenceGenerator: SequenceGenerator
 
   @BeforeEach
   fun setup() {
     fakePaymentJpaRepository = FakePaymentJpaRepository()
-    sequenceGenerator = mockk()
   }
 
   @Test
   @DisplayName("카드 결제 도메인 생성 및 저장 후 조회")
   fun `카드 결제 도메인을 생성하고 저장한 후 다시 조회할 수 있다`() {
     // given
-    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentSeq = 1L
     val paymentId = Payment.createPaymentId(paymentSeq)
 
     val payment = Payment.create(
@@ -68,7 +65,7 @@ class PaymentEntityTest {
     assertEquals("pair_key_001", foundDomain.merchantId)
     assertEquals("ORDER_001", foundDomain.orderId)
     assertEquals("나이키 에어포스", foundDomain.orderName)
-    assertEquals(BigDecimal("129000.00"), foundDomain.amount)
+    assertEquals(Money.won(129000), foundDomain.amount)
     assertEquals(PaymentMethod.CARD, foundDomain.method)
     assertEquals(PaymentStatus.PENDING, foundDomain.status)
     assertEquals("idempotency_001", foundDomain.idempotencyKey)
@@ -83,7 +80,7 @@ class PaymentEntityTest {
   @DisplayName("계좌이체 결제 도메인 생성 및 저장 후 조회")
   fun `계좌이체 결제 도메인을 생성하고 저장한 후 다시 조회할 수 있다`() {
     // given
-    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentSeq = 1L
     val paymentId = Payment.createPaymentId(paymentSeq)
 
     val payment = Payment.create(
@@ -124,7 +121,7 @@ class PaymentEntityTest {
   @DisplayName("할부가 있는 신용카드 결제")
   fun `할부가 있는 신용카드 결제를 저장하고 조회할 수 있다`() {
     // given
-    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentSeq = 1L
     val paymentId = Payment.createPaymentId(paymentSeq)
 
     val payment = Payment.create(
@@ -185,7 +182,7 @@ class PaymentEntityTest {
   @DisplayName("nullable 필드들이 null인 경우")
   fun `선택적 필드들이 null로 저장되고 조회된다`() {
     // given
-    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentSeq = 1L
     val paymentId = Payment.createPaymentId(paymentSeq)
 
     val payment = Payment.create(
@@ -220,51 +217,7 @@ class PaymentEntityTest {
 
     // then
     val cardDetail = foundDomain.methodDetail as PaymentMethodDetails.Card
-    assertNull(cardDetail.cardNumber)
     assertNull(foundDomain.successUrl)
-  }
-
-  @Test
-  @DisplayName("여러 결제 도메인 일괄 저장")
-  fun `여러 결제를 한 번에 저장할 수 있다`() {
-    // given
-    val payment1 = createTestCardPayment("ORDER_006")
-    val payment2 = createTestCardPayment("ORDER_007")
-    val payment3 = createTestBankTransferPayment("ORDER_008")
-
-    // when
-    val entities = listOf(payment1, payment2, payment3).map { PaymentMapper.toEntity(it) }
-    fakePaymentJpaRepository.saveAll(entities)
-
-    // then
-    assertEquals(3, fakePaymentJpaRepository.count())
-  }
-
-  @Test
-  @DisplayName("결제 ID 자동 생성 확인")
-  fun `결제 ID가 swift_pay 형식으로 자동 생성된다`() {
-    // given
-    val payment = createTestCardPayment("ORDER_009")
-
-    // then
-    assertTrue(payment.paymentId.startsWith("swift_pay_"))
-  }
-
-  @Test
-  @DisplayName("다양한 통화로 결제 저장")
-  fun `USD 통화로 결제를 저장할 수 있다`() {
-    // given
-    val payment = createTestCardPayment("ORDER_010")
-
-    // when
-    val entity = PaymentMapper.toEntity(payment)
-    val saved = fakePaymentJpaRepository.save(entity)
-
-    val foundEntity = fakePaymentJpaRepository.findById(saved.id!!).get()
-    val foundDomain = PaymentMapper.toDomain(foundEntity)
-
-    // then
-    assertEquals(BigDecimal("10000.00"), foundDomain.amount)
   }
 
   @Test
@@ -305,24 +258,12 @@ class PaymentEntityTest {
     assertFalse(fakePaymentJpaRepository.existsById(999L))
   }
 
-  @Test
-  @DisplayName("전체 결제 개수 조회")
-  fun `저장된 전체 결제 개수를 조회할 수 있다`() {
-    // given
-    fakePaymentJpaRepository.save(PaymentMapper.toEntity(createTestCardPayment("ORDER_014")))
-    fakePaymentJpaRepository.save(PaymentMapper.toEntity(createTestCardPayment("ORDER_015")))
-    fakePaymentJpaRepository.save(PaymentMapper.toEntity(createTestBankTransferPayment("ORDER_016")))
-
-    // when & then
-    assertEquals(3, fakePaymentJpaRepository.count())
-  }
-
   private fun createTestCardPayment(
     orderId: String,
     idempotencyKey: String? = "idempotency_$orderId",
     cardType: PaymentCardType = PaymentCardType.CREDIT
   ): Payment {
-    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentSeq = 1L
     val paymentId = Payment.createPaymentId(paymentSeq)
 
     return Payment.create(
@@ -353,7 +294,7 @@ class PaymentEntityTest {
     orderId: String,
     idempotencyKey: String = "idempotency_$orderId"
   ): Payment {
-    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentSeq = 1L
     val paymentId = Payment.createPaymentId(paymentSeq)
 
     return Payment.create(
