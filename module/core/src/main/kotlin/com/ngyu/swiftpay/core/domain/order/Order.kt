@@ -74,10 +74,10 @@ class Order(
   }
 
   fun refund(amount: Money): Order {
-    if (status == OrderStatus.DONE || status == OrderStatus.PARTIAL_REFUNDED) {
+    if (status != OrderStatus.DONE && status != OrderStatus.PARTIAL_REFUNDED) {
       throw InvalidOrderStatusException("환불 가능한 상태가 아닙니다.")
     }
-    if (balanceAmount >= amount) {
+    if (balanceAmount < amount) {
       throw InvalidAmountException("환불 금액이 환불 가능 금액보다 큽니다.")
     }
 
@@ -100,7 +100,7 @@ class Order(
   }
 
   fun processing(): Order {
-    if (this.status == OrderStatus.READY) {
+    if (this.status != OrderStatus.READY) {
       throw InvalidOrderStatusException("주문 대기 상태가 아닙니다.")
     }
     return this.copy(
@@ -109,7 +109,7 @@ class Order(
   }
 
   fun done(): Order {
-    if (this.status == OrderStatus.PROCESSING) {
+    if (this.status != OrderStatus.PROCESSING) {
       throw InvalidOrderStatusException("주문 진행중 상태가 아닙니다.")
     }
     return this.copy(
@@ -118,7 +118,7 @@ class Order(
   }
 
   fun cancel(): Order {
-    if (this.status == OrderStatus.PROCESSING) {
+    if (this.status != OrderStatus.PROCESSING) {
       throw InvalidOrderStatusException("주문 진행중 상태가 아닙니다.")
     }
     return this.copy(

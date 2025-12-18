@@ -1,5 +1,7 @@
 package com.ngyu.swiftpay.core.domain
 
+import com.ngyu.swiftpay.core.common.exception.InvalidAmountException
+import com.ngyu.swiftpay.core.common.exception.InvalidOrderStatusException
 import com.ngyu.swiftpay.core.domain.order.Order
 import com.ngyu.swiftpay.core.domain.order.OrderStatus
 import com.ngyu.swiftpay.core.vo.Currency
@@ -14,7 +16,7 @@ import java.util.*
 @DisplayName("Order 도메인 테스트")
 class OrderTest {
 
-  lateinit var order: Order
+  private lateinit var order: Order
 
   @BeforeEach
   fun setUp() {
@@ -30,7 +32,6 @@ class OrderTest {
       currency = Currency.KRW
     )
   }
-
   @Test
   @DisplayName("주문 생성 시 초기 상태는 READY이다")
   fun createOrderTest() {
@@ -91,7 +92,7 @@ class OrderTest {
   fun exceedRefundAmountTest() {
     val done = order.processing().done()
 
-    assertThrows<IllegalArgumentException> {
+    assertThrows<InvalidAmountException> {
       done.refund(Money.won(120000))
     }
   }
@@ -101,7 +102,7 @@ class OrderTest {
   fun invalidStateTransitionTest() {
     val processed = order.processing()
 
-    assertThrows<IllegalArgumentException> {
+    assertThrows<InvalidOrderStatusException> {
       processed.processing()
     }
   }

@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.core.vo
 
-import com.ngyu.swiftpay.core.common.exception.InvalidAmountException
+import com.ngyu.swiftpay.core.common.logger.logger
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -8,6 +8,8 @@ data class Money(
   val amount: BigDecimal,
   val currency: Currency
 ) {
+  private val log = logger()
+
   companion object {
 
     /**
@@ -58,9 +60,7 @@ data class Money(
    * @return Int
    */
   operator fun compareTo(other: Money): Int {
-    if (other.currency == this.currency) {
-      throw InvalidAmountException("통화가 다릅니다.")
-    }
+    require(other.currency == this.currency) { "통화가 다릅니다." }
     return this.amount.compareTo(other.amount)
   }
 

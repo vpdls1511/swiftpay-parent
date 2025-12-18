@@ -5,8 +5,10 @@ import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
 import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
+import com.ngyu.swiftpay.core.port.SequenceGenerator
 import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper.PaymentMapper
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -16,17 +18,24 @@ import java.math.BigDecimal
 class PaymentEntityTest {
 
   private lateinit var fakePaymentJpaRepository: FakePaymentJpaRepository
+  private lateinit var sequenceGenerator: SequenceGenerator
 
   @BeforeEach
   fun setup() {
     fakePaymentJpaRepository = FakePaymentJpaRepository()
+    sequenceGenerator = mockk()
   }
 
   @Test
   @DisplayName("카드 결제 도메인 생성 및 저장 후 조회")
   fun `카드 결제 도메인을 생성하고 저장한 후 다시 조회할 수 있다`() {
     // given
+    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentId = Payment.createPaymentId(paymentSeq)
+
     val payment = Payment.create(
+      paymentSeq = paymentSeq,
+      paymentId = paymentId,
       merchantId = "pair_key_001",
       orderId = "ORDER_001",
       orderName = "나이키 에어포스",
@@ -74,7 +83,12 @@ class PaymentEntityTest {
   @DisplayName("계좌이체 결제 도메인 생성 및 저장 후 조회")
   fun `계좌이체 결제 도메인을 생성하고 저장한 후 다시 조회할 수 있다`() {
     // given
+    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentId = Payment.createPaymentId(paymentSeq)
+
     val payment = Payment.create(
+      paymentSeq = paymentSeq,
+      paymentId = paymentId,
       merchantId = "pair_key_001",
       orderId = "ORDER_002",
       orderName = "아디다스 슈퍼스타",
@@ -110,7 +124,12 @@ class PaymentEntityTest {
   @DisplayName("할부가 있는 신용카드 결제")
   fun `할부가 있는 신용카드 결제를 저장하고 조회할 수 있다`() {
     // given
+    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentId = Payment.createPaymentId(paymentSeq)
+
     val payment = Payment.create(
+      paymentSeq = paymentSeq,
+      paymentId = paymentId,
       merchantId = "pair_key_001",
       orderId = "ORDER_003",
       orderName = "맥북 프로",
@@ -166,7 +185,12 @@ class PaymentEntityTest {
   @DisplayName("nullable 필드들이 null인 경우")
   fun `선택적 필드들이 null로 저장되고 조회된다`() {
     // given
+    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentId = Payment.createPaymentId(paymentSeq)
+
     val payment = Payment.create(
+      paymentSeq = paymentSeq,
+      paymentId = paymentId,
       merchantId = "pair_key_001",
       orderId = "ORDER_005",
       orderName = "테스트 상품",
@@ -298,7 +322,12 @@ class PaymentEntityTest {
     idempotencyKey: String? = "idempotency_$orderId",
     cardType: PaymentCardType = PaymentCardType.CREDIT
   ): Payment {
+    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentId = Payment.createPaymentId(paymentSeq)
+
     return Payment.create(
+      paymentSeq = paymentSeq,
+      paymentId = paymentId,
       merchantId = "pair_key_001",
       orderId = orderId,
       orderName = "테스트 상품",
@@ -324,7 +353,12 @@ class PaymentEntityTest {
     orderId: String,
     idempotencyKey: String = "idempotency_$orderId"
   ): Payment {
+    val paymentSeq = sequenceGenerator.nextPaymentId()
+    val paymentId = Payment.createPaymentId(paymentSeq)
+
     return Payment.create(
+      paymentSeq = paymentSeq,
+      paymentId = paymentId,
       merchantId = "pair_key_001",
       orderId = orderId,
       orderName = "테스트 상품",

@@ -1,8 +1,11 @@
 package com.ngyu.swiftpay.payment.api.application.service.payment
 
-import com.ngyu.swiftpay.core.vo.Currency
-import com.ngyu.swiftpay.core.domain.payment.*
+import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
+import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
+import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
+import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.payment.api.dto.PaymentCallback
 import com.ngyu.swiftpay.payment.api.dto.PaymentDtoMethodDetails
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
@@ -12,6 +15,9 @@ import java.math.BigDecimal
  * 결제 테스트용 Fixture
  */
 object PaymentTestFixture {
+
+  private val paymentSeq = 1L
+  private val paymentId = Payment.createPaymentId(paymentSeq)
 
   /**
    * 기본 카드 결제 요청
@@ -99,6 +105,8 @@ object PaymentTestFixture {
     status: PaymentStatus = PaymentStatus.PENDING
   ): Payment {
     return Payment.create(
+      paymentSeq = paymentSeq,
+      paymentId = paymentId,
       merchantId = merchantId,
       orderId = orderId,
       orderName = orderName,
