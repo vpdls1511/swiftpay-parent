@@ -9,8 +9,7 @@ import java.time.LocalDateTime
 @Table(name = "escrow")
 class EscrowEntity(
   @Id
-  @Column(name = "id")
-  val id: Long? = null,
+  val id: Long,
 
   @Column(name = "escrow_id", nullable = false, unique = true, length = 100)
   val escrowId: String,

@@ -7,7 +7,7 @@ import com.ngyu.swiftpay.core.vo.Money
 import java.time.LocalDateTime
 
 class Escrow(
-  override val id: Long? = null,
+  override val id: Long,
 
   val escrowId: String,
   val paymentId: String,
@@ -23,9 +23,10 @@ class Escrow(
   val updatedAt: LocalDateTime
 ) : BaseDomain<Long>() {
   companion object {
-    fun hold(payment: Payment): Escrow {
+    fun hold(id: Long, payment: Payment): Escrow {
       val now = LocalDateTime.now()
       return Escrow(
+        id = id,
         escrowId = generateEscrowId(),
         paymentId = payment.paymentId,
         merchantId = payment.merchantId,
@@ -66,7 +67,7 @@ class Escrow(
   }
 
   private fun copy(
-    id: Long? = this.id,
+    id: Long = this.id,
     escrowId: String = this.escrowId,
     paymentId: String = this.paymentId,
     merchantId: String = this.merchantId,
