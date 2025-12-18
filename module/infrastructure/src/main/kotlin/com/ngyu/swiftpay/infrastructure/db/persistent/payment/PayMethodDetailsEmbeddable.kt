@@ -3,6 +3,8 @@ package com.ngyu.swiftpay.infrastructure.db.persistent.payment
 import com.ngyu.swiftpay.core.domain.payment.PaymentCardType
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 
 @Embeddable
 class PayMethodDetailsEmbeddable(
@@ -19,7 +21,8 @@ class PayMethodDetailsEmbeddable(
   @Column(length = 4)
   val cardCvc: String? = null,
 
-  @Column(length = 5)
+  @Enumerated(EnumType.STRING)
+  @Column(length = 20)
   val cardType: PaymentCardType? = null,
 
   @Column
