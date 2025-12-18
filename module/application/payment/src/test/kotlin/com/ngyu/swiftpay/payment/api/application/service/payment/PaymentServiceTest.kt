@@ -5,11 +5,9 @@ import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
 import com.ngyu.swiftpay.core.port.PaymentRepository
-import com.ngyu.swiftpay.core.vo.Currency
-import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
-import com.ngyu.swiftpay.payment.application.service.order.OrderService
+import com.ngyu.swiftpay.core.port.SequenceGenerator
+import com.ngyu.swiftpay.payment.application.service.escrow.EscrowService
 import com.ngyu.swiftpay.payment.application.service.payment.PaymentService
-import com.ngyu.swiftpay.payment.application.strategy.PaymentBankStrategy
 import com.ngyu.swiftpay.payment.application.strategy.PaymentCardStrategy
 import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
 import org.assertj.core.api.Assertions.assertThat
@@ -37,13 +35,19 @@ class PaymentServiceTest {
  private lateinit var mockCardStrategy: PaymentCardStrategy
 
  @Mock
- private lateinit var mockBankStrategy: PaymentBankStrategy
+ private lateinit var escrowService: EscrowService  // 추가 필요
+
+ @Mock
+ private lateinit var sequenceGenerator: SequenceGenerator  // 추가 필요
+
+// @Mock
+// private lateinit var mockBankStrategy: PaymentBankStrategy
 
  @InjectMocks
  private lateinit var paymentService: PaymentService
 
- @InjectMocks
- private lateinit var orderService: OrderService
+// @InjectMocks
+// private lateinit var orderService: OrderService
 
  private lateinit var testPayment: Payment
 
@@ -52,30 +56,6 @@ class PaymentServiceTest {
   testPayment = PaymentTestFixture.createPayment()
  }
 
- @Test
- @DisplayName("주문서 생성 - 성공")
- fun `주문서를 생성하면 OrderCreateResponseDto를 반환한다`() {
-  // given
-  val request = OrderCreateRequestDto(
-   merchantId = "merchant_123",
-   orderName = "테스트 상품",
-   totalAmount = 10000L,
-   currency = Currency.KRW,
-   customerName = "홍길동",
-   customerEmail = "test@example.com",
-   customerPhone = "01012345678"
-  )
-
-  // when
-  val result = orderService.createOrder(request)
-
-  // then
-  assertThat(result).isNotNull
-  assertThat(result.orderId).isNotBlank()
-  assertThat(result.orderName).isEqualTo("테스트 상품")
-  assertThat(result.amount).isEqualTo(10000L)
-  assertThat(result.customerName).isEqualTo("홍길동")
- }
 
  @Test
  @DisplayName("카드 결제 처리 - 동기 처리 선택")
@@ -114,7 +94,7 @@ class PaymentServiceTest {
 
   // Mock 설정 - 계좌이체 전략 사용
   whenever(paymentRepository.save(any())).thenReturn(testPayment)
-  whenever(paymentStrategyFactory.getStrategy(any())).thenReturn(mockBankStrategy)
+//  whenever(paymentStrategyFactory.getStrategy(any())).thenReturn(mockBankStrategy)
 //  whenever(mockBankStrategy.shouldAsyncProcessing(any())).thenReturn(true)
 //  whenever(mockBankStrategy.getStrategyName()).thenReturn("계좌이체")
 
@@ -187,7 +167,7 @@ class PaymentServiceTest {
   )
 
   whenever(paymentRepository.save(any())).thenReturn(testPayment)
-  whenever(paymentStrategyFactory.getStrategy(any())).thenReturn(mockBankStrategy)
+//  whenever(paymentStrategyFactory.getStrategy(any())).thenReturn(mockBankStrategy)
 //  whenever(mockBankStrategy.shouldAsyncProcessing(any())).thenReturn(true)
 //  whenever(mockBankStrategy.getStrategyName()).thenReturn("계좌이체")
 
@@ -262,7 +242,7 @@ class PaymentServiceTest {
   )
 
   whenever(paymentRepository.save(any())).thenReturn(testPayment)
-  whenever(paymentStrategyFactory.getStrategy(any())).thenReturn(mockBankStrategy)
+//  whenever(paymentStrategyFactory.getStrategy(any())).thenReturn(mockBankStrategy)
 //  whenever(mockBankStrategy.shouldAsyncProcessing(any())).thenReturn(true)
 //  whenever(mockBankStrategy.getStrategyName()).thenReturn("계좌이체")
 

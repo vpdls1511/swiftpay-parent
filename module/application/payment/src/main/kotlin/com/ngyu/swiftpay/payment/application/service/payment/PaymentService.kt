@@ -8,13 +8,14 @@ import com.ngyu.swiftpay.core.port.SequenceGenerator
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.escrow.EscrowService
+import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
 class PaymentService(
   // TODO - 아직 각 전략의 내부 서비스를 완성하지 않은 단계. 우선, 도메인 생성 후 DB 저장까지만.
-  // private val paymentStrategyFactory: PaymentStrategyFactory,
+  private val paymentStrategyFactory: PaymentStrategyFactory,
   private val paymentRepository: PaymentRepository,
   private val escrowService: EscrowService,
   private val sequenceGenerator: SequenceGenerator
@@ -28,6 +29,7 @@ class PaymentService(
     validatePaymentRequest(request)
 
     val payment = createPayment(request)
+    val strategy = paymentStrategyFactory.getStrategy(payment)
     val processed = processPayment(payment)
     val saved = paymentRepository.save(processed)
 
@@ -59,7 +61,7 @@ class PaymentService(
       escrowService.hold(payment)
       log.info("에스크로 예치 성공 | paymentId=${payment.paymentId}")
 
-      payment.success()
+      payment
     } catch (e: Exception) {
       log.error("결제 실패 | paymentId=${payment.paymentId}", e)
       val failure = payment.failed(e.message ?: "결제 처리 중 오류")
