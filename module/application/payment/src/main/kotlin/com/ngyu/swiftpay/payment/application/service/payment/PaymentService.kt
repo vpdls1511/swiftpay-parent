@@ -3,8 +3,8 @@ package com.ngyu.swiftpay.payment.application.service.payment
 import com.ngyu.swiftpay.core.common.exception.PaymentProcessException
 import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.payment.Payment
-import com.ngyu.swiftpay.core.port.repository.PaymentRepository
 import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
+import com.ngyu.swiftpay.core.port.repository.PaymentRepository
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.escrow.EscrowService
@@ -25,7 +25,7 @@ class PaymentService(
 
   @Transactional
   fun processing(request: PaymentRequestDto): PaymentResponseDto {
-    log.info("결제 처리 시작 | orderId=${request.orderId}, merchantId=${request.merchantId}, method=${request.method}, amount=${request.amount}")
+    log.info("결제 처리 시작 :: orderId=${request.orderId}, merchantId=${request.merchantId}, method=${request.method}, amount=${request.amount}")
     validatePaymentRequest(request)
 
     val payment = createPayment(request)
@@ -64,13 +64,15 @@ class PaymentService(
   private fun processPayment(payment: Payment): Payment {
     return try {
       val strategy = paymentStrategyFactory.getStrategy(payment)
+      log.info("결제 전략 선택 완료 | strategy=${strategy.getStrategyName()}")
 
-      strategy.process(payment)
+      val processed = strategy.process(payment)
+      log.info("결제 요청 처리 성공 | paymentId=${processed.paymentId}, status=${processed.status}")
 
       escrowService.hold(payment)
       log.info("에스크로 예치 성공 | paymentId=${payment.paymentId}")
 
-      payment
+      processed
     } catch (e: Exception) {
       log.error("결제 실패 | paymentId=${payment.paymentId}", e)
       val failure = payment.failed(e.message ?: "결제 처리 중 오류")
