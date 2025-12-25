@@ -3,7 +3,6 @@ package com.ngyu.swiftpay.payment.application.strategy
 import com.ngyu.swiftpay.core.domain.payment.Payment
 import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.port.client.BankApiClientPort
-import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 import org.springframework.stereotype.Component
 
 @Component
@@ -17,7 +16,7 @@ class PaymentBankStrategy(
     return false
   }
 
-  override fun process(payment: Payment): PaymentResponseDto {
+  override fun process(payment: Payment): Payment {
     TODO("Not yet implemented")
   }
 
