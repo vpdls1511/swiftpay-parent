@@ -106,26 +106,54 @@ class Payment(
     return copy(status = PaymentStatus.IN_PROGRESS)
   }
 
-  fun success(): Payment {
+  fun success(
+    acquirerTransactionId: String,
+    acquirerApprovalNumber: String,
+    acquirerResponseCode: String,
+    acquirerMessage: String
+  ): Payment {
     if (status != PaymentStatus.IN_PROGRESS) {
       throw InvalidPaymentStatusException("결제 중 상태가 아닙니다. 현재: $status")
     }
-    return copy(status = PaymentStatus.SUCCEEDED)
+    return copy(
+      status = PaymentStatus.SUCCEEDED,
+      acquirerTransactionId = acquirerTransactionId,
+      acquirerApprovalNumber = acquirerApprovalNumber,
+      acquirerResponseCode = acquirerResponseCode,
+      acquirerMessage = acquirerMessage
+    )
   }
 
-  fun cancel(): Payment {
+  fun cancel(reason: String): Payment {
     if (status != PaymentStatus.IN_PROGRESS) {
       throw InvalidPaymentStatusException("결제 중 상태가 아닙니다. 현재: $status")
     }
-    return copy(status = PaymentStatus.CANCELLED)
+    return copy(
+      status = PaymentStatus.CANCELLED,
+      reason = reason,
+    )
   }
 
-  fun failed(reason: String): Payment {
+  fun failed(
+    reason: String,
+    acquirerTransactionId: String,
+    acquirerApprovalNumber: String,
+    acquirerResponseCode: String,
+    acquirerMessage: String
+  ): Payment {
     if (status != PaymentStatus.IN_PROGRESS) {
       throw InvalidPaymentStatusException("결제 중 상태가 아닙니다. 현재: $status")
     }
-    return copy(status = PaymentStatus.FAILED, reason = reason)
+    return copy(
+      status = PaymentStatus.FAILED,
+      reason = reason,
+      acquirerTransactionId = acquirerTransactionId,
+      acquirerApprovalNumber = acquirerApprovalNumber,
+      acquirerResponseCode = acquirerResponseCode,
+      acquirerMessage = acquirerMessage,
+    )
   }
+
   // ===== 불변 복제(copy) 메서드 =====
   private fun copy(
     id: Long = this.id,
@@ -143,6 +171,10 @@ class Payment(
     reason: String? = this.reason,
     idempotencyKey: String? = this.idempotencyKey,
     settlementId: String? = this.settlementId,
+    acquirerTransactionId: String? = null, // 거래번호
+    acquirerApprovalNumber: String? = null, // 승인번호 or 이체번호
+    acquirerResponseCode: String? = null, // 승인 코드
+    acquirerMessage: String? = null, // 승인 메시지
     createdAt: LocalDateTime = this.createdAt,
     updatedAt: LocalDateTime = LocalDateTime.now()
   ): Payment {
@@ -162,6 +194,10 @@ class Payment(
       reason = reason,
       idempotencyKey = idempotencyKey,
       settlementId = settlementId,
+      acquirerTransactionId = acquirerTransactionId,
+      acquirerApprovalNumber = acquirerApprovalNumber,
+      acquirerResponseCode = acquirerResponseCode,
+      acquirerMessage = acquirerMessage,
       createdAt = createdAt,
       updatedAt = updatedAt
     )

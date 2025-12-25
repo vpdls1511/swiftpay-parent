@@ -19,8 +19,9 @@ class MockExternalCardApiClient: CardApiClientPort {
 
     return CardApprovalResult(
       isSuccess = isSuccess,
-      approvalNumber = if (isSuccess) UUID.randomUUID().toString() else null,
-      transferNumber = if (isSuccess) UUID.randomUUID().toString() else null,
+      transactionId = UUID.randomUUID().toString(),
+      approvalNumber = UUID.randomUUID().toString(),
+      code = if (isSuccess) "0000" else "9999",
       message = if (isSuccess) "승인" else "한도초과"
     )
   }

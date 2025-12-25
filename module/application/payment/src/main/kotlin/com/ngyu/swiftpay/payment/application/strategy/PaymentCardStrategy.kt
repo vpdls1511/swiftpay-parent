@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 @Component
 class PaymentCardStrategy(
   private val cardApiClientFactory: CardApiClientFactory
-): PaymentStrategy() {
+) : PaymentStrategy() {
   override fun getPaymentMethod() = PaymentMethod.CARD
 
   override fun shouldAsyncProcessing(payment: Payment): Boolean = false
@@ -19,8 +19,20 @@ class PaymentCardStrategy(
     val result = cardApiClient.approve(inProgress)
 
     return when {
-      result.isSuccess -> inProgress.success()
-      else -> inProgress.failed(result.message)
+      result.isSuccess -> inProgress.success(
+        acquirerTransactionId = result.transactionId,
+        acquirerApprovalNumber = result.approvalNumber,
+        acquirerResponseCode = result.code,
+        acquirerMessage = result.message,
+      )
+
+      else -> inProgress.failed(
+        reason = result.message,
+        acquirerTransactionId = result.transactionId,
+        acquirerApprovalNumber = result.approvalNumber,
+        acquirerResponseCode = result.code,
+        acquirerMessage = result.message,
+      )
     }
   }
 
