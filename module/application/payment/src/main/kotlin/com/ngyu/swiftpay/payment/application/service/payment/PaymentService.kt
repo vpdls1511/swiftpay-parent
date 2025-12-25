@@ -29,7 +29,6 @@ class PaymentService(
     validatePaymentRequest(request)
 
     val payment = createPayment(request)
-    val strategy = paymentStrategyFactory.getStrategy(payment)
     val processed = processPayment(payment)
     val saved = paymentRepository.save(processed)
 
@@ -40,9 +39,10 @@ class PaymentService(
 
   /**
    * 1. 중복된 orderId 인지 검증
-   * 2. 금액의 유효성 ( 0원보다 작은지 )
-   * 3. 결제를 하고자 하는 가맹점이 활성화 상태인지
-   * 4. 해당 결제수단을 지원하는지
+   * 2. 결제수단 검증
+   * 3. 금액의 유효성 ( 0원보다 작은지 )
+   * 4. 결제를 하고자 하는 가맹점이 활성화 상태인지
+   * 5. 해당 결제수단을 지원하는지
    *
    * 위 조건을 모두 만족하지 못한다면, Exception 발생.
    */
@@ -50,14 +50,23 @@ class PaymentService(
     // TODO - pending -> progress 결제 요청 자체의 유효성을 검사해야한다..
   }
 
+  /**
+   * 결제를 위한 데이터를 만들고, 이를 DB에 Pending 상태로 저장한다.
+   */
   private fun createPayment(request: PaymentRequestDto): Payment {
     val paymentSeq = sequenceGenerator.nextPaymentId()
     val paymentId = Payment.createPaymentId(paymentSeq)
-    return request.toDomain(paymentSeq, paymentId).inProgress()
+    val payment = request.toDomain(paymentSeq, paymentId)
+
+    return paymentRepository.save(payment)
   }
 
   private fun processPayment(payment: Payment): Payment {
     return try {
+      val strategy = paymentStrategyFactory.getStrategy(payment)
+
+      strategy.process(payment)
+
       escrowService.hold(payment)
       log.info("에스크로 예치 성공 | paymentId=${payment.paymentId}")
 
