@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.settlement
 
 import com.ngyu.swiftpay.core.domain.settlement.Settlement
-import com.ngyu.swiftpay.core.port.SettlementRepository
+import com.ngyu.swiftpay.core.port.repository.SettlementRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 

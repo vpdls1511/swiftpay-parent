@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.apiCredentials
 
 import com.ngyu.swiftpay.core.domain.apiCredentials.ApiCredentials
-import com.ngyu.swiftpay.core.port.ApiCredentialsRepository
+import com.ngyu.swiftpay.core.port.repository.ApiCredentialsRepository
 import org.springframework.stereotype.Component
 
 @Component

@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.core.port
+package com.ngyu.swiftpay.core.port.repository
 
 import com.ngyu.swiftpay.core.domain.settlement.Settlement
 

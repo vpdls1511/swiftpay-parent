@@ -4,8 +4,8 @@ import com.ngyu.swiftpay.core.domain.payment.Payment
 import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
-import com.ngyu.swiftpay.core.port.PaymentRepository
-import com.ngyu.swiftpay.core.port.SequenceGenerator
+import com.ngyu.swiftpay.core.port.repository.PaymentRepository
+import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
 import com.ngyu.swiftpay.payment.application.service.escrow.EscrowService
 import com.ngyu.swiftpay.payment.application.service.payment.PaymentService
 import com.ngyu.swiftpay.payment.application.strategy.PaymentCardStrategy

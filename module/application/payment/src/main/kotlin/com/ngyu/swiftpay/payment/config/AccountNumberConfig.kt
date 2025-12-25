@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.payment.config
 
 import com.ngyu.swiftpay.core.domain.bank.BankCode
-import com.ngyu.swiftpay.core.port.AccountNumberGenerator
+import com.ngyu.swiftpay.core.port.generator.AccountNumberGenerator
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

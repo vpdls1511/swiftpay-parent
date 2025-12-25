@@ -2,7 +2,7 @@ package com.ngyu.swiftpay.payment.security
 
 import com.ngyu.swiftpay.core.domain.apiCredentials.ApiCredentials
 import com.ngyu.swiftpay.core.common.logger.logger
-import com.ngyu.swiftpay.core.port.ApiCredentialsRepository
+import com.ngyu.swiftpay.core.port.repository.ApiCredentialsRepository
 import com.ngyu.swiftpay.infrastructure.redis.service.ApiKeyCacheService
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import com.ngyu.swiftpay.security.util.HmacEncUtil

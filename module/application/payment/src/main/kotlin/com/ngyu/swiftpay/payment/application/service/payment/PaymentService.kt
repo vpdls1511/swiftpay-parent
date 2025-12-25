@@ -3,8 +3,8 @@ package com.ngyu.swiftpay.payment.application.service.payment
 import com.ngyu.swiftpay.core.common.exception.PaymentProcessException
 import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.payment.Payment
-import com.ngyu.swiftpay.core.port.PaymentRepository
-import com.ngyu.swiftpay.core.port.SequenceGenerator
+import com.ngyu.swiftpay.core.port.repository.PaymentRepository
+import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.escrow.EscrowService

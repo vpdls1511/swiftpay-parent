@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.merchant
 
 import com.ngyu.swiftpay.core.domain.merchant.Merchant
-import com.ngyu.swiftpay.core.port.MerchantRepository
+import com.ngyu.swiftpay.core.port.repository.MerchantRepository
 import org.springframework.stereotype.Component
 
 @Component

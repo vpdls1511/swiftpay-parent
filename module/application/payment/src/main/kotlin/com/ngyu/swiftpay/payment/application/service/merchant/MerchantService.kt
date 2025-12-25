@@ -4,8 +4,8 @@ import com.ngyu.swiftpay.core.common.exception.DuplicateMerchantException
 import com.ngyu.swiftpay.core.common.exception.InvalidMerchantDataException
 import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.merchant.Merchant
-import com.ngyu.swiftpay.core.port.MerchantRepository
-import com.ngyu.swiftpay.core.port.SequenceGenerator
+import com.ngyu.swiftpay.core.port.repository.MerchantRepository
+import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials

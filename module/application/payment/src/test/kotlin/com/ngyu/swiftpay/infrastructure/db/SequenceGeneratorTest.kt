@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db
 
 import com.ngyu.swiftpay.core.common.logger.logger
-import com.ngyu.swiftpay.core.port.SequenceGenerator
+import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat

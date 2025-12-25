@@ -3,8 +3,8 @@ package com.ngyu.swiftpay.payment.application.service.escrow
 import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.escrow.Escrow
 import com.ngyu.swiftpay.core.domain.payment.Payment
-import com.ngyu.swiftpay.core.port.EscrowRepository
-import com.ngyu.swiftpay.core.port.SequenceGenerator
+import com.ngyu.swiftpay.core.port.repository.EscrowRepository
+import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
