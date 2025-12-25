@@ -3,13 +3,11 @@ package com.ngyu.swiftpay.payment.application.strategy
 import com.ngyu.swiftpay.core.domain.payment.Payment
 import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.port.client.CardApiClientFactory
-import com.ngyu.swiftpay.core.port.client.CardApiClientPort
 import org.springframework.stereotype.Component
 
 @Component
 class PaymentCardStrategy(
-  private val cardApiClientFactory: CardApiClientFactory,
-  private val cardApiClient: CardApiClientPort
+  private val cardApiClientFactory: CardApiClientFactory
 ): PaymentStrategy() {
   override fun getPaymentMethod() = PaymentMethod.CARD
 
