@@ -10,6 +10,6 @@ import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
 sealed class PaymentStrategy {
   abstract fun getPaymentMethod(): PaymentMethod
   abstract fun shouldAsyncProcessing(payment: Payment): Boolean
-  abstract suspend fun process(payment: Payment): PaymentResponseDto
+  abstract fun process(payment: Payment): PaymentResponseDto
   abstract fun getStrategyName(): String
 }
