@@ -39,6 +39,12 @@ class Payment(
   val idempotencyKey: String? = null,   // 중복 결제 방지 키
   val settlementId: String? = null,     // 정산 관리 Id
 
+  // 은행 / 카드사 응답값
+  val acquirerTransactionId: String? = null, // 거래번호
+  val acquirerApprovalNumber: String? = null, // 승인번호 or 이체번호
+  val acquirerResponseCode: String? = null, // 승인 코드
+  val acquirerMessage: String? = null, // 승인 메시지
+
   // 시스템 정보
   val createdAt: LocalDateTime,
   val updatedAt: LocalDateTime

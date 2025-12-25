@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.payment.mapper
 
-import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.infrastructure.db.persistent.payment.PaymentEntity
 import java.math.BigDecimal
 
@@ -23,6 +23,10 @@ object PaymentMapper {
       failureUrl = domain.failureUrl,
       status = domain.status,
       reason = domain.reason,
+      acquirerTransactionId = domain.acquirerTransactionId,
+      acquirerApprovalNumber = domain.acquirerApprovalNumber,
+      acquirerResponseCode = domain.acquirerResponseCode,
+      acquirerMessage = domain.acquirerMessage,
       idempotencyKey = domain.idempotencyKey,
       settlementId = domain.settlementId,
     )
@@ -43,6 +47,10 @@ object PaymentMapper {
       failureUrl = entity.failureUrl,
       status = entity.status,
       reason = entity.reason,
+      acquirerTransactionId = entity.acquirerTransactionId,
+      acquirerApprovalNumber = entity.acquirerApprovalNumber,
+      acquirerResponseCode = entity.acquirerResponseCode,
+      acquirerMessage = entity.acquirerMessage,
       idempotencyKey = entity.idempotencyKey,
       settlementId = entity.settlementId,
       createdAt = entity.createdAt,

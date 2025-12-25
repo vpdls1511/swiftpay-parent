@@ -55,6 +55,19 @@ class PaymentEntity(
   @Column
   val reason: String? = null,
 
+  @Column
+  val acquirerTransactionId: String? = null, // 거래번호
+
+  @Column
+  val acquirerApprovalNumber: String? = null, // 승인번호 or 이체번호
+
+  @Column
+  val acquirerResponseCode: String? = null, // 승인 코드
+
+  @Column
+  val acquirerMessage: String? = null, // 승인 메시지
+
+
   @Column(unique = true, length = 100)
   val idempotencyKey: String? = null,
 

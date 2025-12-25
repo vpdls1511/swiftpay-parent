@@ -19,6 +19,7 @@ class MockExternalBankApiClient: BankApiClientPort {
     return BankTransferResult(
       isSuccess = isSuccess,
       transactionId = if (isSuccess) UUID.randomUUID().toString() else null,
+      approvalNumber = if (isSuccess) UUID.randomUUID().toString() else null,
       message = if (isSuccess) "이체완료" else "잔액부족"
     )
   }
