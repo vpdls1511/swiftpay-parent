@@ -5,13 +5,11 @@ import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.port.client.BankApiClientPort
 import com.ngyu.swiftpay.core.vo.Money
 import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
-import com.ngyu.swiftpay.payment.application.service.payment.PaymentCardService
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 
 @Component
 class PaymentCardStrategy(
-  private val cardService: PaymentCardService,
   private val cardApiClient: BankApiClientPort
 ): PaymentStrategy() {
   override fun getPaymentMethod() = PaymentMethod.CARD
