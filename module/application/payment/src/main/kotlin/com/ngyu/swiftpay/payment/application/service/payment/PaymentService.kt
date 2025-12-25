@@ -3,6 +3,7 @@ package com.ngyu.swiftpay.payment.application.service.payment
 import com.ngyu.swiftpay.core.common.exception.PaymentProcessException
 import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.payment.Payment
+import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
 import com.ngyu.swiftpay.core.port.repository.PaymentRepository
 import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
@@ -69,8 +70,10 @@ class PaymentService(
       val processed = strategy.process(payment)
       log.info("결제 요청 처리 성공 | paymentId=${processed.paymentId}, status=${processed.status}")
 
-      escrowService.hold(payment)
-      log.info("에스크로 예치 성공 | paymentId=${payment.paymentId}")
+      if (processed.status == PaymentStatus.SUCCEEDED) {
+        escrowService.hold(payment)
+        log.info("에스크로 예치 성공 | paymentId=${payment.paymentId}")
+      }
 
       processed
     } catch (e: Exception) {
