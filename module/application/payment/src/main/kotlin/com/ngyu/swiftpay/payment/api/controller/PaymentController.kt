@@ -50,7 +50,7 @@ class PaymentController(
   )
   @PostMapping
   fun confirmPayment(
-    @PaymentPrincipal principal: PaymentPrincipal,
+    @PaymentPrincipal principal: PaymentCredentials,
     @RequestBody request: PaymentRequestDto
   ): ResponseEntity<PaymentResponseDto> {
     log.info("결제 처리 시작")

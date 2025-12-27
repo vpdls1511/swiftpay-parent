@@ -16,10 +16,10 @@ class ApiCredentialsService(
 
   private val log = logger()
 
-  fun issueKey(): PaymentCredentials {
+  fun issueKey(merchantId: Long): PaymentCredentials {
     log.info("API 키 발급 시작 - ")
     val pair: ApiKeyPair = paymentTokenProvider.issue()
-    val apiCredentials: ApiCredentials = ApiCredentials.create(pair.hashed, pair.apiPairKey)
+    val apiCredentials: ApiCredentials = ApiCredentials.create(merchantId, pair.hashed, pair.apiPairKey)
 
     log.debug("ApiKeyPair 발급 완료")
     log.debug("ApiKey Hash 값 db 저장")
@@ -29,6 +29,23 @@ class ApiCredentialsService(
     return PaymentCredentials(
       apiKey = pair.plain,
       apiPairKey = pair.apiPairKey
+    )
+  }
+
+  fun reissueToken(merchantId: Long, apiPairKey: String): PaymentCredentials {
+    log.info("API키 재발행 시작")
+    val existApiCredentials = apiCredentialsRepository.findApiKey(apiPairKey)
+    val pair = paymentTokenProvider.issue()
+    val apiCredentials: ApiCredentials = ApiCredentials.create(merchantId, pair.hashed, existApiCredentials.lookupKey)
+
+    val updateCredentials = existApiCredentials.update(apiCredentials.apiKey, existApiCredentials.lookupKey)
+
+    log.debug("new ApiKey Hash 값 db 저장")
+    apiCredentialsRepository.save(updateCredentials)
+
+    return PaymentCredentials(
+      apiKey = pair.plain,
+      apiPairKey = apiPairKey
     )
   }
 

@@ -2,17 +2,19 @@ package com.ngyu.swiftpay.payment.application.service.merchant
 
 import com.ngyu.swiftpay.core.common.exception.DuplicateMerchantException
 import com.ngyu.swiftpay.core.common.exception.InvalidMerchantDataException
+import com.ngyu.swiftpay.core.common.exception.MerchantNotFoundException
 import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.merchant.Merchant
-import com.ngyu.swiftpay.core.port.repository.MerchantRepository
 import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
+import com.ngyu.swiftpay.core.port.repository.MerchantRepository
+import com.ngyu.swiftpay.payment.api.dto.MerchantInfoRequest
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterResponseDto
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import com.ngyu.swiftpay.payment.application.auth.ApiCredentialsService
-import jakarta.transaction.Transactional
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
@@ -23,6 +25,27 @@ class MerchantService(
 ) {
 
   private val log = logger()
+
+  @Transactional
+  fun getMerchantInfo(
+    principal: PaymentCredentials,
+    request: MerchantInfoRequest
+  ): MerchantRegisterResponseDto {
+    log.info("가맹점 정보 찾기 시작 merchantId: ${request.merchantId}")
+    if (principal.apiKey.isEmpty() || principal.apiPairKey.isEmpty()) {
+      log.error("api key가 존재하지 않습니다.")
+      throw MerchantNotFoundException()
+    }
+
+    val domain = merchantRepository.findByMerchantId(request.merchantId)
+    val credentials = apiCredentialsService.reissueToken(domain.id, principal.apiPairKey)
+
+    return MerchantRegisterResponseDto(
+      merchantId = domain.merchantId,
+      merchantName = domain.businessName,
+      credentials = credentials,
+    )
+  }
 
   /**
    * 가맹점 등록
@@ -73,7 +96,7 @@ class MerchantService(
     val savedMerchant = merchantRepository.save(approvedDomain)
     log.info("가맹점 승인 완료 - merchantId = $merchantId STATUS = ${savedMerchant.status}")
 
-    return apiCredentialsService.issueKey()
+    return apiCredentialsService.issueKey(domain.id)
   }
 
 }

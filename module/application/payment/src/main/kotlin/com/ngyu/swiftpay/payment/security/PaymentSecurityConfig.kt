@@ -16,7 +16,7 @@ class PaymentSecurityConfig(
   @Bean
   fun paymentSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
     return http
-      .securityMatcher("/payment/**")
+      .securityMatcher("/**")
       .addFilterBefore(
         PaymentTokenFilter(paymentTokenValidator),
         UsernamePasswordAuthenticationFilter::class.java

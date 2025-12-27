@@ -23,14 +23,14 @@ DROP TABLE IF EXISTS `api_credentials`;
 
 CREATE TABLE api_credentials
 (
-    api_key    VARCHAR(255) NOT NULL PRIMARY KEY,
-    lookup_key VARCHAR(255) NOT NULL,
-    user_id    BIGINT       NULL,
-    call_limit INT          NOT NULL,
-    status     VARCHAR(20)  NOT NULL DEFAULT 'ACTIVE',
-    issued_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    expires_at TIMESTAMP    NOT NULL,
-    updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    merchant_id BIGINT       NULL PRIMARY KEY,
+    api_key     VARCHAR(255) NOT NULL,
+    lookup_key  VARCHAR(255) NOT NULL,
+    call_limit  INT          NOT NULL,
+    status      VARCHAR(20)  NOT NULL DEFAULT 'ACTIVE',
+    issued_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at  TIMESTAMP    NOT NULL,
+    updated_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     INDEX idx_lookup_key (lookup_key),
     INDEX idx_call_limit (call_limit),

@@ -21,15 +21,12 @@ class Merchant(
   val phoneNumber: String,
   val address: String,
 
-  val apiPairKey: String? = null,
-
   val bankAccountNumber: String,
   val feeRate: BigDecimal = BigDecimal.valueOf(0.03), // 기본 3%
 
   val settlementCycle: SettlementCycle = SettlementCycle.D_PLUS_1,
 
   val status: MerchantStatus = MerchantStatus.PENDING,
-  val suspendedReason: String? = null,
 
   val contractStartDate: LocalDate? = null,
   val contractEndDate: LocalDate? = null,
@@ -59,13 +56,12 @@ class Merchant(
     )
   }
 
-  fun suspended(reason: String): Merchant {
+  fun suspended(): Merchant {
     if (this.status != MerchantStatus.ACTIVE) {
       throw InvalidMerchantStatusException("활성 상태가 아닙니다")
     }
     return this.copy(
       status = MerchantStatus.SUSPENDED,
-      suspendedReason = reason
     )
   }
 
@@ -99,12 +95,10 @@ class Merchant(
     email: String = this.bankAccountNumber,
     phoneNumber: String = this.bankAccountNumber,
     address: String = this.address,
-    apiPairKey: String = this.bankAccountNumber,
     bankAccountNumber: String = this.bankAccountNumber,
     feeRate: BigDecimal = this.feeRate,
     settlementCycle: SettlementCycle = this.settlementCycle,
     status: MerchantStatus = this.status,
-    suspendedReason: String? = this.suspendedReason,
     contractStartDate: LocalDate? = this.contractStartDate,
     contractEndDate: LocalDate? = this.contractEndDate,
     createdAt: LocalDateTime = this.createdAt,
@@ -122,12 +116,10 @@ class Merchant(
       email = email,
       phoneNumber = phoneNumber,
       address = address,
-      apiPairKey = apiPairKey,
       bankAccountNumber = bankAccountNumber,
       feeRate = feeRate,
       settlementCycle = settlementCycle,
       status = status,
-      suspendedReason = suspendedReason,
       contractStartDate = contractStartDate,
       contractEndDate = contractEndDate,
       createdAt = createdAt,

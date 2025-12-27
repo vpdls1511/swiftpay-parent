@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.infrastructure.redis.service
 
+import com.ngyu.swiftpay.core.common.exception.PrincipalException
 import com.ngyu.swiftpay.core.domain.apiCredentials.ApiCredentials
 import com.ngyu.swiftpay.core.domain.apiCredentials.ApiKeyStatus
-import com.ngyu.swiftpay.core.common.exception.PrincipalException
 import com.ngyu.swiftpay.infrastructure.redis.constant.RedisKey
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Service
@@ -19,9 +19,9 @@ class ApiKeyCacheService(
     val key = RedisKey.apiKey(apiCredentials.lookupKey)
 
     val map = mapOf(
+      "merchantId" to apiCredentials.merchantId.toString(),  // 이렇게 수정
       "apiKey" to apiCredentials.apiKey,
       "lookupKey" to apiCredentials.lookupKey,
-      "userId" to (apiCredentials.userId?.toString() ?: ""),  // 이렇게 수정
       "issuedAt" to apiCredentials.issuedAt.toString(),
       "expiresAt" to apiCredentials.expiresAt.toString(),
       "status" to apiCredentials.status.toString(),
@@ -60,7 +60,7 @@ class ApiKeyCacheService(
     return ApiCredentials(
       apiKey = this["apiKey"] ?: throw PrincipalException("apiKey가 없습니다."),
       lookupKey = this["lookupKey"] ?: throw PrincipalException("lookupKey가 없습니다."),
-      userId = this["userId"]?.toLongOrNull() ?: 0,
+      merchantId = this["merchantId"]?.toLongOrNull() ?: 0,
       callLimit = this["callLimit"]?.toIntOrNull() ?: 0,
       issuedAt = this["issuedAt"]?.let { LocalDateTime.parse(it) }
         ?: throw PrincipalException("issuedAt이 없습니다."),

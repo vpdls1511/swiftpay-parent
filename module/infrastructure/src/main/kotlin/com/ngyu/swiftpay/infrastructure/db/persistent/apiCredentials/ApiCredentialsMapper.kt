@@ -8,7 +8,7 @@ object ApiCredentialsMapper {
     return ApiCredentialsEntity(
       apiKey = domain.apiKey,
       lookupKey = domain.lookupKey,
-      userId = domain.userId,
+      merchantId = domain.merchantId,
       callLimit = domain.callLimit,
       issuedAt = domain.issuedAt,
       expiresAt = domain.expiresAt,
@@ -20,7 +20,7 @@ object ApiCredentialsMapper {
     return ApiCredentials(
       apiKey = entity.apiKey,
       lookupKey = entity.lookupKey,
-      userId = entity.userId,
+      merchantId = entity.merchantId,
       callLimit = entity.callLimit,
       issuedAt = entity.issuedAt,
       expiresAt = entity.expiresAt,

@@ -28,6 +28,10 @@ data class MerchantRegisterReqeust(
   }
 }
 
+data class MerchantInfoRequest(
+  val merchantId: String
+)
+
 
 data class MerchantRegisterResponseDto(
   val merchantId: String,

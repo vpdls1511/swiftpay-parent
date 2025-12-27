@@ -23,7 +23,7 @@ class PaymentApiCredentialsServiceTest {
     val signature: ApiKeyPair = paymentTokenProvider.issue()
     apiKeyPair = signature
 
-    val apiCredentials: ApiCredentials = ApiCredentials.create(apiKeyPair.plain, apiKeyPair.apiPairKey)
+    val apiCredentials: ApiCredentials = ApiCredentials.create(1, apiKeyPair.plain, apiKeyPair.apiPairKey)
 
     fakeApiKeyJpaRepository.save(apiCredentials)
   }

@@ -8,14 +8,14 @@ import java.time.LocalDateTime
 @Table(name = "api_credentials")
 class ApiCredentialsEntity(
   @Id
+  @Column(name = "merchant_id")
+  val merchantId: Long,
+
   @Column(name = "api_key", unique = true, nullable = false)
   val apiKey: String,
 
   @Column(name = "lookup_key", unique = true, nullable = false)
   val lookupKey: String,
-
-  @Column(name = "user_id")
-  val userId: Long? = null,
 
   @Column(name = "call_limit", nullable = false)
   val callLimit: Int,
@@ -33,7 +33,7 @@ class ApiCredentialsEntity(
   protected constructor() : this(
     apiKey = "",
     lookupKey = "",
-    userId = null,
+    merchantId = 0,
     callLimit = 0,
     issuedAt = LocalDateTime.now(),
     expiresAt = LocalDateTime.now(),

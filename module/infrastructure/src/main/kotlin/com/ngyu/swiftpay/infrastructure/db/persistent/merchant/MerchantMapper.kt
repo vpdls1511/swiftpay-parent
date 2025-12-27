@@ -37,12 +37,10 @@ object MerchantMapper {
       email = entity.email,
       phoneNumber = entity.phoneNumber,
       address = entity.address,
-      apiPairKey = null, // Entity에 없음
       bankAccountNumber = entity.bankAccountNumber,
       feeRate = entity.feeRate,
       settlementCycle = entity.settlementCycle,
       status = entity.status,
-      suspendedReason = null, // Entity에 없음
       contractStartDate = entity.contractStartDate,
       contractEndDate = entity.contractEndDate,
       createdAt = entity.createdAt,

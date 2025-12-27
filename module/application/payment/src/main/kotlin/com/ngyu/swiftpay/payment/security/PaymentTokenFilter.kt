@@ -34,13 +34,13 @@ class PaymentTokenFilter(
    */
   override fun getProtectedPaths(): List<String> {
     return listOf(
-      "/payment/**"
-    )
+      "/**"
+      )
   }
 
   override fun getNoProtectedPaths(): List<String> {
     return listOf(
-      "/merchant/**",
+      "/merchant/register",
       "/payment/api-keys/issued",
     )
   }
