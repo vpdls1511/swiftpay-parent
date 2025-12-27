@@ -12,17 +12,18 @@ data class ApiCredentials(
   val status: ApiKeyStatus
 ) {
   companion object {
+    private const val DEFAULT_LIMIT = 100000
+    private const val DEFAULT_EXPIRED_WEEKS = 1L
+
     fun create(merchantId: Long, apiKey: String, lookupKey: String): ApiCredentials {
       val now = LocalDateTime.now()
-      val defaultLimit = 100000
-      val defaultExpiredWeek = 1L
       return ApiCredentials(
         merchantId = merchantId,
         apiKey = apiKey,
         lookupKey = lookupKey,
-        callLimit = defaultLimit,
+        callLimit = DEFAULT_LIMIT,
         issuedAt = now,
-        expiresAt = now.plusWeeks(defaultExpiredWeek),
+        expiresAt = now.plusWeeks(DEFAULT_EXPIRED_WEEKS),
         status = ApiKeyStatus.ACTIVE
       )
     }
@@ -31,10 +32,11 @@ data class ApiCredentials(
   /**
    * api key는 sha256으로 hash 되어있어 복호화 불가능
    */
-  fun update(apiKey: String, apiPairKey: String): ApiCredentials {
+  fun update(apiKey: String): ApiCredentials {
+    val now = LocalDateTime.now()
     return this.copy(
       apiKey = apiKey,
-      lookupKey = apiPairKey,
+      expiresAt = now.plusWeeks(DEFAULT_EXPIRED_WEEKS),
     )
   }
 }

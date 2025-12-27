@@ -38,7 +38,7 @@ class ApiCredentialsService(
     val pair = paymentTokenProvider.issue()
     val apiCredentials: ApiCredentials = ApiCredentials.create(merchantId, pair.hashed, existApiCredentials.lookupKey)
 
-    val updateCredentials = existApiCredentials.update(apiCredentials.apiKey, existApiCredentials.lookupKey)
+    val updateCredentials = existApiCredentials.update(apiCredentials.apiKey)
 
     log.debug("new ApiKey Hash 값 db 저장")
     apiCredentialsRepository.save(updateCredentials)
