@@ -37,7 +37,6 @@ class Payment(
   val status: PaymentStatus,
   val reason: String? = null,
   val idempotencyKey: String? = null,   // 중복 결제 방지 키
-  val settlementId: String? = null,     // 정산 관리 Id
 
   // 은행 / 카드사 응답값
   val acquirerTransactionId: String? = null, // 거래번호
@@ -170,7 +169,6 @@ class Payment(
     status: PaymentStatus = this.status,
     reason: String? = this.reason,
     idempotencyKey: String? = this.idempotencyKey,
-    settlementId: String? = this.settlementId,
     acquirerTransactionId: String? = null, // 거래번호
     acquirerApprovalNumber: String? = null, // 승인번호 or 이체번호
     acquirerResponseCode: String? = null, // 승인 코드
@@ -193,7 +191,6 @@ class Payment(
       status = status,
       reason = reason,
       idempotencyKey = idempotencyKey,
-      settlementId = settlementId,
       acquirerTransactionId = acquirerTransactionId,
       acquirerApprovalNumber = acquirerApprovalNumber,
       acquirerResponseCode = acquirerResponseCode,

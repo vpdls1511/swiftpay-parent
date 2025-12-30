@@ -28,7 +28,6 @@ object PaymentMapper {
       acquirerResponseCode = domain.acquirerResponseCode,
       acquirerMessage = domain.acquirerMessage,
       idempotencyKey = domain.idempotencyKey,
-      settlementId = domain.settlementId,
     )
   }
 
@@ -52,7 +51,6 @@ object PaymentMapper {
       acquirerResponseCode = entity.acquirerResponseCode,
       acquirerMessage = entity.acquirerMessage,
       idempotencyKey = entity.idempotencyKey,
-      settlementId = entity.settlementId,
       createdAt = entity.createdAt,
       updatedAt = entity.updatedAt,
     )

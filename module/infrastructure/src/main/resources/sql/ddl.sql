@@ -80,7 +80,6 @@ CREATE TABLE `payments`
     `status`                   ENUM ('PENDING', 'IN_PROGRESS', 'SUCCEEDED', 'FAILED', 'CANCELLED') NOT NULL COMMENT '결제 상태',
     `reason`                   varchar(255)                                                                 DEFAULT NULL COMMENT '실패 이유',
     `idempotency_key`          VARCHAR(100)                                                                 DEFAULT NULL COMMENT '중복 방지 키',
-    `settlement_id`            VARCHAR(100)                                                                 DEFAULT NULL COMMENT '정산 관리 키',
 
     -- 상태 관리
     `acquirer_transaction_id`  varchar(255)                                                                 DEFAULT NULL COMMENT '거래번호',
