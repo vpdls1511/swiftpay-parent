@@ -17,19 +17,20 @@ class SettlementService(
   /**
    * 정산을 위한 Settlement 저장
    */
-  fun pending(escrow: Escrow, merchantId: String) {
+  fun pending(escrow: Escrow, merchantId: String): Settlement {
     val settlementSeq = sequenceGenerator.nextSettlementId()
     val settlementId = Settlement.createSettlementId(settlementSeq)
-    escrow.settle(settlementSeq)
+    escrow.settle()
 
     val settlement = Settlement.create(
       seq = settlementSeq,
       settlementId = settlementId,
+      escrowId = escrow.escrowId,
       merchantId = merchantId,
       totalAmount = escrow.amount,
       fee = escrow.amount / 10 // 수수료 10%
     )
 
-    settlementRepository.save(settlement)
+    return settlementRepository.save(settlement)
   }
 }

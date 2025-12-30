@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Payment API")
 @RestController
@@ -56,6 +53,21 @@ class PaymentController(
     log.info("결제 처리 시작")
     val response = paymentService.processing(request)
 
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body(response)
+    return ResponseEntity.status(HttpStatus.OK).body(response)
   }
+
+  @Operation(summary = "구매 확정", description = "구매 확정이 되면, 환불이 불가하며 정산 대기상태로 들어갑니다.")
+  @PostMapping("/{paymentId}/confirm")
+  fun confirmPayment(@PathVariable paymentId: String): ResponseEntity<ConfirmPaymentResponse> {
+    val response = paymentService.confirmPayment(paymentId)
+
+    return ResponseEntity.status(HttpStatus.OK).body(response)
+  }
+
+  @Operation(summary = "결제 환불")
+  @PostMapping("/{paymentId}/refund")
+  fun refundPayment(@PathVariable paymentId: String) {
+
+  }
+
 }

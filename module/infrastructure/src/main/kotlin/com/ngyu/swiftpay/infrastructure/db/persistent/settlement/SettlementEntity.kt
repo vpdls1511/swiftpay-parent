@@ -16,6 +16,9 @@ class SettlementEntity(
   @Column(name = "settlement_id", nullable = false, unique = true, length = 100)
   val settlementId: String,
 
+  @Column(name = "escrow_id", nullable = false, unique = true, length = 100)
+  val escrowId: String,
+
   @Column(name = "merchant_id", nullable = false, length = 100)
   val merchantId: String,
 

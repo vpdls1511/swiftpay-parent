@@ -15,8 +15,6 @@ class Escrow(
   val amount: Money,
   val status: EscrowStatus,
 
-  val settlementId: Long? = null,
-
   val createdAt: LocalDateTime,
   val completedAt: LocalDateTime? = null,  // settle or refund 완료 시간
   val updatedAt: LocalDateTime
@@ -41,13 +39,12 @@ class Escrow(
     }
   }
 
-  fun settle(settlementId: Long): Escrow {
+  fun settle(): Escrow {
     if (status != EscrowStatus.HOLD) {
       throw InvalidEscrowStatusException("HOLD 상태가 아닙니다.")
     }
     val now = LocalDateTime.now()
     return copy(
-      settlementId = settlementId,
       status = EscrowStatus.SETTLED,
       completedAt = now,
       updatedAt = now
@@ -72,7 +69,6 @@ class Escrow(
     merchantId: String = this.merchantId,
     amount: Money = this.amount,
     status: EscrowStatus = this.status,
-    settlementId: Long? = this.settlementId,
     createdAt: LocalDateTime = this.createdAt,
     completedAt: LocalDateTime? = this.completedAt,
     updatedAt: LocalDateTime = LocalDateTime.now(),
@@ -84,7 +80,6 @@ class Escrow(
       merchantId = merchantId,
       amount = amount,
       status = status,
-      settlementId = settlementId,
       createdAt = createdAt,
       completedAt = completedAt,
       updatedAt = updatedAt

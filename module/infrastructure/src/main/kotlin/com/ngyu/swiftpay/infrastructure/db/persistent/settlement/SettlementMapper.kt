@@ -10,6 +10,7 @@ object SettlementMapper {
     return Settlement(
       id = entity.id,
       settlementId = entity.settlementId,
+      escrowId = entity.escrowId,
       merchantId = entity.merchantId,
       totalAmount = Money(entity.totalAmount, Currency.valueOf(entity.currency)),
       feeAmount = Money(entity.feeAmount, Currency.valueOf(entity.currency)),
@@ -25,6 +26,7 @@ object SettlementMapper {
   fun toEntity(domain: Settlement): SettlementEntity {
     return SettlementEntity(
       id = domain.id,
+      escrowId = domain.escrowId,
       settlementId = domain.settlementId,
       merchantId = domain.merchantId,
       totalAmount = domain.totalAmount.amount,

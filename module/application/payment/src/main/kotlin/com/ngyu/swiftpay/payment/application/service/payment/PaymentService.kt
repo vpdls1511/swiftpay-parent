@@ -6,6 +6,7 @@ import com.ngyu.swiftpay.core.domain.payment.Payment
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
 import com.ngyu.swiftpay.core.port.repository.PaymentRepository
+import com.ngyu.swiftpay.payment.api.controller.dto.ConfirmPaymentResponse
 import com.ngyu.swiftpay.payment.api.controller.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.api.controller.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.escrow.EscrowService
@@ -36,6 +37,12 @@ class PaymentService(
     log.info("결제 정보 저장 완료 :: orderId = ${request.orderId} , paymentId = ${saved.paymentId}")
 
     return PaymentResponseDto.fromDomain(saved)
+  }
+
+  fun confirmPayment(paymentId: String): ConfirmPaymentResponse {
+    val settlement = escrowService.settle(paymentId)
+
+    return ConfirmPaymentResponse.create(settlement)
   }
 
   /**
