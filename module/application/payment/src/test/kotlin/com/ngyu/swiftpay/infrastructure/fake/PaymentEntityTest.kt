@@ -62,8 +62,8 @@ class PaymentEntityTest {
 
     // then
     assertEquals(payment.paymentId, foundDomain.paymentId)
-    assertEquals("pair_key_001", foundDomain.merchantId)
-    assertEquals("ORDER_001", foundDomain.orderId)
+    assertEquals(1, foundDomain.merchantId)
+    assertEquals(1, foundDomain.orderId)
     assertEquals("나이키 에어포스", foundDomain.orderName)
     assertEquals(Money.won(129000), foundDomain.amount)
     assertEquals(PaymentMethod.CARD, foundDomain.method)
