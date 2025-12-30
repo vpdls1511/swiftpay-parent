@@ -32,6 +32,11 @@ data class MerchantInfoRequest(
   val merchantId: String
 )
 
+data class PutWebhookUrlRequest(
+  val merchantId: String,
+  val url: String
+)
+
 
 data class MerchantRegisterResponseDto(
   val merchantId: String,

@@ -1,18 +1,13 @@
 package com.ngyu.swiftpay.payment.api.controller
 
-import com.ngyu.swiftpay.payment.api.controller.dto.MerchantInfoRequest
-import com.ngyu.swiftpay.payment.api.controller.dto.MerchantRegisterReqeust
-import com.ngyu.swiftpay.payment.api.controller.dto.MerchantRegisterResponseDto
-import com.ngyu.swiftpay.payment.api.controller.dto.PaymentCredentials
+import com.ngyu.swiftpay.payment.api.controller.dto.*
 import com.ngyu.swiftpay.payment.application.service.merchant.MerchantService
 import com.ngyu.swiftpay.payment.security.PaymentPrincipal
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Merchant API")
 @RestController
@@ -38,6 +33,16 @@ class MerchantController(
   ): ResponseEntity<MerchantRegisterResponseDto> {
     val response = merchantService.register(request)
     return ResponseEntity.ok(response)
+  }
+
+  @PutMapping("/webhook-url")
+  @Operation(summary = "가맹점 정산 알림 웹훅 등록")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun putSettleWebhookUrl(
+    @RequestBody request: PutWebhookUrlRequest
+  ): ResponseEntity<Void> {
+    merchantService.pugSettleWebhookUrl(request)
+    return ResponseEntity.ok().build()
   }
 
 }

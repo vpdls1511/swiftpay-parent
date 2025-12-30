@@ -58,6 +58,10 @@ class Merchant(
     )
   }
 
+  fun setSettleWebhookUrl(url: String): Merchant {
+    return this.copy(settleWebhookUrl = url)
+  }
+
   fun suspended(): Merchant {
     if (this.status != MerchantStatus.ACTIVE) {
       throw InvalidMerchantStatusException("활성 상태가 아닙니다")

@@ -7,10 +7,7 @@ import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.merchant.Merchant
 import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
 import com.ngyu.swiftpay.core.port.repository.MerchantRepository
-import com.ngyu.swiftpay.payment.api.controller.dto.MerchantInfoRequest
-import com.ngyu.swiftpay.payment.api.controller.dto.MerchantRegisterReqeust
-import com.ngyu.swiftpay.payment.api.controller.dto.MerchantRegisterResponseDto
-import com.ngyu.swiftpay.payment.api.controller.dto.PaymentCredentials
+import com.ngyu.swiftpay.payment.api.controller.dto.*
 import com.ngyu.swiftpay.payment.application.auth.ApiCredentialsService
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
@@ -84,6 +81,14 @@ class MerchantService(
       log.error("가맹점 정보 저장 중 알 수 없는 오류 발생", e)
       throw e
     }
+  }
+
+  @Transactional
+  fun pugSettleWebhookUrl(request: PutWebhookUrlRequest) {
+    val merchant = merchantRepository.findByMerchantId(request.merchantId)
+    val updated = merchant.setSettleWebhookUrl(request.url)
+
+    merchantRepository.save(updated)
   }
 
   /**
