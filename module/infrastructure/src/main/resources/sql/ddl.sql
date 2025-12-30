@@ -168,7 +168,7 @@ CREATE TABLE `escrow`
     `id`           BIGINT                               NOT NULL AUTO_INCREMENT COMMENT '에스크로 고유 ID (PK)',
     `escrow_id`    VARCHAR(100)                         NOT NULL COMMENT '에스크로 ID (외부 노출)',
     `payment_id`   BIGINT                               NOT NULL COMMENT '결제 ID (Payment.paymentId 참조)',
-    `merchant_id`  VARCHAR(100)                         NOT NULL COMMENT '가맹점 ID',
+    `merchant_id`  BIGINT                               NOT NULL COMMENT '가맹점 ID',
     `amount`       DECIMAL(19, 2)                       NOT NULL COMMENT '보관 금액',
     `currency`     VARCHAR(3)                           NOT NULL DEFAULT 'KRW' COMMENT '통화',
     `status`       ENUM ('HOLD', 'SETTLED', 'REFUNDED') NOT NULL COMMENT '에스크로 상태 (HOLD: 보관중, SETTLED: 정산완료, REFUNDED: 환불완료)',
