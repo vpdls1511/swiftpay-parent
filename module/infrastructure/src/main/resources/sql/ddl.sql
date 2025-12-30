@@ -95,7 +95,6 @@ CREATE TABLE `payments`
     UNIQUE KEY `uk_idempotency_key` (`idempotency_key`),
     INDEX `idx_order_id` (`order_id`),
     INDEX `idx_merchant_id` (`merchant_id`),
-    INDEX `idx_settlement_id` (`settlement_id`),
     INDEX `idx_status` (`status`),
     INDEX `idx_created_at` (`created_at`),
     INDEX `idx_order_id_status` (`order_id`, `status`)
