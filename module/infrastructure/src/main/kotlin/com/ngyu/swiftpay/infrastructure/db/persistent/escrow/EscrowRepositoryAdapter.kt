@@ -30,7 +30,7 @@ class EscrowRepositoryAdapter(
     TODO("Not yet implemented")
   }
 
-  override fun findByPaymentId(paymentId: String): Escrow {
+  override fun findByPaymentId(paymentId: Long): Escrow {
     val entity = repository.findByPaymentId(paymentId)
       ?: throw Exception("결제를 찾을 수 없습니다: $paymentId")
 

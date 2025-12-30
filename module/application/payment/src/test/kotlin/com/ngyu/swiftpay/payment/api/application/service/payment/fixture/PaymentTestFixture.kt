@@ -96,8 +96,8 @@ object PaymentTestFixture {
    */
   fun createPayment(
     id: String = "payment_${System.currentTimeMillis()}",
-    merchantId: String = "merchant_123",
-    orderId: String = "order_123",
+    merchantId: Long = 1L,
+    orderId: Long = 1L,
     orderName: String = "테스트 상품",
     amount: BigDecimal = BigDecimal(10000),
     currency: Currency = Currency.KRW,

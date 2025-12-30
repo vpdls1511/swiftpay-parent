@@ -15,10 +15,10 @@ class EscrowEntity(
   val escrowId: String,
 
   @Column(name = "payment_id", nullable = false, length = 100)
-  val paymentId: String,
+  val paymentId: Long,
 
   @Column(name = "merchant_id", nullable = false, length = 100)
-  val merchantId: String,
+  val merchantId: Long,
 
   @Column(name = "amount", nullable = false, precision = 19, scale = 2)
   val amount: BigDecimal,

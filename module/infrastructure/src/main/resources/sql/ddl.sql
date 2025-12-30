@@ -49,8 +49,8 @@ CREATE TABLE `payments`
 (
     `id`                       BIGINT                                                              NOT NULL AUTO_INCREMENT NOT NULL COMMENT '결제 고유 ID',
     `payment_id`               VARCHAR(50)                                                         NOT NULL COMMENT '결제 ID',
-    `merchant_id`              VARCHAR(100)                                                        NOT NULL COMMENT '가맹점 ID',
-    `order_id`                 VARCHAR(100)                                                        NOT NULL COMMENT '가맹점 주문 번호',
+    `merchant_id`              BIGINT                                                              NOT NULL COMMENT '가맹점 ID',
+    `order_id`                 BIGINT                                                              NOT NULL COMMENT '가맹점 주문 번호',
     `order_name`               VARCHAR(200)                                                        NOT NULL COMMENT '주문 상품명',
     `amount`                   DECIMAL(19, 2)                                                      NOT NULL COMMENT '결제 금액',
     `currency`                 VARCHAR(3)                                                          NOT NULL DEFAULT 'KRW' COMMENT '통화',
@@ -165,23 +165,21 @@ drop table `escrow`;
 -- escrow 테이블 생성
 CREATE TABLE `escrow`
 (
-    `id`            BIGINT                               NOT NULL AUTO_INCREMENT COMMENT '에스크로 고유 ID (PK)',
-    `escrow_id`     VARCHAR(100)                         NOT NULL COMMENT '에스크로 ID (외부 노출)',
-    `payment_id`    VARCHAR(100)                         NOT NULL COMMENT '결제 ID (Payment.paymentId 참조)',
-    `settlement_id` BIGINT                               NULL COMMENT '정산 ID (Settlement.id 참조)',
-    `merchant_id`   VARCHAR(100)                         NOT NULL COMMENT '가맹점 ID',
-    `amount`        DECIMAL(19, 2)                       NOT NULL COMMENT '보관 금액',
-    `currency`      VARCHAR(3)                           NOT NULL DEFAULT 'KRW' COMMENT '통화',
-    `status`        ENUM ('HOLD', 'SETTLED', 'REFUNDED') NOT NULL COMMENT '에스크로 상태 (HOLD: 보관중, SETTLED: 정산완료, REFUNDED: 환불완료)',
+    `id`           BIGINT                               NOT NULL AUTO_INCREMENT COMMENT '에스크로 고유 ID (PK)',
+    `escrow_id`    VARCHAR(100)                         NOT NULL COMMENT '에스크로 ID (외부 노출)',
+    `payment_id`   BIGINT                               NOT NULL COMMENT '결제 ID (Payment.paymentId 참조)',
+    `merchant_id`  BIGINT                               NOT NULL COMMENT '가맹점 ID',
+    `amount`       DECIMAL(19, 2)                       NOT NULL COMMENT '보관 금액',
+    `currency`     VARCHAR(3)                           NOT NULL DEFAULT 'KRW' COMMENT '통화',
+    `status`       ENUM ('HOLD', 'SETTLED', 'REFUNDED') NOT NULL COMMENT '에스크로 상태 (HOLD: 보관중, SETTLED: 정산완료, REFUNDED: 환불완료)',
 
-    `created_at`    DATETIME(6)                          NOT NULL COMMENT '생성 일시',
-    `completed_at`  DATETIME(6)                                   DEFAULT NULL COMMENT '완료 일시 (정산 or 환불)',
-    `updated_at`    DATETIME(6)                          NOT NULL COMMENT '수정 일시',
+    `created_at`   DATETIME(6)                          NOT NULL COMMENT '생성 일시',
+    `completed_at` DATETIME(6)                                   DEFAULT NULL COMMENT '완료 일시 (정산 or 환불)',
+    `updated_at`   DATETIME(6)                          NOT NULL COMMENT '수정 일시',
 
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_escrow_id` (`escrow_id`),
     INDEX `idx_payment_id` (`payment_id`),
-    INDEX `idx_settlement_id` (`settlement_id`),
     INDEX `idx_merchant_id` (`merchant_id`),
     INDEX `idx_status` (`status`),
     INDEX `idx_created_at` (`created_at`)
@@ -195,19 +193,20 @@ drop table `settlement`;
 -- settlement 테이블 생성
 CREATE TABLE `settlement`
 (
-    `id`                      BIGINT                                                NOT NULL AUTO_INCREMENT COMMENT '정산 고유 ID (PK)',
-    `settlement_id`           VARCHAR(100)                                          NOT NULL COMMENT '정산 ID (외부 노출)',
-    `merchant_id` VARCHAR(100)                                           NOT NULL COMMENT '가맹점 ID',
-    `total_amount`            DECIMAL(19, 2)                                        NOT NULL COMMENT '총 결제 금액',
-    `fee_amount`              DECIMAL(19, 2)                                        NOT NULL COMMENT '총 수수료',
-    `settlement_amount`       DECIMAL(19, 2)                                        NOT NULL COMMENT '실제 정산 금액 (총액 - 수수료)',
-    `currency`                VARCHAR(3)                                            NOT NULL DEFAULT 'KRW' COMMENT '통화',
-    `settlement_date`         DATE                                                  NOT NULL COMMENT '정산 예정일',
-    `status`                  ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED') NOT NULL COMMENT '정산 상태 (PENDING: 대기, PROCESSING: 처리중, COMPLETED: 완료, FAILED: 실패)',
-    `fail_reason`             VARCHAR(500)                                                   DEFAULT NULL COMMENT '실패 사유',
+    `id`                BIGINT                                                NOT NULL AUTO_INCREMENT COMMENT '정산 고유 ID (PK)',
+    `settlement_id`     VARCHAR(100)                                          NOT NULL COMMENT '정산 ID (외부 노출)',
+    `escrow_id`         BIGINT                                                NOT NULL COMMENT '에스크로 ID',
+    `merchant_id`       BIGINT                                                NOT NULL COMMENT '가맹점 ID',
+    `total_amount`      DECIMAL(19, 2)                                        NOT NULL COMMENT '총 결제 금액',
+    `fee_amount`        DECIMAL(19, 2)                                        NOT NULL COMMENT '총 수수료',
+    `settlement_amount` DECIMAL(19, 2)                                        NOT NULL COMMENT '실제 정산 금액 (총액 - 수수료)',
+    `currency`          VARCHAR(3)                                            NOT NULL DEFAULT 'KRW' COMMENT '통화',
+    `settlement_date`   DATE                                                  NOT NULL COMMENT '정산 예정일',
+    `status`            ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED') NOT NULL COMMENT '정산 상태 (PENDING: 대기, PROCESSING: 처리중, COMPLETED: 완료, FAILED: 실패)',
+    `fail_reason`       VARCHAR(500)                                                   DEFAULT NULL COMMENT '실패 사유',
 
-    `created_at`              DATETIME(6)                                           NOT NULL COMMENT '생성 일시',
-    `executed_at`             DATETIME(6)                                                    DEFAULT NULL COMMENT '실행 일시',
+    `created_at`        DATETIME(6)                                           NOT NULL COMMENT '생성 일시',
+    `executed_at`       DATETIME(6)                                                    DEFAULT NULL COMMENT '실행 일시',
 
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_settlement_id` (`settlement_id`),
@@ -224,7 +223,7 @@ CREATE TABLE `orders`
 (
     `id`             BIGINT                                                                            NOT NULL AUTO_INCREMENT COMMENT '주문 고유 ID (PK)',
     `order_id`       VARCHAR(100)                                                                      NOT NULL COMMENT '주문 ID (외부 노출)',
-    `merchant_id`    VARCHAR(100)                                                                      NOT NULL COMMENT '가맹점 ID',
+    `merchant_id`    BIGINT                                                                            NOT NULL COMMENT '가맹점 ID',
     `order_name`     VARCHAR(200)                                                                      NOT NULL COMMENT '주문 상품명',
 
     `total_amount`   DECIMAL(19, 2)                                                                    NOT NULL COMMENT '총 주문 금액',

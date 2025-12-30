@@ -25,11 +25,11 @@ data class OrderCreateRequestDto(
   val customerEmail: String? = null,
   val customerPhone: String? = null
 ) {
-  fun toDomain(seq: Long, orderId: String): Order {
+  fun toDomain(seq: Long, orderId: String, merchantId: Long): Order {
     return Order.create(
       orderSeq = seq,
       orderId = orderId,
-      merchantId = this.merchantId,
+      merchantId = merchantId,
       orderName = this.orderName,
       totalAmount = this.totalAmount,
       currency = this.currency,
@@ -85,12 +85,12 @@ data class PaymentRequestDto(
   // 옵션 - 콜백 URL
   val callBack: PaymentCallback? = null,
 ) {
-  fun toDomain(seq: Long, paymentId: String): Payment {
+  fun toDomain(seq: Long, paymentId: String, order: Order): Payment {
     return Payment.create(
       paymentSeq = seq,
       paymentId = paymentId,
-      merchantId = this.merchantId,
-      orderId = this.orderId,
+      merchantId = order.merchantId,
+      orderId = order.id,
       orderName = this.orderName,
       amount = amount,
       currency = this.currency,
@@ -118,11 +118,11 @@ data class PaymentResponseDto(
   val trnDate: LocalDateTime
 ) {
   companion object {
-    fun fromDomain(domain: Payment): PaymentResponseDto {
+    fun fromDomain(domain: Payment, orderId: String, merchantId: String): PaymentResponseDto {
       return PaymentResponseDto(
         trnKey = domain.paymentId,
-        orderId = domain.orderId,
-        merchantId = domain.merchantId,
+        orderId = orderId,
+        merchantId = merchantId,
         amount = domain.amount.toBigDecimal(),
         currency = domain.amount.currency,
         orderName = domain.orderName,
