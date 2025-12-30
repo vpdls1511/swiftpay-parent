@@ -2,6 +2,8 @@ plugins {
   kotlin("jvm") version "1.9.25"
   kotlin("plugin.spring") version "1.9.25"
   kotlin("plugin.jpa") version "1.9.25"
+  kotlin("kapt")
+
   id("org.springframework.boot") version "3.5.6"
   id("io.spring.dependency-management") version "1.1.7"
 }
@@ -34,6 +36,10 @@ dependencies {
 
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.springframework.boot:spring-boot-starter")
+  implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
+
+  kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+  kapt("jakarta.persistence:jakarta.persistence-api")
 
   api("org.springframework.boot:spring-boot-starter-data-redis")
   api("io.lettuce:lettuce-core")
