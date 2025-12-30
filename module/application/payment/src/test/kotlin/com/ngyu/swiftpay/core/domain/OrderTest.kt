@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
 
 @DisplayName("Order 도메인 테스트")
 class OrderTest {
@@ -26,7 +25,7 @@ class OrderTest {
     order = Order.create(
       orderSeq = orderSeq,
       orderId = orderId,
-      merchantId = UUID.randomUUID().toString(),
+      merchantId = 1L,
       orderName = "테스트 상품",
       totalAmount = 110000L,
       currency = Currency.KRW

@@ -29,9 +29,9 @@ class EscrowService(
     return savedEscrow
   }
 
-  fun settle(paymentId: String): Settlement {
+  fun settle(paymentId: Long): Settlement {
     val escrow = escrowRepository.findByPaymentId(paymentId)
-    val settlement = settlementService.pending(escrow, escrow.merchantId)
+    val settlement = settlementService.pending(escrow, escrow.id)
 
     val settleEscrow = escrow.settle()
     escrowRepository.save(settleEscrow)

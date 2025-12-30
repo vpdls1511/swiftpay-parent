@@ -2,6 +2,7 @@ package com.ngyu.swiftpay.payment.application.service.payment
 
 import com.ngyu.swiftpay.core.common.exception.PaymentProcessException
 import com.ngyu.swiftpay.core.common.logger.logger
+import com.ngyu.swiftpay.core.domain.order.Order
 import com.ngyu.swiftpay.core.domain.payment.Payment
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
@@ -10,6 +11,7 @@ import com.ngyu.swiftpay.payment.api.controller.dto.ConfirmPaymentResponse
 import com.ngyu.swiftpay.payment.api.controller.dto.PaymentRequestDto
 import com.ngyu.swiftpay.payment.api.controller.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.escrow.EscrowService
+import com.ngyu.swiftpay.payment.application.service.order.OrderService
 import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -18,9 +20,12 @@ import org.springframework.stereotype.Service
 class PaymentService(
   // TODO - 아직 각 전략의 내부 서비스를 완성하지 않은 단계. 우선, 도메인 생성 후 DB 저장까지만.
   private val paymentStrategyFactory: PaymentStrategyFactory,
+
   private val paymentRepository: PaymentRepository,
   private val escrowService: EscrowService,
-  private val sequenceGenerator: SequenceGenerator
+  private val orderService: OrderService,
+
+  private val sequenceGenerator: SequenceGenerator,
 ) {
 
   private val log = logger()
@@ -30,17 +35,20 @@ class PaymentService(
     log.info("결제 처리 시작 :: orderId=${request.orderId}, merchantId=${request.merchantId}, method=${request.method}, amount=${request.amount}")
     validatePaymentRequest(request)
 
-    val payment = createPayment(request)
+    val order = orderService.findOrder(request.orderId)
+
+    val payment = createPayment(request, order)
     val processed = processPayment(payment)
     val saved = paymentRepository.save(processed)
 
     log.info("결제 정보 저장 완료 :: orderId = ${request.orderId} , paymentId = ${saved.paymentId}")
 
-    return PaymentResponseDto.fromDomain(saved)
+    return PaymentResponseDto.fromDomain(saved, order.orderId, request.merchantId)
   }
 
   fun confirmPayment(paymentId: String): ConfirmPaymentResponse {
-    val settlement = escrowService.settle(paymentId)
+    val payment = paymentRepository.findByPaymentId(paymentId)
+    val settlement = escrowService.settle(payment.id)
 
     return ConfirmPaymentResponse.create(settlement)
   }
@@ -61,10 +69,10 @@ class PaymentService(
   /**
    * 결제를 위한 데이터를 만들고, 이를 DB에 Pending 상태로 저장한다.
    */
-  private fun createPayment(request: PaymentRequestDto): Payment {
+  private fun createPayment(request: PaymentRequestDto, order: Order): Payment {
     val paymentSeq = sequenceGenerator.nextPaymentId()
     val paymentId = Payment.createPaymentId(paymentSeq)
-    val payment = request.toDomain(paymentSeq, paymentId)
+    val payment = request.toDomain(paymentSeq, paymentId, order)
 
     return paymentRepository.save(payment)
   }

@@ -17,10 +17,10 @@ class SettlementEntity(
   val settlementId: String,
 
   @Column(name = "escrow_id", nullable = false, unique = true, length = 100)
-  val escrowId: String,
+  val escrowId: Long,
 
   @Column(name = "merchant_id", nullable = false, length = 100)
-  val merchantId: String,
+  val merchantId: Long,
 
   @Column(name = "total_amount", nullable = false, precision = 19, scale = 2)
   val totalAmount: BigDecimal,

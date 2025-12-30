@@ -17,10 +17,10 @@ class PaymentEntity(
   val paymentId: String,
 
   @Column(nullable = false, length = 100)
-  val merchantId: String,
+  val merchantId: Long,
 
   @Column(nullable = false, length = 100)
-  val orderId: String,
+  val orderId: Long,
 
   @Column(nullable = false, length = 200)
   val orderName: String,

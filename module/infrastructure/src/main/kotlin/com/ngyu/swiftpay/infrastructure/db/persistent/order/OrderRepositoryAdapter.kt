@@ -17,6 +17,13 @@ class OrderRepositoryAdapter(
     return OrderMapper.toDomain(savedEntity)
   }
 
+  override fun findByOrder(orderId: String): Order {
+    val entity = repository.findByOrderId(orderId)
+      ?: throw Exception("주문 정보를 찾을 수 없습니다.")
+
+    return OrderMapper.toDomain(entity)
+  }
+
   override fun findByPayment(domain: Order): Order {
     val orderId = domain.id
     requireNotNull(orderId) { "Settlement id가 Null 입니다" }

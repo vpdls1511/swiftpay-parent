@@ -47,6 +47,11 @@ class MerchantService(
     )
   }
 
+  @Transactional(readOnly = true)
+  fun getMerchant(merchantId: String): Merchant {
+    return merchantRepository.findByMerchantId(merchantId)
+  }
+
   /**
    * 가맹점 등록
    *

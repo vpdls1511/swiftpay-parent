@@ -44,8 +44,8 @@ class SettlementServiceTest {
     payment = Payment.create(
       paymentSeq = 1L,
       paymentId = Payment.createPaymentId(1L),
-      merchantId = "pair_key_001",
-      orderId = "ORDER_001",
+      merchantId = 1L,
+      orderId = 1L,
       orderName = "나이키 에어포스",
       amount = BigDecimal("129000.00"),
       currency = Currency.KRW,
@@ -73,7 +73,7 @@ class SettlementServiceTest {
     given(sequenceGenerator.nextSettlementId()).willReturn(1L)
 
     // when
-    settlementService.pending(escrow, "TEST_MERCHANT_ID")
+    settlementService.pending(escrow, 1L)
 
     // then
     verify(settlementRepository).save(any())
@@ -88,7 +88,7 @@ class SettlementServiceTest {
     val captor = argumentCaptor<Settlement>()
 
     // when
-    settlementService.pending(escrow, "TEST_MERCHANT_ID")
+    settlementService.pending(escrow, 1L)
 
     // then
     verify(settlementRepository).save(captor.capture())
@@ -104,7 +104,7 @@ class SettlementServiceTest {
     val captor = argumentCaptor<Settlement>()
 
     // when
-    settlementService.pending(escrow, "TEST_MERCHANT_ID")
+    settlementService.pending(escrow, 1L)
 
     // then
     verify(settlementRepository).save(captor.capture())
@@ -118,8 +118,8 @@ class SettlementServiceTest {
     val vaPayment = Payment.create(
       paymentSeq = 2L,
       paymentId = Payment.createPaymentId(2L),
-      merchantId = "pair_key_001",
-      orderId = "ORDER_002",
+      merchantId = 1L,
+      orderId = 1L,
       orderName = "아디다스 슈퍼스타",
       amount = BigDecimal("89000.00"),
       currency = Currency.KRW,
@@ -137,7 +137,7 @@ class SettlementServiceTest {
     given(sequenceGenerator.nextSettlementId()).willReturn(2L)
 
     // when
-    settlementService.pending(escrow, "TEST_MERCHANT_ID")
+    settlementService.pending(escrow, 1L)
 
     // then
     verify(settlementRepository).save(any())
@@ -147,7 +147,7 @@ class SettlementServiceTest {
   @Test
   fun merchantIdShouldBeStoredCorrectly() {
     // given
-    val merchantId = "TEST_MERCHANT_001"
+    val merchantId = 1L
     val escrow = Escrow.hold(id = 1L, payment = payment)
     given(sequenceGenerator.nextSettlementId()).willReturn(1L)
     val captor = argumentCaptor<Settlement>()

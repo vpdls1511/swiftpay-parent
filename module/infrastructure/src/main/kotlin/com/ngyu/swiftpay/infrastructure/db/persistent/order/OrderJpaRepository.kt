@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface OrderJpaRepository: JpaRepository<OrderEntity, Long> {
+  fun findByOrderId(orderId: String): OrderEntity?
 }

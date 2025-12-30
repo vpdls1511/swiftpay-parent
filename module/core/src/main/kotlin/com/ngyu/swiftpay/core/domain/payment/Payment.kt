@@ -19,8 +19,8 @@ class Payment(
 
   // 기본정보
   val paymentId: String,              // 고유 ID
-  val merchantId: String,             // 가맹점 Id
-  val orderId: String,                // 가맹점의 주문번호
+  val merchantId: Long,             // 가맹점 Id
+  val orderId: Long,                // 가맹점의 주문번호
   val orderName: String,              // 상품 이름
   val amount: Money,                  // 결제 금액
 
@@ -62,8 +62,8 @@ class Payment(
     fun create(
       paymentSeq: Long,
       paymentId: String,
-      merchantId: String,
-      orderId: String,
+      merchantId: Long,
+      orderId: Long,
       orderName: String,
       amount: BigDecimal,
       currency: Currency,
@@ -157,8 +157,8 @@ class Payment(
   private fun copy(
     id: Long = this.id,
     paymentId: String = this.paymentId,
-    merchantId: String = this.merchantId,
-    orderId: String = this.orderId,
+    merchantId: Long = this.merchantId,
+    orderId: Long = this.orderId,
     orderName: String = this.orderName,
     amount: Money = this.amount,
     method: PaymentMethod = this.method,

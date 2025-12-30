@@ -15,6 +15,10 @@ class FakePaymentJpaRepository : PaymentJpaRepository {
   private val storage = mutableMapOf<Long, PaymentEntity>()
   private var autoIncrement = 1L
 
+  override fun findByPaymentId(paymentId: String): PaymentEntity? {
+    TODO("Not yet implemented")
+  }
+
   override fun <S : PaymentEntity> save(entity: S): S {
     val id = entity.id ?: autoIncrement++
     @Suppress("UNCHECKED_CAST")

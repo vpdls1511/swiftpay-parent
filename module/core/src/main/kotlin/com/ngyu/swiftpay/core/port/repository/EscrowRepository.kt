@@ -7,5 +7,5 @@ interface EscrowRepository {
   fun findByEscrow(domain: Escrow): Escrow
 
   fun findBySettlementId(settlementId: String): List<Escrow>
-  fun findByPaymentId(paymentId: String): Escrow
+  fun findByPaymentId(paymentId: Long): Escrow
 }

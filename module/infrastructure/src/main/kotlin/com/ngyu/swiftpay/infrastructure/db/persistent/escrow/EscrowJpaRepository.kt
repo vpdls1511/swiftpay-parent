@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface EscrowJpaRepository: JpaRepository<EscrowEntity, Long> {
-  fun findByPaymentId(paymentId: String): EscrowEntity?
+  fun findByPaymentId(paymentId: Long): EscrowEntity?
 }

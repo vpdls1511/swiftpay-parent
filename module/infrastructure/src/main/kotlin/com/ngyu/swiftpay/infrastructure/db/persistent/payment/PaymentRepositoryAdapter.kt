@@ -25,4 +25,11 @@ class PaymentRepositoryAdapter(
 
     return PaymentMapper.toDomain(entity)
   }
+
+  override fun findByPaymentId(paymentId: String): Payment {
+    val entity = repository.findByPaymentId(paymentId)
+      ?: throw PaymentPersistenceException("결제를 찾을 수 없습니다: $paymentId")
+
+    return PaymentMapper.toDomain(entity)
+  }
 }

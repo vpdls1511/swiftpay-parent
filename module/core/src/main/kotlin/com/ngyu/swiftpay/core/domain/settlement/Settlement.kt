@@ -11,8 +11,8 @@ import java.time.LocalDateTime
 class Settlement(
   override val id: Long? = null,
   val settlementId: String,
-  val escrowId: String,
-  val merchantId: String,
+  val escrowId: Long,
+  val merchantId: Long,
 
   val totalAmount: Money, // 총 결제 금액
   val feeAmount: Money, // 총 수수료
@@ -30,12 +30,14 @@ class Settlement(
   companion object {
     fun createSettlementId(seq: Long): String = "$PREFIX${seq.toString().padStart(PADDING_LENGTH, '0')}"
 
-    fun create(seq: Long,
-               settlementId: String,
-               escrowId: String,
-               merchantId: String,
-               totalAmount: Money,
-               fee: Money): Settlement {
+    fun create(
+      seq: Long,
+      settlementId: String,
+      escrowId: Long,
+      merchantId: Long,
+      totalAmount: Money,
+      fee: Money
+    ): Settlement {
       val now = LocalDateTime.now()
       return Settlement(
         id = seq,
@@ -84,8 +86,8 @@ class Settlement(
   private fun copy(
     id: Long? = this.id,
     settlementId: String = this.settlementId,
-    escrowId: String = this.escrowId,
-    merchantId: String = this.merchantId,
+    escrowId: Long = this.escrowId,
+    merchantId: Long = this.merchantId,
     totalAmount: Money = this.totalAmount,
     feeAmount: Money = this.feeAmount,
     settlementAmount: Money = this.settlementAmount,

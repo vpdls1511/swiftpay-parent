@@ -10,8 +10,8 @@ class Escrow(
   override val id: Long,
 
   val escrowId: String,
-  val paymentId: String,
-  val merchantId: String,
+  val paymentId: Long,
+  val merchantId: Long,
   val amount: Money,
   val status: EscrowStatus,
 
@@ -25,7 +25,7 @@ class Escrow(
       return Escrow(
         id = id,
         escrowId = generateEscrowId(),
-        paymentId = payment.paymentId,
+        paymentId = payment.id,
         merchantId = payment.merchantId,
         amount = payment.amount,
         status = EscrowStatus.HOLD,
@@ -65,8 +65,8 @@ class Escrow(
   private fun copy(
     id: Long = this.id,
     escrowId: String = this.escrowId,
-    paymentId: String = this.paymentId,
-    merchantId: String = this.merchantId,
+    paymentId: Long = this.paymentId,
+    merchantId: Long = this.merchantId,
     amount: Money = this.amount,
     status: EscrowStatus = this.status,
     createdAt: LocalDateTime = this.createdAt,

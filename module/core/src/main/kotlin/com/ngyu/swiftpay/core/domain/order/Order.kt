@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 class Order(
   override val id: Long,
   val orderId: String,
-  val merchantId: String,
+  val merchantId: Long,
 
   val orderName: String,
 
@@ -42,7 +42,7 @@ class Order(
     fun create(
       orderSeq: Long,
       orderId: String,
-      merchantId: String,
+      merchantId: Long,
       orderName: String,
       totalAmount: Long,
       currency: Currency,
@@ -129,7 +129,7 @@ class Order(
   private fun copy(
     id: Long = this.id,
     orderId: String = this.orderId,
-    merchantId: String = this.merchantId,
+    merchantId: Long = this.merchantId,
     orderName: String = this.orderName,
     totalAmount: Money = this.totalAmount,
     balanceAmount: Money = this.balanceAmount,

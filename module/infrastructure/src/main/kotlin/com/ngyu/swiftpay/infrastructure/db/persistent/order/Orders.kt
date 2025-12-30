@@ -23,7 +23,7 @@ class OrderEntity(
   val orderId: String,
 
   @Column(name = "merchant_id", nullable = false, length = 100)
-  val merchantId: String,
+  val merchantId: Long,
 
   @Column(name = "order_name", nullable = false, length = 200)
   val orderName: String,
