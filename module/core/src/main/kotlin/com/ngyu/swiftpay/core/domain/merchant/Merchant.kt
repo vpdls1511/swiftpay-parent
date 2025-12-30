@@ -28,6 +28,8 @@ class Merchant(
 
   val status: MerchantStatus = MerchantStatus.PENDING,
 
+  val settleWebhookUrl: String? = null,
+
   val contractStartDate: LocalDate? = null,
   val contractEndDate: LocalDate? = null,
 
@@ -99,6 +101,7 @@ class Merchant(
     feeRate: BigDecimal = this.feeRate,
     settlementCycle: SettlementCycle = this.settlementCycle,
     status: MerchantStatus = this.status,
+    settleWebhookUrl: String? = this.settleWebhookUrl,
     contractStartDate: LocalDate? = this.contractStartDate,
     contractEndDate: LocalDate? = this.contractEndDate,
     createdAt: LocalDateTime = this.createdAt,
@@ -120,6 +123,7 @@ class Merchant(
       feeRate = feeRate,
       settlementCycle = settlementCycle,
       status = status,
+      settleWebhookUrl = settleWebhookUrl,
       contractStartDate = contractStartDate,
       contractEndDate = contractEndDate,
       createdAt = createdAt,

@@ -151,6 +151,7 @@ CREATE TABLE merchant
     contract_end_date   DATE,
 
     status              VARCHAR(20)   NOT NULL,
+    settle_webhook_url  VARCHAR(255),
     approved_at         DATETIME,
 
     created_at          TIMESTAMP     NOT NULL,

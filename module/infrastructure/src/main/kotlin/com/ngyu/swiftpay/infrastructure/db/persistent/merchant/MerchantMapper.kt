@@ -21,6 +21,7 @@ object MerchantMapper {
       contractStartDate = domain.contractStartDate,
       contractEndDate = domain.contractEndDate,
       status = domain.status,
+      settleWebhookUrl = domain.settleWebhookUrl,
       approvedAt = domain.approvedAt
     )
   }
@@ -41,6 +42,7 @@ object MerchantMapper {
       feeRate = entity.feeRate,
       settlementCycle = entity.settlementCycle,
       status = entity.status,
+      settleWebhookUrl = entity.settleWebhookUrl,
       contractStartDate = entity.contractStartDate,
       contractEndDate = entity.contractEndDate,
       createdAt = entity.createdAt,

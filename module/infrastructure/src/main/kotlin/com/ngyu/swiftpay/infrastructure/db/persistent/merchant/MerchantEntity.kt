@@ -54,6 +54,9 @@ class MerchantEntity(
   @Column(name = "status", nullable = false)
   val status: MerchantStatus = MerchantStatus.PENDING,
 
+  @Column(name = "settle_webhook_url", nullable = true)
+  val settleWebhookUrl: String? = null,
+
   @Column(name = "approved_at")
   val approvedAt: LocalDateTime? = null
 
