@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.payment.api.controller
 
 import com.ngyu.swiftpay.core.common.logger.logger
-import com.ngyu.swiftpay.payment.api.dto.*
+import com.ngyu.swiftpay.payment.api.controller.dto.*
 import com.ngyu.swiftpay.payment.application.service.order.OrderService
 import com.ngyu.swiftpay.payment.application.service.payment.PaymentService
 import com.ngyu.swiftpay.payment.security.PaymentPrincipal

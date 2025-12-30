@@ -6,8 +6,8 @@ import com.ngyu.swiftpay.core.domain.payment.Payment
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
 import com.ngyu.swiftpay.core.port.repository.PaymentRepository
-import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
-import com.ngyu.swiftpay.payment.api.dto.PaymentResponseDto
+import com.ngyu.swiftpay.payment.api.controller.dto.PaymentRequestDto
+import com.ngyu.swiftpay.payment.api.controller.dto.PaymentResponseDto
 import com.ngyu.swiftpay.payment.application.service.escrow.EscrowService
 import com.ngyu.swiftpay.payment.application.strategy.PaymentStrategyFactory
 import jakarta.transaction.Transactional

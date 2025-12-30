@@ -6,9 +6,9 @@ import com.ngyu.swiftpay.core.domain.payment.PaymentMethod
 import com.ngyu.swiftpay.core.domain.payment.PaymentStatus
 import com.ngyu.swiftpay.core.domain.payment.vo.PaymentMethodDetails
 import com.ngyu.swiftpay.core.vo.Currency
-import com.ngyu.swiftpay.payment.api.dto.PaymentCallback
-import com.ngyu.swiftpay.payment.api.dto.PaymentDtoMethodDetails
-import com.ngyu.swiftpay.payment.api.dto.PaymentRequestDto
+import com.ngyu.swiftpay.payment.api.controller.dto.PaymentCallback
+import com.ngyu.swiftpay.payment.api.controller.dto.PaymentDtoMethodDetails
+import com.ngyu.swiftpay.payment.api.controller.dto.PaymentRequestDto
 import java.math.BigDecimal
 
 /**

@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.payment.security
 
-import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
+import com.ngyu.swiftpay.payment.api.controller.dto.PaymentCredentials
 import com.ngyu.swiftpay.security.security.BaseAuthenticationFilter
 import jakarta.servlet.http.HttpServletRequest
 

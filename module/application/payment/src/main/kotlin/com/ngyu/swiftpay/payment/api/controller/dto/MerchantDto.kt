@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.api.dto
+package com.ngyu.swiftpay.payment.api.controller.dto
 
 import com.ngyu.swiftpay.core.domain.merchant.Merchant
 

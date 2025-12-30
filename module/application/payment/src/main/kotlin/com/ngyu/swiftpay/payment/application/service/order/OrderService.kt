@@ -4,8 +4,8 @@ import com.ngyu.swiftpay.core.common.logger.logger
 import com.ngyu.swiftpay.core.domain.order.Order
 import com.ngyu.swiftpay.core.port.repository.OrderRepository
 import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
-import com.ngyu.swiftpay.payment.api.dto.OrderCreateRequestDto
-import com.ngyu.swiftpay.payment.api.dto.OrderCreateResponseDto
+import com.ngyu.swiftpay.payment.api.controller.dto.OrderCreateRequestDto
+import com.ngyu.swiftpay.payment.api.controller.dto.OrderCreateResponseDto
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 

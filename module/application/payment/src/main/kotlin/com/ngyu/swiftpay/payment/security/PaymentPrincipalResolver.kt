@@ -2,7 +2,7 @@ package com.ngyu.swiftpay.payment.security
 
 import com.ngyu.swiftpay.core.common.exception.PrincipalException
 import com.ngyu.swiftpay.core.common.logger.logger
-import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
+import com.ngyu.swiftpay.payment.api.controller.dto.PaymentCredentials
 import org.springframework.core.MethodParameter
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component

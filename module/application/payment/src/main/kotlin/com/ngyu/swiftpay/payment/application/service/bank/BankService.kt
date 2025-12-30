@@ -2,8 +2,8 @@ package com.ngyu.swiftpay.payment.application.service.bank
 
 import com.ngyu.swiftpay.core.domain.bank.BankAccount
 import com.ngyu.swiftpay.core.port.repository.BankAccountRepository
-import com.ngyu.swiftpay.payment.api.dto.BankAccountCreateDto
-import com.ngyu.swiftpay.payment.api.dto.BankAccountResponseDto
+import com.ngyu.swiftpay.payment.api.controller.dto.BankAccountCreateDto
+import com.ngyu.swiftpay.payment.api.controller.dto.BankAccountResponseDto
 import org.springframework.stereotype.Service
 
 @Service

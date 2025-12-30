@@ -1,4 +1,4 @@
-package com.ngyu.swiftpay.payment.api.dto
+package com.ngyu.swiftpay.payment.api.controller.dto
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
