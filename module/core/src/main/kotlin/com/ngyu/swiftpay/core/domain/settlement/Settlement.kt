@@ -2,16 +2,16 @@ package com.ngyu.swiftpay.core.domain.settlement
 
 import com.ngyu.swiftpay.core.common.exception.InvalidSettlementStatusException
 import com.ngyu.swiftpay.core.domain.BaseDomain
+import com.ngyu.swiftpay.core.domain.payment.Payment.Companion.PADDING_LENGTH
+import com.ngyu.swiftpay.core.domain.payment.Payment.Companion.PREFIX
 import com.ngyu.swiftpay.core.vo.Money
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
 
 class Settlement(
   override val id: Long? = null,
-  val settlementId: String = UUID.randomUUID().toString(),
-  val merchantAccountNumber: String,
-  val merchantName: String,
+  val settlementId: String,
+  val merchantId: String,
 
   val totalAmount: Money, // 총 결제 금액
   val feeAmount: Money, // 총 수수료
@@ -25,6 +25,29 @@ class Settlement(
   val createdAt: LocalDateTime = LocalDateTime.now(),
   val executedAt: LocalDateTime? = null
 ) : BaseDomain<Long>() {
+
+  companion object {
+    fun createSettlementId(seq: Long): String = "$PREFIX${seq.toString().padStart(PADDING_LENGTH, '0')}"
+
+    fun create(seq: Long,
+               settlementId: String,
+               merchantId: String,
+               totalAmount: Money,
+               fee: Money): Settlement {
+      val now = LocalDateTime.now()
+      return Settlement(
+        id = seq,
+        settlementId = settlementId,
+        merchantId = merchantId,
+        totalAmount = totalAmount,
+        feeAmount = fee,
+        settlementAmount = totalAmount - fee,
+        settlementDate = now.plusDays(7).toLocalDate(),
+        createdAt = now
+      )
+    }
+  }
+
   fun process(): Settlement {
     if (this.status != SettlementStatus.PENDING) {
       throw InvalidSettlementStatusException("정산 대기 상태가 아닙니다.")
@@ -58,8 +81,7 @@ class Settlement(
   private fun copy(
     id: Long? = this.id,
     settlementId: String = this.settlementId,
-    merchantAccountNumber: String = this.merchantAccountNumber,
-    merchantName: String = this.merchantName,
+    merchantId: String = this.merchantId,
     totalAmount: Money = this.totalAmount,
     feeAmount: Money = this.feeAmount,
     settlementAmount: Money = this.settlementAmount,
@@ -72,8 +94,7 @@ class Settlement(
     return Settlement(
       id = id,
       settlementId = settlementId,
-      merchantAccountNumber = merchantAccountNumber,
-      merchantName = merchantName,
+      merchantId = merchantId,
       totalAmount = totalAmount,
       feeAmount = feeAmount,
       settlementAmount = settlementAmount,

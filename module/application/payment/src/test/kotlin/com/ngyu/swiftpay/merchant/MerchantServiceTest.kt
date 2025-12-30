@@ -3,8 +3,8 @@ package com.ngyu.swiftpay.payment.application.service
 import com.ngyu.swiftpay.core.common.exception.DuplicateMerchantException
 import com.ngyu.swiftpay.core.common.exception.InvalidMerchantDataException
 import com.ngyu.swiftpay.core.domain.merchant.Merchant
-import com.ngyu.swiftpay.core.port.repository.MerchantRepository
 import com.ngyu.swiftpay.core.port.generator.SequenceGenerator
+import com.ngyu.swiftpay.core.port.repository.MerchantRepository
 import com.ngyu.swiftpay.payment.api.dto.MerchantRegisterReqeust
 import com.ngyu.swiftpay.payment.api.dto.PaymentCredentials
 import com.ngyu.swiftpay.payment.application.auth.ApiCredentialsService
@@ -60,7 +60,7 @@ class MerchantServiceTest {
     every { merchantRepository.save(merchant) } returns merchant  // 첫 번째 save
     every { merchantRepository.findByMerchantId(merchantId) } returns merchant
     every { merchantRepository.save(approvedMerchant) } returns approvedMerchant  // 두 번째 save
-    every { apiCredentialsService.issueKey() } returns credentials
+    every { apiCredentialsService.issueKey(merchantSeq) } returns credentials
 
     // when
     val result = merchantService.register(request)
@@ -72,7 +72,7 @@ class MerchantServiceTest {
 
     verify(exactly = 1) { sequenceGenerator.nextMerchantId() }
     verify(exactly = 2) { merchantRepository.save(any()) }
-    verify(exactly = 1) { apiCredentialsService.issueKey() }
+    verify(exactly = 1) { apiCredentialsService.issueKey(merchantSeq) }
   }
 
   @Test

@@ -197,8 +197,7 @@ CREATE TABLE `settlement`
 (
     `id`                      BIGINT                                                NOT NULL AUTO_INCREMENT COMMENT '정산 고유 ID (PK)',
     `settlement_id`           VARCHAR(100)                                          NOT NULL COMMENT '정산 ID (외부 노출)',
-    `merchant_account_number` VARCHAR(50)                                           NOT NULL COMMENT '가맹점 계좌번호',
-    `merchant_name`           VARCHAR(100)                                          NOT NULL COMMENT '가맹점명',
+    `merchant_id` VARCHAR(100)                                           NOT NULL COMMENT '가맹점 ID',
     `total_amount`            DECIMAL(19, 2)                                        NOT NULL COMMENT '총 결제 금액',
     `fee_amount`              DECIMAL(19, 2)                                        NOT NULL COMMENT '총 수수료',
     `settlement_amount`       DECIMAL(19, 2)                                        NOT NULL COMMENT '실제 정산 금액 (총액 - 수수료)',
@@ -212,7 +211,6 @@ CREATE TABLE `settlement`
 
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_settlement_id` (`settlement_id`),
-    INDEX `idx_merchant_account` (`merchant_account_number`),
     INDEX `idx_settlement_date` (`settlement_date`),
     INDEX `idx_status` (`status`),
     INDEX `idx_created_at` (`created_at`)

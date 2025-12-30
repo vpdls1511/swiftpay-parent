@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.infrastructure.redis.service
 
+import com.ngyu.swiftpay.core.common.exception.PrincipalException
 import com.ngyu.swiftpay.core.domain.apiCredentials.ApiCredentials
 import com.ngyu.swiftpay.core.domain.apiCredentials.ApiKeyStatus
-import com.ngyu.swiftpay.core.common.exception.PrincipalException
 import com.ngyu.swiftpay.infrastructure.redis.constant.RedisKey
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -34,7 +34,7 @@ class ApiCredentialsCacheServiceUnitTest {
   val entries = mapOf(
    "apiKey" to "api-key-xyz",
    "lookupKey" to "pair-1234",
-   "userId" to "1001",
+   "merchantId" to "1001",
    "callLimit" to "10",
    "issuedAt" to LocalDateTime.now().minusHours(1).toString(),
    "expiresAt" to LocalDateTime.now().plusHours(2).toString(),
@@ -50,7 +50,7 @@ class ApiCredentialsCacheServiceUnitTest {
   assertThat(result).isNotNull
   assertThat(result!!.apiKey).isEqualTo("api-key-xyz")
   assertThat(result.lookupKey).isEqualTo("pair-1234")
-  assertThat(result.userId).isEqualTo(1001L)
+  assertThat(result.merchantId).isEqualTo(1001L)
   assertThat(result.status).isEqualTo(ApiKeyStatus.ACTIVE)
  }
 
@@ -90,7 +90,7 @@ class ApiCredentialsCacheServiceUnitTest {
   val apiCredentials = ApiCredentials(
    apiKey = "api-key-1234",
    lookupKey = "pair-1234",
-   userId = 1001L,
+   merchantId = 1001L,
    callLimit = 10,
    issuedAt = LocalDateTime.now(),
    expiresAt = LocalDateTime.now().plusHours(1),

@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.infrastructure.db.persistent.settlement
 
+import com.ngyu.swiftpay.core.domain.settlement.Settlement
 import com.ngyu.swiftpay.core.vo.Currency
 import com.ngyu.swiftpay.core.vo.Money
-import com.ngyu.swiftpay.core.domain.settlement.Settlement
 
 object SettlementMapper {
 
@@ -10,8 +10,7 @@ object SettlementMapper {
     return Settlement(
       id = entity.id,
       settlementId = entity.settlementId,
-      merchantAccountNumber = entity.merchantAccountNumber,
-      merchantName = entity.merchantName,
+      merchantId = entity.merchantId,
       totalAmount = Money(entity.totalAmount, Currency.valueOf(entity.currency)),
       feeAmount = Money(entity.feeAmount, Currency.valueOf(entity.currency)),
       settlementAmount = Money(entity.settlementAmount, Currency.valueOf(entity.currency)),
@@ -27,8 +26,7 @@ object SettlementMapper {
     return SettlementEntity(
       id = domain.id,
       settlementId = domain.settlementId,
-      merchantAccountNumber = domain.merchantAccountNumber,
-      merchantName = domain.merchantName,
+      merchantId = domain.merchantId,
       totalAmount = domain.totalAmount.amount,
       feeAmount = domain.feeAmount.amount,
       settlementAmount = domain.settlementAmount.amount,

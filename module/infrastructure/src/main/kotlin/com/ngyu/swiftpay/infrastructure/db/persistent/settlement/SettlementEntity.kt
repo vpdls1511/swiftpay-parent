@@ -16,11 +16,8 @@ class SettlementEntity(
   @Column(name = "settlement_id", nullable = false, unique = true, length = 100)
   val settlementId: String,
 
-  @Column(name = "merchant_account_number", nullable = false, length = 50)
-  val merchantAccountNumber: String,
-
-  @Column(name = "merchant_name", nullable = false, length = 100)
-  val merchantName: String,
+  @Column(name = "merchant_id", nullable = false, length = 100)
+  val merchantId: String,
 
   @Column(name = "total_amount", nullable = false, precision = 19, scale = 2)
   val totalAmount: BigDecimal,

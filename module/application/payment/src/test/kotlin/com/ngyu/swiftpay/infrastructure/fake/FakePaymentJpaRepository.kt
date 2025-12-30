@@ -34,7 +34,6 @@ class FakePaymentJpaRepository : PaymentJpaRepository {
       status = entity.status,
       reason = entity.reason,
       idempotencyKey = entity.idempotencyKey,
-      settlementId = entity.settlementId
     ) as S
     storage[id] = saved
     return saved
