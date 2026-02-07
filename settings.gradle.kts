@@ -4,4 +4,5 @@ include("module:application:payment")
 
 include("module:core")
 include("module:infrastructure")
+include("module:auth")
 include("module:security")
