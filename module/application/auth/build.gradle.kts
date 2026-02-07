@@ -2,7 +2,6 @@ plugins {
   kotlin("jvm") version "1.9.25"
   kotlin("plugin.spring") version "1.9.25"
   kotlin("plugin.jpa") version "1.9.25"
-  kotlin("kapt") version "1.9.25"  // 추가
 
   id("org.springframework.boot") version "3.5.6"
   id("io.spring.dependency-management") version "1.1.7"
@@ -29,13 +28,6 @@ tasks.jar { // 라이브러리용 파일은 만듦
 repositories {
   mavenCentral()
 }
-
-allOpen {
-  annotation("jakarta.persistence.Entity")
-  annotation("jakarta.persistence.MappedSuperclass")
-  annotation("jakarta.persistence.Embeddable")
-}
-
 
 dependencies {
   implementation(project(":module:core"))
