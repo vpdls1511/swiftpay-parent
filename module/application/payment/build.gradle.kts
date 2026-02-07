@@ -24,8 +24,6 @@ repositories {
 
 dependencies {
   implementation(project(":module:core"))
-  implementation(project(":module:infrastructure"))
-  implementation(project(":module:security"))
 
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.springframework.boot:spring-boot-starter")
