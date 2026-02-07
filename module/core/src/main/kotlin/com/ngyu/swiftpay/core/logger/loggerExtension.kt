@@ -1,4 +1,4 @@
-package me.ngyu.swiftpay.common.logger
+package com.ngyu.swiftpay.core.logger
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

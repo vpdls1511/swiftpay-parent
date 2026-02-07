@@ -1,12 +1,12 @@
 package com.ngyu.swiftpay.core.exception.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.ngyu.swiftpay.core.common.exception.PrincipalException
-import com.ngyu.swiftpay.core.common.exception.response.ExceptionResponse
-import com.ngyu.swiftpay.core.common.logger.logger
+import com.ngyu.swiftpay.core.exception.SwiftException
+import com.ngyu.swiftpay.core.exception.response.ExceptionResponse
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.slf4j.LoggerFactory
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.MediaType
@@ -26,12 +26,12 @@ class FilterChainExceptionHandler(
   private val objectMapper: ObjectMapper
 ) : OncePerRequestFilter() {
 
-  private val log = logger()
+  private val log = LoggerFactory.getLogger(javaClass)
 
   override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
     try {
       filterChain.doFilter(request, response)
-    } catch (e: PrincipalException) {
+    } catch (e: SwiftException) {
       log.error("인증 예외 발생 : ${e.message}")
 
       this.writeExceptionResponse(response, request, HttpServletResponse.SC_UNAUTHORIZED, e.message ?: "인증에 실패하였습니다.")

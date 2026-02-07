@@ -1,7 +1,7 @@
 package com.ngyu.swiftpay.common.security.filter
 
-import com.ngyu.swiftpay.core.common.exception.SwiftError
-import com.ngyu.swiftpay.core.common.exception.SwiftException
+import com.ngyu.swiftpay.core.exception.SwiftError
+import com.ngyu.swiftpay.core.exception.SwiftException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

@@ -1,6 +1,6 @@
 package me.ngyu.swiftpay.common.annotation
 
-import com.ngyu.swiftpay.core.common.exception.response.ExceptionResponse
+import com.ngyu.swiftpay.core.exception.response.ExceptionResponse
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse

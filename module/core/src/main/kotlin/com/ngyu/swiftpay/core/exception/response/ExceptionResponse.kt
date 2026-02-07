@@ -1,6 +1,6 @@
 package com.ngyu.swiftpay.core.exception.response
 
-import com.ngyu.swiftpay.core.common.logger.RequestIdFilter
+import com.ngyu.swiftpay.core.logger.RequestIdFilter
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.MDC
 

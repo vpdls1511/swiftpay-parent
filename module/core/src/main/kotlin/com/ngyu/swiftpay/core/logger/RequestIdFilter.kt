@@ -1,4 +1,4 @@
-package me.ngyu.swiftpay.common.logger
+package com.ngyu.swiftpay.core.logger
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

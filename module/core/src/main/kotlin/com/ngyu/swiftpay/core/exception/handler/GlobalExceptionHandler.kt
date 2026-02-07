@@ -1,8 +1,8 @@
 package com.ngyu.swiftpay.core.exception.handler
 
-import com.ngyu.swiftpay.core.common.exception.response.ExceptionResponse
-import com.ngyu.swiftpay.core.common.logger.logger
+import com.ngyu.swiftpay.core.exception.response.ExceptionResponse
 import jakarta.servlet.http.HttpServletRequest
+import org.slf4j.LoggerFactory
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @Order(Ordered.LOWEST_PRECEDENCE)
 class GlobalExceptionHandler {
 
-  private val log = logger()
+  private val log = LoggerFactory.getLogger(javaClass)
 
   @ExceptionHandler(Exception::class)
   fun handleGlobalException(

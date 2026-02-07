@@ -1,6 +1,5 @@
 package com.ngyu.swiftpay.core.vo
 
-import com.ngyu.swiftpay.core.common.logger.logger
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -8,7 +7,6 @@ data class Money(
   val amount: BigDecimal,
   val currency: Currency
 ) {
-  private val log = logger()
 
   companion object {
 
