@@ -2,17 +2,16 @@ package me.ngyu.swiftpay.auth.domain.account
 
 import jakarta.persistence.*
 import me.ngyu.swiftpay.common.domain.BaseEntity
-import java.util.*
 
 @Entity
 @Table(name = "account")
 class Account(
   @Column(nullable = false, unique = true, length = 36)
-  val uuid: String = UUID.randomUUID().toString(),
+  val uuid: String,
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
-  var role: AccountRole = AccountRole.USER,
+  var role: AccountRole,
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
