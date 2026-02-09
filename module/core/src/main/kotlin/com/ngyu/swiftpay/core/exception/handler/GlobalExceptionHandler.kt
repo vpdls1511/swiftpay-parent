@@ -1,5 +1,7 @@
 package com.ngyu.swiftpay.core.exception.handler
 
+import com.ngyu.swiftpay.core.exception.SwiftError
+import com.ngyu.swiftpay.core.exception.SwiftException
 import com.ngyu.swiftpay.core.exception.response.ExceptionResponse
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.LoggerFactory
@@ -21,6 +23,30 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class GlobalExceptionHandler {
 
   private val log = LoggerFactory.getLogger(javaClass)
+
+  @ExceptionHandler(SwiftException::class)
+  fun handleSwiftException(
+    e: SwiftException,
+    request: HttpServletRequest
+  ): ResponseEntity<ExceptionResponse> {
+    val status = when (e.swiftError) {
+      SwiftError.CONFLICT -> HttpStatus.CONFLICT
+      else -> HttpStatus.INTERNAL_SERVER_ERROR
+    }
+
+    log.warn("SwiftException - ${e.swiftError.code}: ${e.message}")
+
+    return ResponseEntity
+      .status(status)
+      .body(
+        ExceptionResponse.create(
+          errorCode = e.swiftError.code,
+          message = e.message ?: e.swiftError.message,
+          request = request
+        )
+      )
+  }
+
 
   @ExceptionHandler(Exception::class)
   fun handleGlobalException(
