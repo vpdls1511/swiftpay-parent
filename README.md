@@ -1,75 +1,75 @@
-# SwiftPay - 결제시스템
-> refactor 브랜치에서 리팩토링 진행중..
----
+<div align="center">
 
-```text
-서버 구성 - On Premise
+# SwiftPay
 
-CPU - N200 / RAM 16GB
-Ubuntu 24.04.03 LTS
+**간편결제 시스템 구현 프로젝트**
 
-Infra
-- Jenkins
-- K3S
-- Kaniko
-```
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.9+-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![JVM](https://img.shields.io/badge/JVM-17-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5+-6DB33F?logo=springboot&logoColor=white)](https://spring.io)
+[![Gradle](https://img.shields.io/badge/Gradle-8.14+-02303A?logo=gradle&logoColor=white)](https://gradle.org)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-
-## 페이먼츠 핵심 : 에스크로(Escrow) 시스템
-### 개념
-중개자(플랫폼)가 구매자와 판매자 사이에서 **결제금을 일시적으로 보관**하다가,
-거래 완료 조건이 충족되면 판매자에게 정산하는 시스템.
-### 플로우
-```
-1. 구매자 결제 → 2. 에스크로 예치 → 3. 상품/서비스 제공 → 4. 구매 확정 → 5. 판매자 정산
-```
-
-### 핵심 기능
-- **예치(Hold)**: 결제 승인 후 자금 보관
-- **정산(Settlement)**: 구매 확정 후 판매자에게 송금
-- **환불(Refund)**: 취소/반품 시 구매자 환급
-- **분쟁 처리**: 문제 발생 시 중재 및 자금 분배
-
-### 안정성 요구사항
-✅ 이중 결제 방지 (멱등성 보장)  
-✅ 금액 불일치 방지 (트랜잭션 원자성)  
-✅ 정산 누락 방지 (이벤트 소싱)
+</div>
 
 ---
 
-### 학습 목표
-✅ Kotlin + Coroutine  
-✅ Redis 분산 시스템 구축  
-✅ Kafka 이벤트 드리븐 아키텍처  
-✅ 대용량 트래픽 처리
+## 📖 개요
 
-### 성능목표
-✅ 평균 응답시간 300ms 이하  
-✅ P99 응답시간 500ms 이하  
-✅ 동시 사용자 처리 1,300명 이상
+결제/정산 도메인 전문성 확보와 금융 시스템 안정성 보장 경험을 위한 프로젝트입니다.  
+헥사고날 아키텍처 기반으로 실무 수준의 간편결제 시스템을 구현합니다.
 
----
+## 🛠 기술 스택
 
-## 개발 진척도
+| 분류 | 기술 |
+|------|------|
+| **Backend** | Kotlin, Spring Boot, Coroutine |
+| **Infrastructure** | K3s, Jenkins, Kaniko |
+| **Storage** | MySQL, Redis |
+| **Message** | Kafka (예정) |
 
-### Phase 1 - 기본 인프라
-- [x] 상점 등록 및 API Key 발급
-- [x] 결제 요청 API
-> 이제 결제 요청 이후 검증해야 할 것.
-> 1. orderId 와 merchantId, apiKey 검증하여 유효한 주문요청인지 확인
-> 2. payment 의 amount가 orderId의 amount와 같은지 검증
-> 3. 결제 여부에 따라 orderId 사용 여-부 알려줘야함.
-     >    4. 짧게 검증하는거니.. DB에 저장 안하고 Redis를 통해서 검증해도 될거같고.. 고민포인트
+**서버 환경**
+```
+On-Premise K3s (N200 / 16GB)
+Pod 리소스 제한: 1vCPU / 1GB
+```
 
+## 💡 핵심 기능
 
-### Phase 2 - 에스크로 (진행중)
-- [x] 결제 예치 (Hold)
-- [ ] 구매 확정 처리
-- [ ] 판매자 정산 배치
-- [ ] 환불 처리
+### 인증/회원
+회원 가입/로그인, JWT 인증, API Key 관리
 
-### Phase 3 - 안정성 (예정)
-- [ ] 멱등성 키 기반 중복 방지
-- [ ] 분산 트랜잭션 처리
-- [ ] 정산 실패 재시도 로직
-- [ ] 이벤트 소싱 도입
+### 결제
+카드 등록 및 토큰화, PG/VAN 연동, 결제 승인/취소
+
+### 에스크로
+```mermaid
+graph LR
+    A[결제 예치] --> B[구매 확정]
+    B --> C[판매자 정산]
+    C --> D[환불 처리]
+```
+
+### 안정성
+멱등성 키 | 트랜잭션 원자성 | 분산 락 | 이벤트 소싱
+
+## 🗺 개발 로드맵
+```
+Phase 1 - 인증/회원 (진행중)
+  ✅ 멀티모듈 + 헥사고날 아키텍처
+  ✅ Exception 처리 인프라
+  ⬜ 회원 가입/로그인, JWT 인증
+
+Phase 2 - 결제
+  ⬜ 결제 요청 API
+  ⬜ PG/VAN Mock 서버
+  ⬜ 결제 승인 처리
+
+Phase 3 - 에스크로
+  ⬜ 결제 예치/정산 배치
+  ⬜ 환불 처리
+
+Phase 4 - 안정성
+  ⬜ 멱등성/분산 트랜잭션
+  ⬜ 이벤트 소싱
+```
+
