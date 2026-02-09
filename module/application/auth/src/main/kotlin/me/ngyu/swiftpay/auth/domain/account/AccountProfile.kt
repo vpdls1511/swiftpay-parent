@@ -6,9 +6,6 @@ import me.ngyu.swiftpay.common.domain.BaseTimeEntity
 @Entity
 @Table(name = "account_profile")
 class AccountProfile(
-  @Id
-  val accountId: Long,
-
   @OneToOne(fetch = FetchType.LAZY)
   @MapsId
   @JoinColumn(name = "account_id")
@@ -17,5 +14,9 @@ class AccountProfile(
   var name: String,
   var email: String,
   var phone: String,
+) : BaseTimeEntity() {
 
-) : BaseTimeEntity()
+  @Id
+  var accountId: Long = 0
+    private set
+}
