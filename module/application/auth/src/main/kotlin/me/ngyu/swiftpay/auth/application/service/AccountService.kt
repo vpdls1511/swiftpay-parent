@@ -2,7 +2,7 @@ package me.ngyu.swiftpay.auth.application.service
 
 import com.ngyu.swiftpay.core.exception.SwiftError
 import com.ngyu.swiftpay.core.exception.SwiftException
-import me.ngyu.swiftpay.auth.application.api.dto.AccountRequest
+import me.ngyu.swiftpay.auth.api.dto.AccountRequest
 import me.ngyu.swiftpay.auth.application.usecase.AccountCredentialsUseCase
 import me.ngyu.swiftpay.auth.application.usecase.AccountProfileUseCase
 import me.ngyu.swiftpay.auth.application.usecase.AccountUseCase

@@ -1,6 +1,6 @@
-package me.ngyu.swiftpay.auth.application.api
+package me.ngyu.swiftpay.auth.api
 
-import me.ngyu.swiftpay.auth.application.api.dto.AccountRequest
+import me.ngyu.swiftpay.auth.api.dto.AccountRequest
 import me.ngyu.swiftpay.auth.application.usecase.AccountUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping

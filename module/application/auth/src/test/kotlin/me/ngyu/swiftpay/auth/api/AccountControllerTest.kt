@@ -1,4 +1,4 @@
-package me.ngyu.swiftpay.auth.application.api
+package me.ngyu.swiftpay.auth.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ngyu.swiftpay.core.exception.SwiftError
@@ -6,7 +6,8 @@ import com.ngyu.swiftpay.core.exception.SwiftException
 import com.ngyu.swiftpay.core.exception.handler.GlobalExceptionHandler
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import me.ngyu.swiftpay.auth.application.api.dto.AccountRequest
+import me.ngyu.swiftpay.auth.api.AccountController
+import me.ngyu.swiftpay.auth.api.dto.AccountRequest
 import me.ngyu.swiftpay.auth.application.usecase.AccountUseCase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc

@@ -7,7 +7,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
-import me.ngyu.swiftpay.auth.application.api.dto.AccountRequest
+import me.ngyu.swiftpay.auth.api.dto.AccountRequest
 import me.ngyu.swiftpay.auth.domain.account.Account
 import me.ngyu.swiftpay.auth.domain.account.AccountCredentials
 import me.ngyu.swiftpay.auth.domain.account.AccountProfile

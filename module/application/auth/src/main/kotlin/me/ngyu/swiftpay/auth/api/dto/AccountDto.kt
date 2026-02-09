@@ -1,4 +1,4 @@
-package me.ngyu.swiftpay.auth.application.api.dto
+package me.ngyu.swiftpay.auth.api.dto
 
 data class AccountRequest(
   val username: String,
