@@ -86,7 +86,6 @@ class AccountTest {
     em.persistAndFlush(account)
 
     val credentials = AccountCredentials(
-      accountId = 0L,
       account = account,
       username = "testuser",
       password = "hashed_password",
@@ -94,7 +93,6 @@ class AccountTest {
     )
 
     val profile = AccountProfile(
-      accountId = 0L,
       account = account,
       name = "홍길동",
       email = "test@example.com",
