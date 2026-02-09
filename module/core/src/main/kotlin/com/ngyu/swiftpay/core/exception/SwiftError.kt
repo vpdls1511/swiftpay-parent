@@ -17,6 +17,7 @@ enum class SwiftError(
   // Common
   INVALID_INPUT("CMN001", "입력값이 유효하지 않습니다", 400),
   RESOURCE_NOT_FOUND("CMN002", "리소스를 찾을 수 없습니다", 404),
-  INTERNAL_ERROR("CMN003", "내부 오류가 발생했습니다", 500)
+  INTERNAL_ERROR("CMN003", "내부 오류가 발생했습니다", 500),
+  CONFLICT("CMN004", "요청한 리소스가 이미 존재합니다", 409),
 }
 
