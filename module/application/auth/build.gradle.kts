@@ -39,14 +39,15 @@ dependencies {
 
   api("org.springframework.boot:spring-boot-starter-security")
 
-  api("org.springframework.boot:spring-boot-starter-data-jpa")  // 이거 추가
-  runtimeOnly("com.mysql:mysql-connector-j")  // DB 드라이버도
+  api("org.springframework.boot:spring-boot-starter-data-jpa")
+  runtimeOnly("com.mysql:mysql-connector-j")
 
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
   testImplementation("com.h2database:h2")
-
+  testImplementation("io.mockk:mockk:1.13.8")
+  testImplementation("org.assertj:assertj-core:3.24.2")
 }
 
 kotlin {
