@@ -3,8 +3,6 @@ package me.ngyu.swiftpay.auth.application.service
 import com.ngyu.swiftpay.core.exception.SwiftError
 import com.ngyu.swiftpay.core.exception.SwiftException
 import me.ngyu.swiftpay.auth.api.dto.AccountRequest
-import me.ngyu.swiftpay.auth.application.usecase.AccountCredentialsUseCase
-import me.ngyu.swiftpay.auth.application.usecase.AccountProfileUseCase
 import me.ngyu.swiftpay.auth.application.usecase.AccountUseCase
 import me.ngyu.swiftpay.auth.domain.account.Account
 import me.ngyu.swiftpay.auth.domain.account.AccountCredentials
@@ -18,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class AccountService(
   private val accountRepositoryPort: AccountRepositoryPort,
   private val passwordEncoder: PasswordEncoder,
-) : AccountUseCase, AccountCredentialsUseCase, AccountProfileUseCase {
+) : AccountUseCase {
 
   @Transactional
   override fun saveUser(request: AccountRequest): String {
