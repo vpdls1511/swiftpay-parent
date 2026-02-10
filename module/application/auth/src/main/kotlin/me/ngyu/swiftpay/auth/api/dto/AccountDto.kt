@@ -1,0 +1,15 @@
+package me.ngyu.swiftpay.auth.api.dto
+
+data class AccountRequest(
+  val username: String,
+  val password: String,
+
+  val name: String,
+  val email: String,
+  val phone: String
+) {}
+
+data class LoginRequest(
+  val username: String,
+  val password: String,
+)

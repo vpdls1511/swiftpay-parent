@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: common
+
+jwt:
+  secret: anythingyouwant_djWjrnwjWJrnthiffkthiffk
+  access-expiration: 1800000    # 30분
+  refresh-expiration: 604800000  # 7일
+
